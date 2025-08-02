@@ -56,9 +56,7 @@ this is just primarily concerned with UTF-8 string constants occuring
 in the code files themselves.
 
 ## See Also
- + [https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949](
-   https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949)
- + [https://fortran-lang.discourse.group/t/how-do-i-file-read-french-special-characters-like-e-etc/6618](
-   https://fortran-lang.discourse.group/t/how-do-i-file-read-french-special-characters-like-e-etc/6618)
- + [https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764](
-   https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764)
+
+ + [https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949](https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949)
+ + [https://fortran-lang.discourse.group/t/how-do-i-file-read-french-special-characters-like-e-etc/6618](https://fortran-lang.discourse.group/t/how-do-i-file-read-french-special-characters-like-e-etc/6618)
+ + [https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764](https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764)
