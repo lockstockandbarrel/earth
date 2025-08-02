@@ -19,7 +19,7 @@ instead of as ASCII byte streams that contain UTF-8 constant strings.
  + utf8_to_ucs4_via_io
  + ucs4_to_utf8
 
-~~~fortran
+```fortran
 program testit
 use iso_fortran_env, only : stdout=>output_unit
 use M_utf8, only : utf8_to_ucs4
