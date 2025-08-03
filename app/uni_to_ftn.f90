@@ -22,7 +22,7 @@ character(len=:,kind=ucs4),allocatable :: ustr
    write(*,g) 'use, intrinsic :: iso_fortran_env, only : output_unit'
    write(*,g) "integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')"
    write(*,g) '! OUTPUT:',command_line
-   write(*,g) 'character(len=*,kind=ucs4),parameter :: variable= &'
+   write(*,g) 'character(len=*,kind=ucs4),parameter :: variable = &'
    write(*,form)(ustr(i:i),i=1,len(ustr))
    write(*,g) "   open (output_unit, encoding='utf-8')"
    write(*,g) "   write(output_unit,'(a)' )variable"
