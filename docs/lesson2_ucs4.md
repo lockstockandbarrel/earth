@@ -10,12 +10,13 @@ the defined 128 ASCII characters or even the Fortran character set,
 which is a subset of the ASCII characters?
 
 Section 6.1(Processor character set) and 7.4.4(Character constants)
-provide guidance on this. A lot is left up to the processor. A conservative
-interpretation implies that for ASCII input files a quoted constant string
-will represent bytes transferred directly to the variable or constant
-value being defined. What is left in question is what encoding ensues
-otherwise, when a file may be using one encoding like UTF-8, but a
-constant using another encoding such as UCS-4 is being declared.
+of the Fortran 2023 Standard provide guidance on this. A lot is left up
+to the processor. A conservative interpretation implies that for ASCII
+input files a quoted constant string must be composed of one-byte ASCII
+characters.
+
+What is left in question is what encoding ensues when this criteria is
+not met.
 
 For example, currently if I edit a UTF-8 file and create
 ```fortran
@@ -49,28 +50,29 @@ end program euro
     ?     1       4        4
     €     1       4        4
 ```
-We want to see a euro character, have a string with a length of 1
-that is stored in four bytes, and be of kind UCS-4. So only UERO3
-is a correctly generated value.
+We want to see a euro character, have a string with a length of 1 that is
+stored in four bytes, and be of kind UCS-4. So only UERO3 is a correctly
+generated value.
 
-We are partly just demonstrating there are a lot of ways to specify
-a string constant that will _not_ end up creating a proper UCS-4
-string, but one (verbose) syntax that should always succeed.
+We are partly just demonstrating there are a lot of ways to specify a
+string constant that will _not_ end up creating a proper UCS-4 string,
+but one (verbose) syntax that should always succeed.
 
-## CHAR() Intrinsic:
-
-So we have demonstrated The CHAR() intrinsic function can be used to
-construct characters from their Unicode code points, allowing you to
-reliably embed Unicode characters within character strings.
+So the CHAR() intrinsic function can be reliably used to directly
+construct UCS-4 multi-byte characters from their Unicode code points.
 
 # Mixing CHAR() and quoted constants
 
-A string literal like
+A quoted string literal can be used to define UCS-4 strings as long
+as the quoted characters are one byte characters (ie. ASCII).
+
+For instance, 
 ```fortran
 ucs4_'Unicode character: ' // char(9787, kind=ucs4)
 ```
-demonstrates creating a Unicode string using the ucs4 kind for a quoted
-string and the CHAR() intrinsic together. This too is standard.
+mixes quoted constant strings and the CHAR() function. As long as the 
+quoted string is composed of ASCII one-byte characters there is no 
+ambiguity.
 
 ## a program to convert a utf-8 file to Fortran CHAR() declarations
 ```fortran
@@ -192,7 +194,7 @@ compiler option:
         "\x"nn, "\u"nnnn and "\U"nnnnnnnn (where each n is a hexadecimal
         digit) are translated into the Unicode characters corresponding to
         the specified code points.
-
+```
 ## Other characters with regards to the Fortran standard
 
 Section 6.1.6 of the f2023 standard says
@@ -212,8 +214,8 @@ processors and operating systems should be very portable as well.
 
 That is it for this lesson. As tempting as it may be to place Unicode
 multi-byte characters in quoted constant strings in code source, the
-portable standard method is to use the CHAR() function and Unicode code
-point values.
+portable standard method is to use the CHAR() function and integer
+Unicode code point values.
 
 Placing messages in an external file and opening the file as UTF-8 encoded
 is an easy alternative that lets you maintain the messages as Unicode
