@@ -43,6 +43,45 @@ character(len=:,kind=ucs4),allocatable  :: str
 
 end program testit
 ```
+-------------------------------------------------------------
+## Fortran Unicode Tutorial
+
+Here are some lessons that describe my experiences with Unicode and
+Fortran, including discussions of open questions concerning what is
+standardized, what extensions commonly used compilers provide to address
+some of the current gaps, and what is known to be non-portable but useful
+behavior from some compilers regarding undefined behaviors.
+
+**WIP Notice:** this has barely been begin. I am still sorting out what is and is
+not standard.
+
+### Introduction to Fortran Unicode support 
+   + [**Lesson I:**](docs/lesson1_ucs4.md) reading and writing UTF-8 Unicode files
+   + Lesson II:  creating Unicode strings in ASCII Fortran source files
+   + Lesson III: mixing ASCII and UCS4 kinds as regards assignments, passing arguments
+                  to external ASCII libraries, and I/O argument lists
+   + Lesson IV:  what is and is not supported with internal READ and WRITE statements
+   + Lesson V:   processing Unicode file names on OPEN() statements
+   + Lesson VI:   reading UTF-8 strings from command lines
+   + Lesson VII:  passing Unicode strings to and from C
+   + Lesson VIII: related utility programs
+
+### off the beaten path: 
+   + Lesson I: UTF-8 source files -- just in comments and constants
+   + Lesson II: the backslash escape code extension
+   + Lesson III: converting between UCS-4 and UTF-8 with procedures
+   + Lesson IV: embedding BOM characters at the beginning of files
+
+### Processing Unicode when ISO-10646 is not supported by a compiler
+   + Lesson I: converting UTF-8 codes to and from INTEGER values
+   + Lesson II: byte-oriented printing of 4-byte integers
+   + Lesson III: issues with terminal emulators, system locale settings, and
+                  other Unicode-related issues
+   + Lesson IV: working with ASCII extended encodings; particularly those
+                 commonly referred to as Extended, Latin, Latin1 and Latin2.
+-------------------------------------------------------------
+
+## Dusty Corners 
 Assigns between different character kinds, and an apparent
 lack of an ability to specify encoding='UTF-8' when using
 internal reads and writes like you can with an OPEN(3f) 
@@ -52,7 +91,7 @@ field descriptor works with multi-byte characters.
 Note that at least with the gfortran(1) compiler conversion
 to UCS4 internal representation works automatically when 
 reading and writing from files with encoding='utf-8' specified,
-this is just primarily concerned with UTF-8 string constants occuring
+this is just primarily concerned with UTF-8 string constants occurring
 in the code files themselves.
 
 ## backslash extension

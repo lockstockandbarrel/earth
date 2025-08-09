@@ -1,0 +1,150 @@
+## Introduction to Fortran Unicode support 
+### Lession I: reading and writing UTF-8 Unicode files
+
+Not all Fortran compilers provide high-level ISO-10646 (ie. "Unicode")
+support. To determine if a compiler provides support, one can attempt
+to compile and execute the following program:
+
+```fortran
+   program test_for_iso_10646
+   use iso_fortran_env, only : selected_char_kind, output_unit
+   implicit none
+   intrinsic selected_char_kind
+   integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')
+      open(output_unit,encoding='utf-8')
+      write(*,*)'Smiling face with open mouth',char(int(z'1F603'),kind=ucs4) ! 😃
+   end program test_for_iso_10646
+```
+
+If this program builds and runs and prints an emoji the compiler
+provides support. If not, Unicode usage will be indirect, and require
+lower-level knowledge of byte-level Fortran processing and I/O and the
+hosting operating system. This introduction only applies to compilers
+providing ISO-10646 support.
+
+Fortran Unicode support is straight-forward if the program source file
+itself does not need to contain Unicode strings. Assuming the program
+merely needs to read or write UTF-8 files and use Fortran intrinsics to
+operate on the strings there is very little different from when processing
+ASCII files.
+
+So to nearly transparently process Unicode UTF-8 files declare all your
+character variables to be kind "iso_10646", and open/reopen your files
+with UTF-8 encoding, being careful to ensure your intrinsic calls are
+using Unicode.
+
+Fortran will then transparently convert the data from UTF-8 files to whichever
+Unicode encoding it uses internally (UTF-8, UTF-32, UTF-16, ...) on input,
+and convert back to UTF-8 on output.
+
+If standard-conforming, the internal representation will be UCS-4, as the
+standard description of the intrinsic SELECTED_CHAR_KIND() states:
+
+   If NAME has the value ISO_10646, then the result has a value equal
+   to that of the kind type parameter of the ISO 10646 character kind
+   (corresponding to UCS-4 as specified in ISO/IEC 10646) if the
+   processor supports such a kind; otherwise the result has the value
+   −1.
+
+This automatic conversion between UTF-32 (aka. UCS-4) and UTF-8 is not so
+different from what occurs when reading and writing numeric values from
+ASCII files. The binary representation of the numbers (REAL, INTEGER,
+COMPLEX, ..)  used internally by the program is very different from the
+human-readable ASCII representations, but Fortran makes this conversion
+automatically for the user when asked to provide formatted I/O.
+
+So it is assumed here that "ISO_10646" implies standard-conforming UCS-4
+encoding internally, but the same rules apply if your compiler supports a
+UTF-2 encoding extension and you select it instead (except UTF-2 requires
+less storage, but cannot represent as wide a range of Unicode glyphs).
+
+For the purposes of this tutorial what matters is that you know the
+memory required to hold the characters will be four times greater than
+if they were ASCII characters, as all UCS-4 characters are 4 byte values.
+
+Many useful programs adhere to these restrictions. A simplistic example
+that reads a UTF-8 file with lines up to 4096 bytes and outputs the
+file prefixing each line with a glyph/character count demonstrates that
+very little differs from a similar program that processes ASCII files:
+
+```fortran
+program count_glyphs
+! @(#) read a utf-8 file and write it out with lines prefixed with glyph counts of the line
+use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
+implicit none
+intrinsic selected_char_kind
+intrinsic is_iostat_end
+intrinsic len_trim
+!------
+! NOTE: we will be using the kind name "ucs4" for Unicode variables
+integer, parameter            :: ucs4 = selected_char_kind ('ISO_10646')
+!------
+character(len=*),parameter    :: g= '(*(g0))'
+integer                       :: length
+integer                       :: i
+integer                       :: iostat
+!------
+! NOTE: this character variable is the Unicode kind, not ASCII
+character(len=4096,kind=ucs4) :: uline ! specifies maximum line length of 4096 bytes,
+                                       ! which might be as few as 1024 (ie. 4096/4) glyphs
+!------
+character(len=255)            :: iomsg
+
+   !------
+   ! NOTE: you can change the encoding used for a file dynamically, even on pre-assigned files
+   open (stdin, encoding='UTF-8')
+   open (stdout, encoding='UTF-8')
+   !------
+
+   do
+      read(stdin,'(a)',iostat=iostat,iomsg=iomsg)uline
+      if(iostat.eq.0)then
+         !------
+         ! NOTE: LEN_TRIM() works with UCS-4 just as with ASCII
+         length=len_trim(uline)
+         !------
+         !------
+         ! NOTE: String substrings work just like with ascii as well
+         write(stdout,'(i9,": ",a)')length,uline(:length)
+         !------
+         !------
+      elseif(is_iostat_end(iostat))then
+         exit
+      else
+         !------
+         ! NOTE:
+         ! does the ASCII message have to be converted to UCS-4?
+         ! this will be discussed in detail later, but for now
+         ! remember you can change the encoding of a file dynamically
+         open (stdout, encoding='DEFAULT')
+         !------
+         write(stdout,g)'<ERROR>',trim(iomsg)
+         exit
+      endif
+   enddo
+
+end program count_glyphs
+```
+That is how simple basic Unicode usage is in Fortran.  The data will
+be converted from UTF-8 to UCS-4 and back again transparently. The
+CHARACTER substring indexing and intrinsic functions such as LEN(),
+TRIM(), VERIFY(), INDEX(), and SCAN() are generic, and will work with
+Unicode as simply as with ASCII.
+
+So if we create a file called "upagain.utf"
+```text
+七転び八起き。
+転んでもまた立ち上がる。
+くじけずに前を向いて歩いていこう。
+```
+and make sure that our terminal displays UTF-8 files properly
+by displaying that file to the screen, then runnng the program
+```bash
+./count_glyphs < upagain.utf
+```
+should produce
+```text
+        7: 七転び八起き。
+       12: 転んでもまた立ち上がる。
+       17: くじけずに前を向いて歩いていこう。
+```
