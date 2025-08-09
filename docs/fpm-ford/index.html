@@ -140,6 +140,48 @@ instead of as ASCII byte streams that contain UTF-8 constant strings.</p>
 <span class="k">end program </span><span class="n">testit</span><span class="w"></span>
 </code></pre></div>
 
+<hr>
+<h2 id="fortran-unicode-tutorial">Fortran Unicode Tutorial</h2>
+<p>Here are some lessons that describe my experiences with Unicode and
+Fortran, including discussions of open questions concerning what is
+standardized, what extensions commonly used compilers provide to address
+some of the current gaps, and what is known to be non-portable but useful
+behavior from some compilers regarding undefined behaviors.</p>
+<p><strong>WIP Notice:</strong> this has barely been begin. I am still sorting out what is and is
+not standard.</p>
+<p>Once constructed and stable, the lessons will become a tutorial on the Fortran Wiki,
+and this project will contain the related modules and examples, but at this point
+this is just an incomplete outline so starting the Wiki entries would be premature.</p>
+<h3 id="introduction-to-fortran-unicode-support">Introduction to Fortran Unicode support</h3>
+<ul>
+<li><a href="docs/lesson1_ucs4.md"><strong>Lesson I:</strong></a> reading and writing UTF-8 Unicode files</li>
+<li>Lesson II:  creating Unicode strings in ASCII Fortran source files</li>
+<li>Lesson III: mixing ASCII and UCS4 kinds as regards assignments, passing arguments
+                  to external ASCII libraries, and I/O argument lists</li>
+<li>Lesson IV:  what is and is not supported with internal READ and WRITE statements</li>
+<li>Lesson V:   processing Unicode file names on OPEN() statements</li>
+<li>Lesson VI:   reading UTF-8 strings from command lines</li>
+<li>Lesson VII:  passing Unicode strings to and from C</li>
+<li>Lesson VIII: related utility programs</li>
+</ul>
+<h3 id="off-the-beaten-path">off the beaten path:</h3>
+<ul>
+<li>Lesson I: UTF-8 source files &ndash; just in comments and constants</li>
+<li>Lesson II: the backslash escape code extension</li>
+<li>Lesson III: converting between UCS-4 and UTF-8 with procedures</li>
+<li>Lesson IV: embedding BOM characters at the beginning of files</li>
+</ul>
+<h3 id="processing-unicode-when-iso-10646-is-not-supported-by-a-compiler">Processing Unicode when ISO-10646 is not supported by a compiler</h3>
+<ul>
+<li>Lesson I: converting UTF-8 codes to and from INTEGER values</li>
+<li>Lesson II: byte-oriented printing of 4-byte integers</li>
+<li>Lesson III: issues with terminal emulators, system locale settings, and
+                  other Unicode-related issues</li>
+<li>Lesson IV: working with ASCII extended encodings; particularly those
+                 commonly referred to as Extended, Latin, Latin1 and Latin2.</li>
+</ul>
+<hr>
+<h2 id="dusty-corners">Dusty Corners</h2>
 <p>Assigns between different character kinds, and an apparent
 lack of an ability to specify encoding=&rsquo;UTF-8&rsquo; when using
 internal reads and writes like you can with an OPEN(3f) 
@@ -148,7 +190,7 @@ field descriptor works with multi-byte characters. </p>
 <p>Note that at least with the gfortran(1) compiler conversion
 to UCS4 internal representation works automatically when 
 reading and writing from files with encoding=&rsquo;utf-8&rsquo; specified,
-this is just primarily concerned with UTF-8 string constants occuring
+this is just primarily concerned with UTF-8 string constants occurring
 in the code files themselves.</p>
 <h2 id="backslash-extension">backslash extension</h2>
 <p>The gfortran(1) compiler supports an extension that allows for building
@@ -223,7 +265,7 @@ lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-f
           <div class="col-xs-6 col-sm-4">
             <div>
               <h3>Source Files</h3>
-              <ul><li><a href='sourcefile/boz.f90.html'>boz.f90</a></li><li><a href='sourcefile/check.f90.html'>check.f90</a></li><li><a href='sourcefile/codepoints.f90.html'>codepoints.f90</a></li><li><a href='sourcefile/hello.f90.html'>hello.f90</a></li><li><a href='sourcefile/m_utf8.f90.html'>M_utf8.f90</a></li><li><a href='sourcefile/main.f90.html'>main.f90</a></li><li><a href='sourcefile/multi_line.f90.html'>multi_line.f90</a></li><li><a href='sourcefile/note.f90.html'>note.f90</a></li><li><a href='sourcefile/question.f90.html'>question.f90</a></li><li><a href='sourcefile/supported.f90.html'>supported.f90</a></li></ul>
+              <ul><li><a href='sourcefile/boz.f90.html'>boz.f90</a></li><li><a href='sourcefile/check.f90.html'>check.f90</a></li><li><a href='sourcefile/codepoints.f90.html'>codepoints.f90</a></li><li><a href='sourcefile/command_line_to_char.f90.html'>command_line_to_char.f90</a></li><li><a href='sourcefile/count_glyphs.f90.html'>count_glyphs.f90</a></li><li><a href='sourcefile/hello.f90.html'>hello.f90</a></li><li><a href='sourcefile/m_utf8.f90.html'>M_utf8.f90</a></li><li><a href='sourcefile/main.f90.html'>main.f90</a></li><li><a href='sourcefile/multi_line.f90.html'>multi_line.f90</a></li><li><a href='sourcefile/note.f90.html'>note.f90</a></li></ul>
             </div>
             <div>
               <ul>
@@ -245,7 +287,7 @@ lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-f
           <div class="col-xs-6 col-sm-4">
             <div>
               <h3>Procedures</h3>
-              <ul><li><a href='proc/checkit.html'>checkit</a></li><li><a href='proc/create_date_string.html'>create_date_string</a></li><li><a href='proc/ucs4_to_utf8.html'>ucs4_to_utf8</a></li><li><a href='proc/ucs4_to_utf8_via_io.html'>ucs4_to_utf8_via_io</a></li><li><a href='proc/utf8_to_codepoints.html'>utf8_to_codepoints</a></li><li><a href='proc/utf8_to_ucs4.html'>utf8_to_ucs4</a></li><li><a href='proc/utf8_to_ucs4_via_io.html'>utf8_to_ucs4_via_io</a></li><li><a href='proc/utf8_to_utf32.html'>utf8_to_utf32</a></li></ul>
+              <ul><li><a href='proc/checkit.html'>checkit</a></li><li><a href='proc/codepoints_to_utf8.html'>codepoints_to_utf8</a></li><li><a href='proc/create_date_string.html'>create_date_string</a></li><li><a href='proc/ucs4_to_utf8.html'>ucs4_to_utf8</a></li><li><a href='proc/ucs4_to_utf8_via_io.html'>ucs4_to_utf8_via_io</a></li><li><a href='proc/utf8_to_codepoints.html'>utf8_to_codepoints</a></li><li><a href='proc/utf8_to_ucs4.html'>utf8_to_ucs4</a></li><li><a href='proc/utf8_to_ucs4_via_io.html'>utf8_to_ucs4_via_io</a></li><li><a href='proc/utf8_to_utf32.html'>utf8_to_utf32</a></li></ul>
             </div>
             <div>
               <ul>
@@ -269,7 +311,7 @@ lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-f
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-03 20:02 +0000             </p>
+ on 2025-08-09 02:55 +0000             </p>
           </div>
         </div>
         <br>

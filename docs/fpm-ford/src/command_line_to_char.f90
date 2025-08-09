@@ -1,5 +1,5 @@
 program uni_to_ftn
-! @(#) take command line argument utf-8 text and generate Fortran statement that represents the string as char(3f) calls
+! @(#) take command line argument utf-8 text and generate Fortran statement that represents the string
 use, intrinsic :: iso_fortran_env, only : output_unit
 use M_utf8, only : utf8_to_ucs4
 implicit none
@@ -22,7 +22,7 @@ character(len=:,kind=ucs4),allocatable :: ustr
    write(*,g) 'use, intrinsic :: iso_fortran_env, only : output_unit'
    write(*,g) "integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')"
    write(*,g) '! OUTPUT:',command_line
-   write(*,g) 'character(len=*,kind=ucs4),parameter :: variable = &'
+   write(*,g) 'character(len=*,kind=ucs4),parameter :: variable= &'
    write(*,form)(ustr(i:i),i=1,len(ustr))
    write(*,g) "   open (output_unit, encoding='utf-8')"
    write(*,g) "   write(output_unit,'(a)' )variable"

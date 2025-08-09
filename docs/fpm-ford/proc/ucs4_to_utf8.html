@@ -88,7 +88,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="23.6% of total for procedures.">47 statements</a>
+                 title=" 4.3% of total for procedures.">9 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -157,19 +157,7 @@
     <div class="col-md-9" id='text'>
     <h2>public  function ucs4_to_utf8(ucs4_string, err) result(string)  
 </h2>
-        <div class="card mb-4">
-      <h3 class="card-header card-title bg-light">Uses</h3>
-      <div class="card-body">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <ul class="list-inline">
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div>
-    </div>
-
+    
 
 
 
@@ -186,7 +174,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ucs4_string~2"></span>
+              <span class="anchor" id="variable-ucs4_string"></span>
               character(kind=ucs4, len=*),
             </td>
 <td>intent(in)</td>
@@ -201,7 +189,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-err~6"></span>
+              <span class="anchor" id="variable-err~5"></span>
               integer,
             </td>
 <td>intent(out),</td>
@@ -239,122 +227,16 @@
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="hl codehilite"><pre><span></span><span class="k">function </span><span class="n">ucs4_to_utf8</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">,</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"></span>
-<span class="c">!</span>
-<span class="c">! converting UCS-4 (representing Unicode code points) to UTF-8</span>
-<span class="c">! internally without using I/O directly requires manual implementation of</span>
-<span class="c">! the UTF-8 encoding rules because there&#39;s no direct intrinsic function</span>
-<span class="c">! for this conversion.</span>
-<span class="c">!</span>
-<span class="c">!    UTF-8 is a variable-width encoding that uses 1 to 4 bytes to represent</span>
-<span class="c">!    Unicode characters.</span>
-<span class="c">!</span>
-<span class="c">!    The number of bytes depends on the value of the Unicode code point:</span>
-<span class="c">!        0x0000 - 0x007F (ASCII): 1 byte (0xxxxxxx).</span>
-<span class="c">!        0x0080 - 0x07FF: 2 bytes (110xxxxx 10xxxxxx).</span>
-<span class="c">!        0x0800 - 0xFFFF (Basic Multilingual Plane): 3 bytes (1110xxxx 10xxxxxx 10xxxxxx).</span>
-<span class="c">!        0x10000 - 0x10FFFF (Supplementary Planes): 4 bytes (11110xxx 10xxxxxx 10xxxxxx 10xxxxxx).</span>
-<span class="c">!</span>
-<span class="c">!    Continuation bytes in multi-byte sequences always start with the</span>
-<span class="c">!    bit pattern 10xxxxxx.</span>
-<span class="c">!</span>
-<span class="c">! Representing UCS-4 in Fortran</span>
-<span class="c">!</span>
-<span class="c">!    Use the selected_char_kind(&#39;ISO_10646&#39;) intrinsic to define a kind</span>
-<span class="c">!    for UCS-4 characters.</span>
-<span class="c">!</span>
-<span class="c">!    You can declare character variables with this kind, e.g.,</span>
-<span class="c">!    character(kind=ucs4, len=&lt;length&gt;) :: my_ucs4_string.</span>
-<span class="c">!</span>
-<span class="c">!    Individual Unicode code points can be represented using hexadecimal</span>
-<span class="c">!    constants and the char function with the specified kind. For example,</span>
-<span class="c">!    char(int(z&#39;4F60&#39;), ucs4) represents the Chinese character &#39;你&#39; (Ni).</span>
-<span class="c">!</span>
-<span class="c">! Conversion Algorithm (Conceptual Example)</span>
-<span class="c">!</span>
-<span class="c">! You iterate through the UCS-4 string (conceptually treating each</span>
-<span class="c">! character as a 4-byte integer) and apply the UTF-8 encoding rules based</span>
-<span class="c">! on the code point&#39;s value. You then build a new byte array or</span>
-<span class="c">! a character string with character(len=1) elements, representing the</span>
-<span class="c">! UTF-8 sequence.</span>
-<span class="c">!</span>
-<span class="c">!    The Unicode standard doesn&#39;t require a BOM for UTF-8, but it may be</span>
-<span class="c">!    encountered at the start of files. This internal conversion doesn&#39;t</span>
-<span class="c">!    add a BOM.</span>
-<span class="c">!</span>
-<span class="c">!    The example doesn&#39;t explicitly handle surrogate pairs, which are</span>
-<span class="c">!    used in UTF-16 to represent characters outside the Basic Multilingual</span>
-<span class="c">!    Plane. Since UCS-4 already directly represents code points, surrogates</span>
-<span class="c">!    are not a direct concern for UCS-4 to UTF-8 conversion, but it&#39;s</span>
-<span class="c">!    good to be aware of them when dealing with other Unicode encodings.</span>
-<span class="c">!</span>
-<span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">error_unit</span><span class="w"></span>
-<span class="k">implicit none</span>
-
-<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="p">(</span><span class="s1">&#39;ISO_10646&#39;</span><span class="p">)</span><span class="w"> </span><span class="c">! The compiler must support UCS-4 characters</span>
-<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span><span class="w">    </span><span class="c">! maybe should use default, as ASCII is technically 128, not 256 chars</span>
-
+<span class="c">! return bytes representing utf8 glyphs from a string of kind ucs4</span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4_string</span><span class="w">  </span><span class="c">! stores the UCS-4 string.</span>
 <span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">err</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ascii</span><span class="p">),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">codepoints</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">))</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
 
-<span class="c">! utf8_bytes stores the resulting UTF-8 byte sequence. It&#39;s declared</span>
-<span class="c">! with kind=ascii and a length determined by the maximum possible</span>
-<span class="c">! bytes for the UCS-4 string length (each UCS-4 character can be up</span>
-<span class="c">! to 4 bytes in UTF-8).</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">)</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">utf8_bytes</span><span class="w"> </span><span class="c">! Max 4 bytes per UCS-4 char</span>
+<span class="w">   </span><span class="n">codepoints</span><span class="o">=</span><span class="p">[(</span><span class="nb">ichar</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">))]</span><span class="w"></span>
 
-<span class="kt">integer</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">code_point</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">num_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">utf8_index</span><span class="w"></span>
-<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">utf8_code</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">utf8_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">)</span><span class="w"> </span><span class="c">! iterate through each UCS-4 character.</span>
-
-<span class="w">    </span><span class="n">code_point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">iachar</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="c">! Get the integer value of the UCS-4 char</span>
-
-<span class="w">    </span><span class="c">! The if/else if statements check the code point value and determine</span>
-<span class="w">    </span><span class="c">! the number of bytes required for UTF-8 encoding.</span>
-<span class="w">    </span><span class="c">!</span>
-<span class="w">    </span><span class="c">! Bitwise operations (ior, ishft, iand) are used to construct the</span>
-<span class="w">    </span><span class="c">! individual UTF-8 bytes according to the standard rules.</span>
-<span class="w">    </span><span class="c">!</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">code_point</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;80&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">  </span><span class="c">! 1-byte UTF-8 (ASCII)</span>
-<span class="w">      </span><span class="n">num_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">code_point</span><span class="w"></span>
-<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">code_point</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;800&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">! 2-byte UTF-8</span>
-<span class="w">      </span><span class="n">num_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">ishft</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">))</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;80&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">iand</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;3F&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">code_point</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;10000&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">! 3-byte UTF-8</span>
-<span class="w">      </span><span class="n">num_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;E0&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">ishft</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">12</span><span class="p">))</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;80&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">iand</span><span class="p">(</span><span class="nb">ishft</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;3F&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;80&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">iand</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;3F&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">code_point</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;110000&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">! 4-byte UTF-8</span>
-<span class="w">      </span><span class="n">num_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;F0&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">ishft</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">18</span><span class="p">))</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;80&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">iand</span><span class="p">(</span><span class="nb">ishft</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">12</span><span class="p">),</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;3F&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;80&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">iand</span><span class="p">(</span><span class="nb">ishft</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;3F&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_code</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ior</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;80&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">iand</span><span class="p">(</span><span class="n">code_point</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;3F&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span><span class="w"></span>
-<span class="w">      </span><span class="c">! Handle invalid code points or error conditions as needed</span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Error: Invalid Unicode code point:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code_point</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">present</span><span class="p">(</span><span class="n">err</span><span class="p">))</span><span class="k">stop </span><span class="mi">1</span><span class="w"></span>
-<span class="w">      </span><span class="n">err</span><span class="o">=</span><span class="n">err</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
-<span class="w">      </span><span class="k">cycle</span>
-<span class="k">    endif</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! Append the UTF-8 bytes to the utf8_bytes string</span>
-<span class="w">    </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">num_bytes</span><span class="w"></span>
-<span class="w">      </span><span class="c">! The utf8_bytes string is built byte by byte using char with kind=ascii.</span>
-<span class="w">      </span><span class="n">utf8_bytes</span><span class="p">(</span><span class="n">utf8_index</span><span class="p">:</span><span class="n">utf8_index</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="n">utf8_code</span><span class="p">(</span><span class="n">j</span><span class="p">),</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">ascii</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf8_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utf8_index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">    </span><span class="k">enddo</span>
-<span class="k">  enddo</span>
-
-<span class="k">  </span><span class="n">string</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">utf8_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">utf8_index</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="c">! the UTF-8 byte sequence </span>
+<span class="w">   </span><span class="k">call </span><span class="n">codepoints_to_utf8</span><span class="p">(</span><span class="n">codepoints</span><span class="p">,</span><span class="n">string</span><span class="p">,</span><span class="n">err</span><span class="p">)</span><span class="w"></span>
 
 <span class="k">end function </span><span class="n">ucs4_to_utf8</span><span class="w"></span>
 </pre></div>
@@ -380,7 +262,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-03 20:02 +0000             </p>
+ on 2025-08-09 02:55 +0000             </p>
           </div>
         </div>
         <br>
