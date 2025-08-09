@@ -54,7 +54,7 @@ that is stored in four bytes, and be of kind UCS-4. So only UERO3
 is a correctly generated value.
 
 We are partly just demonstrating there are a lot of ways to specify
-a string constant that will _not_ end up creating a proper UCS-4 
+a string constant that will _not_ end up creating a proper UCS-4
 string, but one (verbose) syntax that should always succeed.
 
 ## CHAR() Intrinsic:
@@ -65,7 +65,7 @@ reliably embed Unicode characters within character strings.
 
 # Mixing CHAR() and quoted constants
 
-A string literal like 
+A string literal like
 ```fortran
 ucs4_'Unicode character: ' // char(9787, kind=ucs4)
 ```
@@ -216,7 +216,7 @@ portable standard method is to use the CHAR() function and Unicode code
 point values.
 
 Placing messages in an external file and opening the file as UTF-8 encoded
-is an easy alternative that lets you maintain the messages as Unicode 
+is an easy alternative that lets you maintain the messages as Unicode
 directly, but this will require always making the message file accessible
 when the program is being used.
 

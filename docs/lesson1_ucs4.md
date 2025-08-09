@@ -1,4 +1,3 @@
-## Introduction to Fortran Unicode support
 ### Lesson I: reading and writing UTF-8 Unicode files
 
 Not all Fortran compilers provide high-level ISO-10646 (ie. "Unicode")
