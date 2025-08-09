@@ -28,7 +28,7 @@ integer,parameter                       :: ucs4 = selected_char_kind("ISO_10646"
 character(len=:,kind=ucs4),allocatable  :: str
 
    open (stdout, encoding='UTF-8')
-   
+
    ! standard method
    str  = ucs4_'Hello World and Ni Hao -- ' &
       // char (int (z'4F60'), ucs4)         &
@@ -55,9 +55,13 @@ behavior from some compilers regarding undefined behaviors.
 **WIP Notice:** this has barely been begin. I am still sorting out what is and is
 not standard.
 
-### Introduction to Fortran Unicode support 
+Once constructed and stable, the lessons will become a tutorial on the Fortran Wiki,
+and this project will contain the related modules and examples, but at this point
+this is just an incomplete outline so starting the Wiki entries would be premature.
+
+### Introduction to Fortran Unicode support
    + [**Lesson I:**](docs/lesson1_ucs4.md) reading and writing UTF-8 Unicode files
-   + Lesson II:  creating Unicode strings in ASCII Fortran source files
+   + [**Lesson II:**](docs/lesson2_ucs4.md) creating Unicode strings in ASCII Fortran source files
    + Lesson III: mixing ASCII and UCS4 kinds as regards assignments, passing arguments
                   to external ASCII libraries, and I/O argument lists
    + Lesson IV:  what is and is not supported with internal READ and WRITE statements
@@ -66,7 +70,7 @@ not standard.
    + Lesson VII:  passing Unicode strings to and from C
    + Lesson VIII: related utility programs
 
-### off the beaten path: 
+### off the beaten path:
    + Lesson I: UTF-8 source files -- just in comments and constants
    + Lesson II: the backslash escape code extension
    + Lesson III: converting between UCS-4 and UTF-8 with procedures
@@ -81,15 +85,15 @@ not standard.
                  commonly referred to as Extended, Latin, Latin1 and Latin2.
 -------------------------------------------------------------
 
-## Dusty Corners 
+## Dusty Corners
 Assigns between different character kinds, and an apparent
 lack of an ability to specify encoding='UTF-8' when using
-internal reads and writes like you can with an OPEN(3f) 
+internal reads and writes like you can with an OPEN(3f)
 statement are still a little murky; as well as how the T
-field descriptor works with multi-byte characters. 
+field descriptor works with multi-byte characters.
 
 Note that at least with the gfortran(1) compiler conversion
-to UCS4 internal representation works automatically when 
+to UCS4 internal representation works automatically when
 reading and writing from files with encoding='utf-8' specified,
 this is just primarily concerned with UTF-8 string constants occurring
 in the code files themselves.
@@ -123,7 +127,7 @@ Build and run the executable with:
 ```bash
 $ gfortran -fbackslash -o unicode unicode.f90
 $ ./unicode
-Unicode character: ☻ 
+Unicode character: ☻
 ```
 
 The -fbackslash compiler flag is required for escaped Unicode
@@ -149,6 +153,6 @@ str = ucs4_'Unicode character: ' // char(9787, kind=ucs2)
 
 ```bash
 # extract discourse as text
-lynx --dump https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949 
-lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764 
+lynx --dump https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949
+lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764
 ```

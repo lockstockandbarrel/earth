@@ -1,5 +1,5 @@
-## Introduction to Fortran Unicode support 
-### Lession I: reading and writing UTF-8 Unicode files
+## Introduction to Fortran Unicode support
+### Lesson I: reading and writing UTF-8 Unicode files
 
 Not all Fortran compilers provide high-level ISO-10646 (ie. "Unicode")
 support. To determine if a compiler provides support, one can attempt
@@ -7,7 +7,7 @@ to compile and execute the following program:
 
 ```fortran
    program test_for_iso_10646
-   use iso_fortran_env, only : selected_char_kind, output_unit
+   use iso_fortran_env, only : output_unit
    implicit none
    intrinsic selected_char_kind
    integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')
@@ -30,8 +30,7 @@ ASCII files.
 
 So to nearly transparently process Unicode UTF-8 files declare all your
 character variables to be kind "iso_10646", and open/reopen your files
-with UTF-8 encoding, being careful to ensure your intrinsic calls are
-using Unicode.
+with UTF-8 encoding.
 
 Fortran will then transparently convert the data from UTF-8 files to whichever
 Unicode encoding it uses internally (UTF-8, UTF-32, UTF-16, ...) on input,
@@ -59,13 +58,21 @@ UTF-2 encoding extension and you select it instead (except UTF-2 requires
 less storage, but cannot represent as wide a range of Unicode glyphs).
 
 For the purposes of this tutorial what matters is that you know the
-memory required to hold the characters will be four times greater than
-if they were ASCII characters, as all UCS-4 characters are 4 byte values.
+internal representation is encoded differently than in the UTF-8 files,
+and that one kind cannot always be converted to the other simply by
+copying bytes from one value to the other.
 
-Many useful programs adhere to these restrictions. A simplistic example
-that reads a UTF-8 file with lines up to 4096 bytes and outputs the
-file prefixing each line with a glyph/character count demonstrates that
-very little differs from a similar program that processes ASCII files:
+Also note that the memory required memory required to hold UCS-4
+characters is four times greater than if they were ASCII characters,
+as all UCS-4 characters are 4-byte values and all ASCII characters
+are 1-byte.
+
+Many useful programs can adhere to these restrictions.
+
+A simplistic example that reads a UTF-8 file with lines up to 4096
+bytes and outputs the file prefixing each line with a glyph/character
+count demonstrates that very little differs from a similar program which
+processes ASCII files:
 
 ```fortran
 program count_glyphs
@@ -104,9 +111,8 @@ character(len=255)            :: iomsg
          length=len_trim(uline)
          !------
          !------
-         ! NOTE: String substrings work just like with ascii as well
+         ! NOTE: String substrings work just like with ASCII as well
          write(stdout,'(i9,": ",a)')length,uline(:length)
-         !------
          !------
       elseif(is_iostat_end(iostat))then
          exit
@@ -114,7 +120,7 @@ character(len=255)            :: iomsg
          !------
          ! NOTE:
          ! does the ASCII message have to be converted to UCS-4?
-         ! this will be discussed in detail later, but for now
+         ! This will be discussed in detail later, but for now
          ! remember you can change the encoding of a file dynamically
          open (stdout, encoding='DEFAULT')
          !------
@@ -125,11 +131,11 @@ character(len=255)            :: iomsg
 
 end program count_glyphs
 ```
-That is how simple basic Unicode usage is in Fortran.  The data will
-be converted from UTF-8 to UCS-4 and back again transparently. The
-CHARACTER substring indexing and intrinsic functions such as LEN(),
-TRIM(), VERIFY(), INDEX(), and SCAN() are generic, and will work with
-Unicode as simply as with ASCII.
+tHat is how simple basic Unicode usage is in Fortran.  The data will be
+converted from UTF-8 files to UCS-4 internal representation and back again
+transparently. __The CHARACTER substring indexing and intrinsic functions
+such as LEN(), TRIM(), VERIFY(), INDEX(), and SCAN() are generic, and
+will work with Unicode as simply as with ASCII__.
 
 So if we create a file called "upagain.utf"
 ```text
@@ -148,3 +154,11 @@ should produce
        12: 転んでもまた立ち上がる。
        17: くじけずに前を向いて歩いていこう。
 ```
+#### Romanization:
+Nanakorobi yaoki. Koronde mo mata tachiagaru. Kujikezu ni mae o muite aruite ikou.
+
+#### English translation
+
+"Fall seven times, stand up eight.
+Even if you fall down, you will get up again.
+Don't be discouraged, just keep walking forward."

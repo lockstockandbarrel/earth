@@ -24,6 +24,10 @@ copyright = "Copyright 2025, John S. Urban"
 #uni_to_ftn.f90
 
 [[executable]]
+   name="utf8cat"
+   source-dir="app"
+   main="main.f90"
+[[executable]]
    name="command_line_to_char"
    source-dir="app"
    main="command_line_to_char.f90"
