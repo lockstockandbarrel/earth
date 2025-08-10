@@ -9,20 +9,16 @@ But the GET_COMMAND_ARGUMENT() intrinsic specifies that the VALUE argument
 is a "scalar character variable of default kind".
 
 Perhaps you are going to use the value as a stream of bytes representing
-utf-8 characters. In that case you may be fine, and be able to use the
-string without converting it to the suported UCS-4 internal representation
-used by Fortran.
+utf-8 characters. In that case you may be able to use the string without
+converting it to the suported UCS-4 internal representation used by
+Fortran.
 
-But if that is not the case, Fortran does not provide a procedure for
-converting utf-8 to ucs-4 unicode.
+But if that is not the case, how will you convert the UTF-8 bytes to UCS-4?
+Fortran does not provide a procedure for such conversions.
 
-Because of that lack a collection of procedures that includes
-such conversions is being assembled into Fortran modules at
-[github.com/lockstockandbarrel/earth](github.com/lockstockandbarrel/earth).
-
-But Fortran does the conversion needed when reading utf-8-encoded files
-into ucs-4 variables. So far the following method has worked on every
-system type I have had access to ...
+But Fortran does the conversion needed when reading UTF-8-encoded files
+into UCS-4 variables. So we use that functionality to create a simple
+conversion function:
 
 ```fortran
 program read_commandline
@@ -69,23 +65,9 @@ integer                                :: lun
    corrected=trim(line)
 end function utf8_to_ucs4
 
-function ucs4_to_utf8(ucs4_string) result(corrected)
-character(len=*,kind=ucs4),intent(in) :: ucs4_string
-character(len=:),allocatable          :: corrected
-character(len=(len(ucs4_string)*4))   :: line
-integer                               :: lun
-   open(newunit=lun,encoding='UTF-8',status='scratch')
-   write(lun,'(A)')ucs4_string
-   rewind(lun)
-   open(unit=lun,encoding='default')
-   read(lun,'(A)')line
-   close(lun)
-   corrected=trim(line)
-end function ucs4_to_utf8
-   
 end program read_commandline
 ```
-An example run using the famous Confucian expression
+An example run; using the famous Confucian expression
 "己所不欲，勿施於人" (jǐ suǒ bù yù, wù shī yú rén) or
 "What you do not want done to yourself, do not do to others":
 
@@ -107,10 +89,10 @@ char(int(z'4EBA'),kind=ucs4)
 ```
 ## Summary
 
-Command line arguments are returned as ASCII bytes by the
-GET_COMMAND_ARGUMENT() and GET_COMMAND() procedures. But using Fortran's
+Command line arguments are typically returned as single-byte characters
+by the GET_COMMAND_ARGUMENT() and GET_COMMAND() procedures. But using Fortran's
 ability to encode UTF-8 as UCS-4 when reading and writing external files
-it is easy to create functions for converting between the two encodings,
+it is easy to create a function for converting between the two encodings
 to make up for the lack of any equivalent intrinsics.
 
 Note that modules of related functions can be found at 

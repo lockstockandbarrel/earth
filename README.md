@@ -59,13 +59,13 @@ Once constructed and stable, the lessons will become a tutorial on the Fortran W
 and this project will contain the related modules and examples, but at this point
 this is just an incomplete outline so starting the Wiki entries would be premature.
 
-### Introduction to Fortran Unicode support 
+### Introduction to Fortran Unicode support
    + [**Lesson I:**](docs/lesson1_ucs4.md) reading and writing UTF-8 Unicode files
    + [**Lesson II:**](docs/lesson2_ucs4.md) creating Unicode strings in ASCII Fortran source files
-   + Lesson III: mixing ASCII and UCS4 kinds as regards assignments, passing arguments
-                  to external ASCII libraries, and I/O argument lists
+   + Lesson III: mixing ASCII and UCS4 kinds as regards assignments,
+                 contatenation, passing arguments to external ASCII libraries, and I/O argument lists
    + [**Lesson IV:**](docs/lesson4_ucs4.md)what is and is not supported with internal READ and WRITE statements
-   + Lesson V:   processing Unicode file names on OPEN() statements
+   + [**Lesson V:**](docs/lesson5_ucs.md)processing Unicode file names on OPEN() statements
    + [**Lesson VI:**](docs/lesson6_ucs4.md) reading UTF-8 strings from command lines
    + Lesson VII:  passing Unicode strings to and from C
    + Lesson VIII: related utility programs
@@ -142,7 +142,6 @@ Or, simply by using the decimal value of the character code point, without BOZ l
 ```text
 str = ucs4_'Unicode character: ' // char(9787, kind=ucs2)
 ```
-
 ## See Also
 
  + [https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949](https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949)
