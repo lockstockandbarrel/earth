@@ -98,3 +98,5 @@ to make up for the lack of any equivalent intrinsics.
 Note that modules of related functions can be found at 
 [github.com/lockstockandbarrel/earth](github.com/lockstockandbarrel/earth)
 
++ [TOP](https://github.com/lockstockandbarrel/earth)
++ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson5_ucs4.md)

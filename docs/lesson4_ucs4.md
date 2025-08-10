@@ -197,3 +197,6 @@ after:Hello World and Ni Hao -- ??????
   So basically with Unicode support added you cannot do much new with
   internal I/O accept read and write UCS-4 values in and out of UCS-4
   internal files.
+
++ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson2_ucs5.md)
++ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson3_ucs4.md)
