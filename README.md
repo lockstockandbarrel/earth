@@ -79,7 +79,7 @@ this is just an incomplete outline so starting the Wiki entries would be prematu
    + [**Lesson I:**](docs/lesson1_ucs4.md) reading and writing UTF-8 Unicode files
    + [**Lesson II:**](docs/lesson2_ucs4.md) creating Unicode strings in ASCII Fortran source files
    + Lesson III: mixing ASCII and UCS4 kinds as regards assignments,
-                 contatenation, passing arguments to external ASCII libraries, and I/O argument lists
+                 concatenation, passing arguments to external ASCII libraries, and I/O argument lists
    + [**Lesson IV:**](docs/lesson4_ucs4.md)what is and is not supported with internal READ and WRITE statements
    + [**Lesson V:**](docs/lesson5_ucs.md)processing Unicode file names on OPEN() statements
    + [**Lesson VI:**](docs/lesson6_ucs4.md) reading UTF-8 strings from command lines

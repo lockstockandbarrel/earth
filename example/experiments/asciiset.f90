@@ -10,10 +10,6 @@ integer, parameter :: default = selected_char_kind ("default")
 integer, parameter :: ascii =   selected_char_kind ("ascii")
 integer, parameter :: ucs4  =   selected_char_kind ('ISO_10646')
 
-character(len=26, kind=ascii )         :: alphabet
-character(len=30, kind=ucs4  )         :: hello_world
-character(len=30, kind=ucs4  )         :: string
-
 character(len=:),allocatable           :: aline
 character(len=:,kind=ucs4),allocatable :: uline
 character(len=1),allocatable           :: ch(:)
