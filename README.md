@@ -66,7 +66,7 @@ this is just an incomplete outline so starting the Wiki entries would be prematu
                   to external ASCII libraries, and I/O argument lists
    + [**Lesson IV:**](docs/lesson4_ucs4.md)what is and is not supported with internal READ and WRITE statements
    + Lesson V:   processing Unicode file names on OPEN() statements
-   + [**Lesson VI:**](docs/lesson5_ucs4.md) reading UTF-8 strings from command lines
+   + [**Lesson VI:**](docs/lesson6_ucs4.md) reading UTF-8 strings from command lines
    + Lesson VII:  passing Unicode strings to and from C
    + Lesson VIII: related utility programs
 
