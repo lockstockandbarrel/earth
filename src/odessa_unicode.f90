@@ -1,4 +1,6 @@
 module odessa_unicode
+! An enhanced version from Francois Jacq, 2025-08
+! presented in https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949
 
 implicit none
 
