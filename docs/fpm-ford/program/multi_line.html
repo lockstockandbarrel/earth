@@ -87,19 +87,19 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 4.3% of total for programs.">31 statements</a>
+                 title=" 3.8% of total for programs.">27 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/boz.f90"> Source File</a>
+              <a href="../src/multi_line.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/boz.f90.html'>boz.f90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/multi_line.f90.html'>multi_line.f90</a></li>
             <li class="breadcrumb-item active" aria-current="page">multi_line</li>
           </ol>
         </nav>
@@ -128,16 +128,14 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/multi_line.html#variable-aline">aline</a>
-            <a class="list-group-item" href="../program/multi_line.html#variable-ascii~2">ascii</a>
-            <a class="list-group-item" href="../program/multi_line.html#variable-i~3">i</a>
-            <a class="list-group-item" href="../program/multi_line.html#variable-j">j</a>
+            <a class="list-group-item" href="../program/multi_line.html#variable-ascii~3">ascii</a>
+            <a class="list-group-item" href="../program/multi_line.html#variable-i~6">i</a>
+            <a class="list-group-item" href="../program/multi_line.html#variable-j~2">j</a>
+            <a class="list-group-item" href="../program/multi_line.html#variable-line~5">line</a>
             <a class="list-group-item" href="../program/multi_line.html#variable-longest">longest</a>
-            <a class="list-group-item" href="../program/multi_line.html#variable-u3">u3</a>
             <a class="list-group-item" href="../program/multi_line.html#variable-ucs4~5">ucs4</a>
-            <a class="list-group-item" href="../program/multi_line.html#variable-uline~3">uline</a>
             <a class="list-group-item" href="../program/multi_line.html#variable-upagain">upagain</a>
-            <a class="list-group-item" href="../program/multi_line.html#variable-ustr~2">ustr</a>
+            <a class="list-group-item" href="../program/multi_line.html#variable-ustr">ustr</a>
         </div>
       </div>
     </div>
@@ -204,23 +202,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-aline"></span>
-              character(len=:),
-            </td>
-            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>aline</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-ascii~2"></span>
+              <span class="anchor" id="variable-ascii~3"></span>
               integer,
             </td>
             <td>
@@ -236,7 +218,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~3"></span>
+              <span class="anchor" id="variable-i~6"></span>
               integer
             </td>
             <td>
@@ -252,7 +234,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-j"></span>
+              <span class="anchor" id="variable-j~2"></span>
               integer
             </td>
             <td>
@@ -260,6 +242,22 @@ parameter
             </td>
             <td>::</td>
             <td><strong>j</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-line~5"></span>
+              character(kind=ucs4, len=3)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>line</strong></td>
                 <td></td>
                 <td></td>
             <td>
@@ -284,22 +282,6 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-u3"></span>
-              character(kind=ucs4, len=3)
-            </td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>u3</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
               <span class="anchor" id="variable-ucs4~5"></span>
               integer,
             </td>
@@ -310,22 +292,6 @@ parameter
             <td><strong>ucs4</strong></td>
 <td> =</td>
                 <td>selected_char_kind(&#34;ISO_10646&#34;)</td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-uline~3"></span>
-              character(kind=ucs4, len=:),
-            </td>
-            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>uline</strong></td>
-                <td></td>
-                <td></td>
             <td>
                 
             </td>
@@ -348,7 +314,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ustr~2"></span>
+              <span class="anchor" id="variable-ustr"></span>
               character(kind=ucs4, len=4)
             </td>
             <td>
@@ -382,54 +348,46 @@ parameter
 <span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span><span class="w"></span>
 <span class="k">use </span><span class="n">M_utf8</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">utf8_to_ucs4</span><span class="w"></span>
 <span class="k">implicit none</span>
-<span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="p">(</span><span class="s2">&quot;ISO_10646&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">longest</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">u3</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">),</span><span class="k">parameter</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">upagain</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w"> </span><span class="s2">&quot;七転び八起き。&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w"> </span><span class="s2">&quot;転んでもまた立ち上がる。&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w"> </span><span class="s2">&quot;くじけずに前を向いて歩いていこう。&quot;</span><span class="p">]</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">upagain</span><span class="p">),</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ustr</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">upagain</span><span class="p">))</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">aline</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">uline</span><span class="w"></span>
+<span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="p">(</span><span class="s2">&quot;ISO_10646&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                      </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">longest</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">upagain</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s2">&quot;七転び八起き。&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s2">&quot;転んでもまた立ち上がる。&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s2">&quot;くじけずに前を向いて歩いていこう。&quot;</span><span class="p">]</span><span class="w"></span>
 <span class="c">!</span>
 <span class="c">! Romanization:</span>
-<span class="c">!    Nanakorobi yaoki. Koronde mo mata tachiagaru. Kujikezu ni mae o muite aruite ikou.</span>
+<span class="c">! Nanakorobi yaoki. Koronde mo mata tachiagaru. Kujikezu ni mae o muite aruite ikou.</span>
 <span class="c">! or English translation</span>
-<span class="c">!    &quot;Fall seven times, stand up eight.</span>
-<span class="c">!    Even if you fall down, you will get up again.</span>
-<span class="c">!    Don&#39;t be discouraged, just keep walking forward.&quot;</span>
+<span class="c">! &quot;Fall seven times, stand up eight. Even if you fall down, you will get up again. Don&#39;t be discouraged, just keep walking forward.&quot;</span>
 <span class="c">!</span>
-<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">upagain</span><span class="p">),</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ustr</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">upagain</span><span class="p">))</span><span class="w"></span>
 
+<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
 <span class="c">! convert pseudo-utf-8 ascii to actual Fortran ucs4 unicode</span>
 <span class="w">   </span><span class="n">longest</span><span class="o">=</span><span class="mi">0</span><span class="w"> </span><span class="c">! get longest trimmed line</span>
 <span class="w">   </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">upagain</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">utf8_to_ucs4</span><span class="p">(</span><span class="n">upagain</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"></span>
 <span class="w">      </span><span class="n">longest</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">longest</span><span class="p">,</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;LEN=&#39;</span><span class="p">,</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"></span>
 <span class="w">   </span><span class="k">enddo</span>
-<span class="k">   write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;longest=&#39;</span><span class="p">,</span><span class="n">longest</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="k">   write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;longest=&#39;</span><span class="p">,</span><span class="n">longest</span><span class="w"></span>
 <span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)(</span><span class="nb">trim</span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">ustr</span><span class="p">))</span><span class="w"></span>
-
 <span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">ustr</span><span class="p">))</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(*(z8.8))&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">((</span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">)(</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="p">),</span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">))),</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">ustr</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">aline</span><span class="o">=</span><span class="s1">&#39;&amp;</span>
-<span class="s1">    &amp;00004E0300008EE2000030730000516B00008D770000304D0000300200008EE20000309300003067&amp;</span>
-<span class="s1">    &amp;000030820000307E0000305F00007ACB0000306100004E0A0000304C0000308B000030020000304F&amp;</span>
-<span class="s1">    &amp;00003058000030510000305A0000306B0000524D0000309200005411000030440000306600006B69&amp;</span>
-<span class="s1">    &amp;000030440000306600003044000030530000304600003002&#39;</span><span class="w"></span>
-<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">aline</span><span class="p">)</span><span class="o">/</span><span class="mi">8</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
-<span class="c">!   read(aline,&#39;(z288)&#39;) uline</span>
-<span class="w">   </span><span class="k">read</span><span class="p">(</span><span class="n">aline</span><span class="p">,</span><span class="s1">&#39;(*(z8.8))&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">uline</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">uline</span><span class="p">))</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">uline</span><span class="w"></span>
-
+<span class="w">   </span><span class="c">! does not work too well if not a fixed-space font, but even when fixed-spaced having problems in mintty anyway, at least</span>
+<span class="w">   </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">longest</span><span class="w"></span>
+<span class="w">      </span><span class="c">! not lining up</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(*(A))&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">j</span><span class="p">)(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">),</span><span class="n">j</span><span class="o">=</span><span class="n">size</span><span class="p">(</span><span class="n">upagain</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="c">! numbers for T seems to be for ASCII bytes</span>
+<span class="w">      </span><span class="c">!write(output_unit,&#39;(T1,A,T5,A,T9,A)&#39;) (ustr(j)(i:i),j=1,size(upagain))</span>
+<span class="w">      </span><span class="c">!line=ustr(3)(i:i)//ustr(2)(i:i)//ustr(1)(i:i)</span>
+<span class="w">      </span><span class="c">!write(*,*)line</span>
+<span class="w">   </span><span class="k">enddo</span>
+<span class="k">   do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">longest</span><span class="w"></span>
+<span class="w">      </span><span class="c">! not lining up</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(*(A))&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">j</span><span class="p">)(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">),</span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">upagain</span><span class="p">))</span><span class="w"></span>
+<span class="w">   </span><span class="k">enddo</span>
 <span class="k">end program </span><span class="n">multi_line</span><span class="w"></span>
 </pre></div>
 
@@ -453,7 +411,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-10 17:01 +0000             </p>
+ on 2025-08-10 17:25 +0000             </p>
           </div>
         </div>
         <br>
