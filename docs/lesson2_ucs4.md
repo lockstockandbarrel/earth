@@ -222,5 +222,5 @@ is an easy alternative that lets you maintain the messages as Unicode
 directly, but this will require always making the message file accessible
 when the program is being used.
 
-+ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson1_ucs4.md)
-+ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson3_ucs4.md)
++ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson1_ucs4.md)
++ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson3_ucs4.md)

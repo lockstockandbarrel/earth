@@ -98,5 +98,5 @@ that is an alias for the unusable filename. This can typically be done
 with system calls to the intrinsic EXECUTE_COMMAND_LINE() if you do not have
 procedures for creating (and removing) links.
 
-+ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson6_ucs4.md)
 + [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson4_ucs4.md)
++ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson6_ucs4.md)

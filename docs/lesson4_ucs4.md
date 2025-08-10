@@ -198,5 +198,5 @@ after:Hello World and Ni Hao -- ??????
   internal I/O accept read and write UCS-4 values in and out of UCS-4
   internal files.
 
-+ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson2_ucs5.md)
-+ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson3_ucs4.md)
++ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson3_ucs5.md)
++ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson5_ucs4.md)
