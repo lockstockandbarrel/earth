@@ -85,7 +85,7 @@ end function ucs4_to_utf8
    
 end program read_commandline
 ```
-An example run using the famous Confuscion expression
+An example run using the famous Confucian expression
 "己所不欲，勿施於人" (jǐ suǒ bù yù, wù shī yú rén) or
 "What you do not want done to yourself, do not do to others":
 
