@@ -78,7 +78,7 @@ this is just an incomplete outline so starting the Wiki entries would be prematu
 ### Introduction to Fortran Unicode support
    + [**Lesson I:**](docs/lesson1_ucs4.md) reading and writing UTF-8 Unicode files
    + [**Lesson II:**](docs/lesson2_ucs4.md) creating Unicode strings in ASCII Fortran source files
-   + Lesson III: mixing ASCII and UCS4 kinds as regards assignments,
+   + [**Lesson III:**](docs/lesson3_ucs4.md) mixing ASCII and UCS4 kinds as regards assignments,
                  concatenation, passing arguments to external ASCII libraries, and I/O argument lists
    + [**Lesson IV:**](docs/lesson4_ucs4.md)what is and is not supported with internal READ and WRITE statements
    + [**Lesson V:**](docs/lesson5_ucs.md)processing Unicode file names on OPEN() statements
