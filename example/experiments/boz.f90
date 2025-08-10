@@ -17,7 +17,6 @@ character(len=:,kind=ucs4),allocatable  :: uline
 ! Romanization:
 !    Nanakorobi yaoki. Koronde mo mata tachiagaru. Kujikezu ni mae o muite aruite ikou.
 ! or English translation
-!
 !    "Fall seven times, stand up eight.
 !    Even if you fall down, you will get up again.
 !    Don't be discouraged, just keep walking forward."
