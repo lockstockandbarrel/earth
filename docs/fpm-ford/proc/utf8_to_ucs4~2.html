@@ -10,7 +10,7 @@
     <meta name="author" content="John S. Urban" >
     <link rel="icon" href="../favicon.png">
 
-    <title>ucs4_to_utf8 &ndash; M_time</title>
+    <title>utf8_to_ucs4 &ndash; M_time</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -77,7 +77,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>ucs4_to_utf8
+    <h1>utf8_to_ucs4
       <small>Function</small>
       
     </h1>
@@ -93,16 +93,16 @@
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/read_commandline.f90"> Source File</a>
+              <a href="../src/M_utf8.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/read_commandline.f90.html'>read_commandline.f90</a></li>
-                <li class="breadcrumb-item"><a href='../program/uni_to_ftn.html'>uni_to_ftn</a></li>
-            <li class="breadcrumb-item active" aria-current="page">ucs4_to_utf8</li>
+                <li class="breadcrumb-item"><a href='../sourcefile/m_utf8.f90.html'>M_utf8.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/m_utf8.html'>M_utf8</a></li>
+            <li class="breadcrumb-item active" aria-current="page">utf8_to_ucs4</li>
           </ol>
         </nav>
       </div>
@@ -123,19 +123,7 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-      <div class="card mb-4">
-      <a data-bs-toggle="collapse" href="#vars-0"
-         aria-expanded="false" aria-controls="vars-0">
-         <h4 class="card-header bg-primary text-white">Variables</h4>
-      </a>
-      <div id="vars-0" class="collapse">
-        <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../proc/ucs4_to_utf8.html#variable-line~2">line</a>
-            <a class="list-group-item" href="../proc/ucs4_to_utf8.html#variable-lun~2">lun</a>
-        </div>
-      </div>
-    </div>
-
+  
   
   
   
@@ -157,7 +145,7 @@
     <div class="card card-primary">
       <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
       <div class="list-group">
-        <a class="list-group-item" href="../proc/ucs4_to_utf8.html#src">ucs4_to_utf8</a>
+        <a class="list-group-item" href="../proc/utf8_to_ucs4~2.html#src">utf8_to_ucs4</a>
       </div>
     </div>
 
@@ -167,7 +155,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2> function ucs4_to_utf8(ucs4_string) result(corrected)  
+    <h2>public  function utf8_to_ucs4(string) result(corrected)  
 </h2>
     
 
@@ -186,15 +174,15 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ucs4_string"></span>
-              character(kind=ucs4, len=*),
+              <span class="anchor" id="variable-string~6"></span>
+              character(len=*),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
               
             </td>
             <td>::</td>
-            <td><strong>ucs4_string</strong></td>
+            <td><strong>string</strong></td>
             <td>
                 
             </td>
@@ -204,65 +192,14 @@
 
       <h3>Return Value
         <small>
-          <span class="anchor" id="variable-corrected~2"></span>
-          character(len=:), allocatable
+          <span class="anchor" id="variable-corrected~5"></span>
+          character(kind=ucs4, len=:), allocatable
         </small>
       </h3>
       
     <br>
 
 
-    <section>    
-      <h2>Variables</h2>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-<th></th><th scope="col">Initial</th>        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-line~2"></span>
-              character(len=len=(len(ucs4_string)*4)),
-            </td>
-              <td>public</td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>line</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-lun~2"></span>
-              integer,
-            </td>
-              <td>public</td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>lun</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-    </section>
-    <br>
     
     
 
@@ -274,19 +211,20 @@
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="k">function </span><span class="n">ucs4_to_utf8</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4_string</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">corrected</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ucs4_string</span><span class="p">)</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                               </span><span class="kd">::</span><span class="w"> </span><span class="n">lun</span><span class="w"></span>
-<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">lun</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;scratch&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">lun</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="n">ucs4_string</span><span class="w"></span>
-<span class="w">   </span><span class="k">rewind</span><span class="p">(</span><span class="n">lun</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">lun</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">read</span><span class="p">(</span><span class="n">lun</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="n">line</span><span class="w"></span>
-<span class="w">   </span><span class="k">close</span><span class="p">(</span><span class="n">lun</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">corrected</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="w"></span>
-<span class="k">end function </span><span class="n">ucs4_to_utf8</span><span class="w"></span>
+    <div class="hl codehilite"><pre><span></span><span class="k">function </span><span class="n">utf8_to_ucs4</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
+<span class="c">! return a string of kind ucs4 from bytes representing utf8 glyphs</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">corrected</span><span class="w"></span>
+<span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="n">codepoints</span><span class="p">(:)</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">err</span><span class="w"></span>
+<span class="w">   </span><span class="k">call </span><span class="n">utf8_to_codepoints</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="n">codepoints</span><span class="p">,</span><span class="n">err</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">n</span><span class="o">=</span><span class="n">size</span><span class="p">(</span><span class="n">codepoints</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="w"></span>
+<span class="w">      </span><span class="n">corrected</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="nb">char</span><span class="p">(</span><span class="n">codepoints</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">enddo</span>
+<span class="k">end function </span><span class="n">utf8_to_ucs4</span><span class="w"></span>
 </pre></div>
 
     </section>
