@@ -10,14 +10,30 @@ from a byte-stream representing UTF-8 to the UCS-4 character kind typically
 requires manual decoding accept when reading and writing from a file with
 encoding set to "UTF-8".
 
-Here are some experiments in helping to facilitate using source codes
+Herein are some experiments in helping to facilitate using source codes
 containing UTF-8 encoded strings as standard Fortran Unicode characters
-instead of as ASCII byte streams that contain UTF-8 constant strings.
+instead of as ASCII byte streams that contain UTF-8 constant strings, such
+as the procedures
 
  + utf8_to_codepoints
  + utf8_to_ucs4
  + utf8_to_ucs4_via_io
  + ucs4_to_utf8
+
+Fortran supports just using 4-byte UCS-4 encoding for characters/glyphs quite
+well, including an option to automatically encode and decode data read and written
+to UTF-8 files. Where the issues start is that the standard specifies default 
+character kinds for the OPEN FILE= specifier, filenames on INQUIRE, strings returned
+by GET_COMMAND_ARGUMENT, ... . So you can not just forget about ASCII quite yet.
+And some systems might use other encodings like UTF-16, so basically Fortran still
+needs procedures or methods for converting between UCS-4, UTF-16, UTF-8, and possibly
+other encodings before you can just use Unicode everywhere in Fortran and forget about
+ASCII or other encodings. Plus there apparently is currently a dearth of documentation 
+about using Unicode from Fortran. This material is meant to fill in the gap with both
+issues.
+
+The intent is for the information to useful for all Fortran processing, but currently
+is primarily tested with gfortran on Linux and Cygwin.
 
 ```fortran
 program testit
