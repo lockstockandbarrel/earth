@@ -28,9 +28,9 @@ copyright = "Copyright 2025, John S. Urban"
    source-dir="app"
    main="main.f90"
 [[executable]]
-   name="command_line_to_char"
+   name="uni_to_ftn"
    source-dir="app"
-   main="command_line_to_char.f90"
+   main="uni_to_ftn.f90"
 #   [executable.dependencies]
 #      M_CLI2 = { git = "https://github.com/urbanjost/M_CLI2.git" }
 #      #M_CLI2 = { namespace = "GPF" }
