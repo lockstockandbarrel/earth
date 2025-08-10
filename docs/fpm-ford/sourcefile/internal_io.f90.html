@@ -233,19 +233,13 @@
 <a id="ln-64" name="ln-64" href="#ln-64"></a><span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="n">uline</span><span class="w"></span>
 <a id="ln-65" name="ln-65" href="#ln-65"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)(</span><span class="nb">ichar</span><span class="p">(</span><span class="n">uline</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">uline</span><span class="p">))</span><span class="w"></span>
 <a id="ln-66" name="ln-66" href="#ln-66"></a><span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;And back again&#39;</span><span class="w"></span>
-<a id="ln-67" name="ln-67" href="#ln-67"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;before&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
+<a id="ln-67" name="ln-67" href="#ln-67"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;before:&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
 <a id="ln-68" name="ln-68" href="#ln-68"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)(</span><span class="nb">ichar</span><span class="p">(</span><span class="n">astr</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">astr</span><span class="p">))</span><span class="w"></span>
 <a id="ln-69" name="ln-69" href="#ln-69"></a><span class="w">   </span><span class="k">read</span><span class="p">(</span><span class="n">uline</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)</span><span class="n">astr</span><span class="w"></span>
-<a id="ln-70" name="ln-70" href="#ln-70"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;after&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
+<a id="ln-70" name="ln-70" href="#ln-70"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;after:&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
 <a id="ln-71" name="ln-71" href="#ln-71"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)(</span><span class="nb">ichar</span><span class="p">(</span><span class="n">astr</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">astr</span><span class="p">))</span><span class="w"></span>
 <a id="ln-72" name="ln-72" href="#ln-72"></a>
 <a id="ln-73" name="ln-73" href="#ln-73"></a><span class="k">end program </span><span class="n">internal_io</span><span class="w"></span>
-<a id="ln-74" name="ln-74" href="#ln-74"></a><span class="c">! in gfortran internal I/O does no encoding or decoding like writing into file opened with encoding=&#39;utf-8&#39; </span>
-<a id="ln-75" name="ln-75" href="#ln-75"></a><span class="c">! so ASCII into ASCII but not UCS4 into ASCII, UTF4 into UTF4, but not ASCII into UTF4. Is it an extention</span>
-<a id="ln-76" name="ln-76" href="#ln-76"></a><span class="c">! for internal files to be non-default or non-ASCII?</span>
-<a id="ln-77" name="ln-77" href="#ln-77"></a>
-<a id="ln-78" name="ln-78" href="#ln-78"></a><span class="c">! The A format is a binary transfer of bytes for integers and reals and everything else accept non-default kind UCS-4 characters</span>
-<a id="ln-79" name="ln-79" href="#ln-79"></a><span class="c">! are converted to and from UTF-8, which breaks with the use of the A format to transfer binary data to formatted files</span>
 </pre></div>
 
       </section>
@@ -267,7 +261,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-10 00:39 +0000             </p>
+ on 2025-08-10 00:41 +0000             </p>
           </div>
         </div>
         <br>

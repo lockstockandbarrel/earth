@@ -128,12 +128,12 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/internal_io.html#variable-aline">aline</a>
+            <a class="list-group-item" href="../program/internal_io.html#variable-aline~2">aline</a>
             <a class="list-group-item" href="../program/internal_io.html#variable-all">all</a>
-            <a class="list-group-item" href="../program/internal_io.html#variable-ascii~2">ascii</a>
-            <a class="list-group-item" href="../program/internal_io.html#variable-astr~2">astr</a>
+            <a class="list-group-item" href="../program/internal_io.html#variable-ascii~3">ascii</a>
+            <a class="list-group-item" href="../program/internal_io.html#variable-astr">astr</a>
             <a class="list-group-item" href="../program/internal_io.html#variable-glyph">glyph</a>
-            <a class="list-group-item" href="../program/internal_io.html#variable-i~2">i</a>
+            <a class="list-group-item" href="../program/internal_io.html#variable-i~3">i</a>
             <a class="list-group-item" href="../program/internal_io.html#variable-ucs4~3">ucs4</a>
             <a class="list-group-item" href="../program/internal_io.html#variable-uline~2">uline</a>
             <a class="list-group-item" href="../program/internal_io.html#variable-ustr~2">ustr</a>
@@ -202,7 +202,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-aline"></span>
+              <span class="anchor" id="variable-aline~2"></span>
               character(kind=ascii, len=:),
             </td>
             <td>
@@ -234,7 +234,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ascii~2"></span>
+              <span class="anchor" id="variable-ascii~3"></span>
               integer,
             </td>
             <td>
@@ -250,7 +250,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-astr~2"></span>
+              <span class="anchor" id="variable-astr"></span>
               character(kind=ascii, len=:),
             </td>
             <td>
@@ -282,7 +282,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~2"></span>
+              <span class="anchor" id="variable-i~3"></span>
               integer
             </td>
             <td>
@@ -426,10 +426,10 @@ parameter
 <span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="n">uline</span><span class="w"></span>
 <span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)(</span><span class="nb">ichar</span><span class="p">(</span><span class="n">uline</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">uline</span><span class="p">))</span><span class="w"></span>
 <span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;And back again&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;before&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;before:&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
 <span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)(</span><span class="nb">ichar</span><span class="p">(</span><span class="n">astr</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">astr</span><span class="p">))</span><span class="w"></span>
 <span class="w">   </span><span class="k">read</span><span class="p">(</span><span class="n">uline</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)</span><span class="n">astr</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;after&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)</span><span class="s1">&#39;after:&#39;</span><span class="p">,</span><span class="n">astr</span><span class="w"></span>
 <span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="k">all</span><span class="p">)(</span><span class="nb">ichar</span><span class="p">(</span><span class="n">astr</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">astr</span><span class="p">))</span><span class="w"></span>
 
 <span class="k">end program </span><span class="n">internal_io</span><span class="w"></span>
@@ -455,7 +455,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-10 00:39 +0000             </p>
+ on 2025-08-10 00:41 +0000             </p>
           </div>
         </div>
         <br>
