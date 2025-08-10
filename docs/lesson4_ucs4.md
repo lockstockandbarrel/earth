@@ -118,10 +118,10 @@ integer                                 :: i
    print all,uline
    write(stdout,all)(ichar(uline(i:i)),",",i=1,len(uline))
    print all, 'And back again'
-   write(stdout,all)'before',astr
+   write(stdout,all)'before:',astr
    write(stdout,all)(ichar(astr(i:i)),",",i=1,len(astr))
    read(uline,'(a)')astr
-   write(stdout,all)'after',astr
+   write(stdout,all)'after:',astr
    write(stdout,all)(ichar(astr(i:i)),",",i=1,len(astr))
 
 end program internal_io
@@ -156,9 +156,9 @@ bytes         :128
 Hello World and Ni Hao -- ¿¿¿¿¿¿¿¿¿¿¿¿¿¿
 72,101,108,108,111,32,87,111,114,108,100,32,97,110,100,32,78,105,32,72,97,111,32,45,45,32,-28,-67,-96,-27,-91,-67,
 And back again
-beforeHello World and Ni Hao -- ä½ å¥½
+before:Hello World and Ni Hao -- ä½ å¥½
 72,101,108,108,111,32,87,111,114,108,100,32,97,110,100,32,78,105,32,72,97,111,32,45,45,32,228,189,160,229,165,189,
-afterHello World and Ni Hao -- ??????
+after:Hello World and Ni Hao -- ??????
 72,101,108,108,111,32,87,111,114,108,100,32,97,110,100,32,78,105,32,72,97,111,32,45,45,32,63,63,63,63,63,63,
 ```
 ## Summary

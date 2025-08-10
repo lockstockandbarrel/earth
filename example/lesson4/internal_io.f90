@@ -64,17 +64,10 @@ integer                                 :: i
    print all,uline
    write(stdout,all)(ichar(uline(i:i)),",",i=1,len(uline))
    print all, 'And back again'
-   write(stdout,all)'before',astr
+   write(stdout,all)'before:',astr
    write(stdout,all)(ichar(astr(i:i)),",",i=1,len(astr))
    read(uline,'(a)')astr
-   write(stdout,all)'after',astr
+   write(stdout,all)'after:',astr
    write(stdout,all)(ichar(astr(i:i)),",",i=1,len(astr))
 
 end program internal_io
-! in gfortran internal I/O does no encoding or decoding like writing into file opened with encoding='utf-8' 
-! so ASCII into ASCII but not UCS4 into ASCII, UTF4 into UTF4, but not ASCII into UTF4. Is it an extention
-! for internal files to be non-default or non-ASCII?
-
-! The A format is a binary transfer of bytes for integers and reals and everything else accept non-default kind UCS-4 characters
-! are converted to and from UTF-8, which breaks with the use of the A format to transfer binary data to formatted files
-
