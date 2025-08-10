@@ -33,11 +33,11 @@
 
    You would probably also expect the "A" format field descriptor would
    produce a binary copy of bytes when the type is CHARACTER as it does
-   with other types; whether the internal file is UCS4 or ASCII. The "A"
-   field descriptor is the original TRANSFER() function with added field
-   descriptor control. That was the most common method for allowing binary
-   data to be placed in formatted files prior to stream I/O support,
-   for example.
+   with other types; whether the internal file is UCS4 or ASCII. The
+   "A" field descriptor is the original equivalent of the TRANSFER()
+   function with added field descriptor control. That was the most common
+   method for allowing binary data to be placed in formatted files prior
+   to stream I/O support, for example.
 
    __Yes, but only for CHARACTER variables of the same kind__. Using
    other CHARACTER kinds that do not match the internal file kind are
