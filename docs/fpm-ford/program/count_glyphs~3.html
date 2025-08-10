@@ -87,7 +87,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 4.3% of total for programs.">28 statements</a>
+                 title=" 4.5% of total for programs.">29 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -327,34 +327,55 @@ parameter
     <section>
     <h2 id="src">Source Code</h2>
     <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">count_glyphs</span><span class="w"></span>
-<span class="c">! @(#) read a utf-8 file and write it out with lines prefixed with glyph count of the line</span>
-<span class="k">use</span><span class="p">,</span><span class="w"> </span><span class="k">intrinsic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">input_unit</span><span class="w"></span>
+<span class="c">! @(#) read a utf-8 file and write it out with lines prefixed with glyph counts of the line</span>
+<span class="k">use</span><span class="p">,</span><span class="w"> </span><span class="k">intrinsic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">stdout</span><span class="o">=&gt;</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">stdin</span><span class="o">=&gt;</span><span class="n">input_unit</span><span class="w"></span>
 <span class="k">implicit none</span>
 <span class="k">intrinsic </span><span class="nb">selected_char_kind</span>
 <span class="k">intrinsic </span><span class="nb">is_iostat_end</span>
-<span class="k">intrinsic </span><span class="nb">len_trim</span>
-<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ISO_10646&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;(*(g0))&#39;</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                                </span><span class="kd">::</span><span class="w"> </span><span class="n">length</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                                </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                                </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">uline</span><span class="w"> </span><span class="c">! specifies maximum line length of 4096 bytes,</span>
-<span class="w">                                                </span><span class="c">! which might be as few as 1024 (ie. 4096/4) glyphs</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="n">iomsg</span><span class="w"></span>
+<span class="k">intrinsic </span><span class="nb">len_trim</span><span class="w"></span>
+<span class="c">!------</span>
+<span class="c">! NOTE: we will be using the kind name &quot;ucs4&quot; for Unicode variables</span>
+<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ISO_10646&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="c">!------</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;(*(g0))&#39;</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">length</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span><span class="w"></span>
+<span class="c">!------</span>
+<span class="c">! NOTE: this character variable is the Unicode kind, not ASCII</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">uline</span><span class="w"> </span><span class="c">! specifies maximum line length of 4096 bytes,</span>
+<span class="w">                                       </span><span class="c">! which might be as few as 1024 (ie. 4096/4) glyphs</span>
+<span class="c">!------</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iomsg</span><span class="w"></span>
 
-<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">input_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="c">!------</span>
+<span class="w">   </span><span class="c">! NOTE: you can change the encoding used for a file dynamically, even on pre-assigned files</span>
+<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="c">!------</span>
 
 <span class="w">   </span><span class="k">do</span>
-<span class="k">      read</span><span class="p">(</span><span class="n">input_unit</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">)</span><span class="n">uline</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">iostat</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
-<span class="k">         </span><span class="n">length</span><span class="o">=</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(i9,&quot;: &quot;,a)&#39;</span><span class="p">)</span><span class="n">length</span><span class="p">,</span><span class="n">uline</span><span class="p">(:</span><span class="n">length</span><span class="p">)</span><span class="w"></span>
+<span class="k">      read</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">)</span><span class="n">uline</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">iostat</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span><span class="w"></span>
+<span class="w">         </span><span class="c">!------</span>
+<span class="w">         </span><span class="c">! NOTE: LEN_TRIM() works with UCS-4 just as with ASCII</span>
+<span class="w">         </span><span class="n">length</span><span class="o">=</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="c">!------</span>
+<span class="w">         </span><span class="c">!------</span>
+<span class="w">         </span><span class="c">! NOTE: String substrings work just like with ASCII as well</span>
+<span class="w">         </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="s1">&#39;(i9,&quot;: &quot;,a)&#39;</span><span class="p">)</span><span class="n">length</span><span class="p">,</span><span class="n">uline</span><span class="p">(:</span><span class="n">length</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="c">!------</span>
 <span class="w">      </span><span class="n">elseif</span><span class="p">(</span><span class="nb">is_iostat_end</span><span class="p">(</span><span class="n">iostat</span><span class="p">))</span><span class="k">then</span>
 <span class="k">         exit</span>
-<span class="k">      else</span><span class="w"> </span>
-<span class="w">         </span><span class="c">! does the message have to be converted to ucs-4?</span>
-<span class="w">         </span><span class="k">write</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;&lt;ERROR&gt;&#39;</span><span class="p">,</span><span class="nb">trim</span><span class="p">(</span><span class="n">iomsg</span><span class="p">)</span><span class="w"></span>
+<span class="k">      else</span><span class="w"></span>
+<span class="w">         </span><span class="c">!------</span>
+<span class="w">         </span><span class="c">! NOTE:</span>
+<span class="w">         </span><span class="c">! does the ASCII message have to be converted to UCS-4?</span>
+<span class="w">         </span><span class="c">! This will be discussed in detail later, but for now</span>
+<span class="w">         </span><span class="c">! remember you can change the encoding of a file dynamically</span>
+<span class="w">         </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="c">!------</span>
+<span class="w">         </span><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;&lt;ERROR&gt;&#39;</span><span class="p">,</span><span class="nb">trim</span><span class="p">(</span><span class="n">iomsg</span><span class="p">)</span><span class="w"></span>
 <span class="w">         </span><span class="k">exit</span>
 <span class="k">      endif</span>
 <span class="k">   enddo</span>
@@ -382,7 +403,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-10 00:29 +0000             </p>
+ on 2025-08-10 00:31 +0000             </p>
           </div>
         </div>
         <br>
