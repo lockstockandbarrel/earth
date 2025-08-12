@@ -1,5 +1,5 @@
 module M_utf8
-use iso_fortran_env, only: error_unit
+use iso_fortran_env, only: error_unit, stderr=>error_unit
 implicit none
 
 private
@@ -214,6 +214,11 @@ integer                                 :: err
    call utf8_to_codepoints(string,codepoints,err)
    n=size(codepoints)
    allocate(character(len=n,kind=ucs4)  :: corrected)
+
+   if(.not.allocated(codepoints))then
+      corrected=''
+      return
+   endif
    do i=1,n
       corrected(i:i)=char(codepoints(i),kind=ucs4)
    enddo
@@ -237,11 +242,22 @@ function utf8_to_ucs4_via_io(string) result(corrected)
 character(len=*),intent(in)            :: string
 character(len=:,kind=ucs4),allocatable :: corrected
 character(len=(len(string)),kind=ucs4) :: line
+character(len=255)                     :: iomsg
+integer                                :: i
 integer                                :: lun
+integer                                :: iostat
    open(newunit=lun,encoding='UTF-8',status='scratch')
-   write(lun,'(A)')string
+   do i=1,len(string)
+      write(lun,'(A)',iostat=iostat,iomsg=iomsg,advance='no')string(i:i)
+      if(iostat.ne.0)then
+         ! not definite: after an error the position may be undefined
+         write(lun,'(A)',iostat=iostat,iomsg=iomsg,advance='no')'?'
+	 write(stderr,'(A)')trim(iomsg)
+      endif
+   enddo
+   write(lun,'(A)',advance='yes')
    rewind(lun)
-   read(lun,'(A)')line
+   read(lun,'(A)',iostat=iostat)line
    close(lun)
    corrected=trim(line)
 end function utf8_to_ucs4_via_io
