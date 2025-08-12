@@ -40,6 +40,7 @@ integer, parameter :: default = selected_char_kind ("default")
 integer, parameter :: ascii =   selected_char_kind ("ascii")
 integer, parameter :: ucs4  =   selected_char_kind ('ISO_10646')
 
+character(len=*),parameter             :: g='(*(g0))'
 character(len=:),allocatable           :: aline, a1, a2
 character(len=:,kind=ucs4),allocatable :: uline, u1, u2
 character(len=1),allocatable           :: ch(:), ch2(:)
@@ -85,14 +86,14 @@ character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) !
    write(stdout,'(a)')'what about characters that have no equivalent in the other kind?'
    write(stdout,'(A)')'conversion by assignment'
    aline=uline 
-   write(stdout,'(a)') aline,len(aline)
+   write(stdout,g) aline,' ',len(aline),' ',len(uline)
    write(stdout,'(a)') 'conversion by ACHAR/ICHAR:'
    aline=ucs4_to_ascii(uline) ! is "smiley" replaced with a character used for errors?
-   write(stdout,'(a)') aline,len(aline)
+   write(stdout,g) aline,' ',len(aline),' ',len(uline)
    write(stdout,'(a)') 'which character replaces the unrepresentable characters is processor-dependent'
    write(stdout,'(a)') 'and might be unprintable'
    aline=smiley
-   write(stdout,'(a,i0)') 'ADE:',ichar(aline)' CHARACTER:',aline
+   write(stdout,'(a,i0,a)') 'ADE:',ichar(aline),' CHARACTER:',aline
    write(stdout,'(A)')repeat('=',80)
 
 contains
