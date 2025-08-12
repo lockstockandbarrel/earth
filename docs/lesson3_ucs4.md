@@ -6,7 +6,7 @@
 
 ### Concatenation, Assignment, and automatic conversion
 
-Concerning assignment the Fortran standard states
+Concerning assignment -- the Fortran standard states
 
    if the variable is of type character and of ISO 10646, ASCII, or default
    character kind, expr shall be of ISO 10646, ASCII, or default character
@@ -83,10 +83,16 @@ character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) !
    !
    write(stdout,'(A)')'unrepresentable characters:'
    write(stdout,'(a)')'what about characters that have no equivalent in the other kind?'
-   aline=uline ! conversion by assignment
-   write(stdout,'(a)') aline
+   write(stdout,'(A)')'conversion by assignment'
+   aline=uline 
+   write(stdout,'(a)') aline,len(aline)
+   write(stdout,'(a)') 'conversion by ACHAR/ICHAR:'
    aline=ucs4_to_ascii(uline) ! is "smiley" replaced with a character used for errors?
-   write(stdout,'(a)') aline
+   write(stdout,'(a)') aline,len(aline)
+   write(stdout,'(a)') 'which character replaces the unrepresentable characters is processor-dependent'
+   write(stdout,'(a)') 'and might be unprintable'
+   aline=smiley
+   write(stdout,'(a,i0)') 'ADE:',ichar(aline)' CHARACTER:',aline
    write(stdout,'(A)')repeat('=',80)
 
 contains
