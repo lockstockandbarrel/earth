@@ -10,7 +10,7 @@ is a "scalar character variable of default kind".
 
 Perhaps you are going to use the value as a stream of bytes representing
 utf-8 characters. In that case you may be able to use the string without
-converting it to the suported UCS-4 internal representation used by
+converting it to the supported UCS-4 internal representation used by
 Fortran.
 
 But if that is not the case, how will you convert the UTF-8 bytes to UCS-4?

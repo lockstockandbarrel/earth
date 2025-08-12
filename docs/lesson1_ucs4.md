@@ -131,7 +131,7 @@ character(len=255)            :: iomsg
 
 end program count_glyphs
 ```
-tHat is how simple basic Unicode usage is in Fortran.  The data will be
+That is how simple basic Unicode usage is in Fortran.  The data will be
 converted from UTF-8 files to UCS-4 internal representation and back again
 transparently. __The CHARACTER substring indexing and intrinsic functions
 such as LEN(), TRIM(), VERIFY(), INDEX(), and SCAN() are generic, and
@@ -144,7 +144,7 @@ So if we create a file called "upagain.utf"
 くじけずに前を向いて歩いていこう。
 ```
 and make sure that our terminal displays UTF-8 files properly
-by displaying that file to the screen, then runnng the program
+by displaying that file to the screen, then running the program
 ```bash
 ./count_glyphs < upagain.utf
 ```

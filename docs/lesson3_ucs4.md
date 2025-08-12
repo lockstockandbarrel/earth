@@ -6,7 +6,7 @@
 
 ```fortran
 program ascii_and_ucs4
-use iso_fortran_env, only : stdout=>output_unit
+use iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
 implicit none
 
 intrinsic selected_char_kind
@@ -17,15 +17,17 @@ integer, parameter :: ucs4  =   selected_char_kind ('ISO_10646')
 
 character(len=:),allocatable           :: aline
 character(len=:,kind=ucs4),allocatable :: uline
-character(len=1),allocatable           :: ch(:)
+character(len=1),allocatable           :: ch(:), ch2(:)
 character(len=1,kind=ucs4),allocatable :: glyph(:)
 integer                                :: i
+integer                                :: iostat
 integer                                :: nerr
+character(len=1)                       :: paws
 
    open (stdout, encoding='DEFAULT')
    open (stdout, encoding='UTF-8')
 
-   ! cannot cocatenate character variables of different kinds
+   ! cannot concatenate character variables of different kinds
    !uline='ascii string' // ucs4_'unicode string'
 
    ! only characters defined in the other encoding are copied on an assign
@@ -43,9 +45,32 @@ integer                                :: nerr
    write(stdout,'(a)')trim(aline)
    uline=aline ! all ASCII 7-bit characters can be represented in UCS-4
    write(stdout,'(a)')trim(uline)//ucs4_' assigned to UCS4'
+
+   write(stdout,'(A)')'round trip for all ASCII bytes'
+
+   write(stdout,'(A)')repeat(ucs4_'=',80)
+   ch=[(char(i),i=0,255)]
+   open (stdout, encoding='DEFAULT')
+   write(stdout,'(10(g0,1x,g0,1x))')(ch(i),i=0,255)
+   open (stdout, encoding='UTF-8')
+   write(stdout,'(10(g0,1x,g0,1x))')(ch(i),i=0,255)
+   read(stdin,'(a)',iostat=iostat)paws
+
+   write(stdout,'(A)')repeat(ucs4_'=',80)
+   glyph=ch
+   write(stdout,'(10(g0,1x,g0,1x))')(glyph(i),i=0,255)
+   read(stdin,'(a)',iostat=iostat)paws
+
+   write(stdout,'(A)')repeat(ucs4_'=',80)
+   ch2=glyph
+   write(stdout,'(10(g0,1x,g0,1x))')(ch2(i),i=0,255)
+   read(stdin,'(a)',iostat=iostat)paws
+
+   write(stdout,'(A)')repeat(ucs4_'=',80)
+
+   write(stdout,'(a,L0)') 'roundrobin returned all values unchanged?',all( ch .eq. ch2)
       
 end program ascii_and_ucs4
 ```
-
 + [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson2_ucs4.md)
 + [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson4_ucs4.md)
