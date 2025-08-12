@@ -10,7 +10,7 @@
     <meta name="author" content="John S. Urban" >
     <link rel="icon" href="../favicon.png">
 
-    <title>checkit &ndash; M_time</title>
+    <title>ucs4_to_ascii &ndash; M_time</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -77,8 +77,8 @@
 
     <div class="container">
   <div class="row">
-    <h1>checkit
-      <small>Subroutine</small>
+    <h1>ucs4_to_ascii
+      <small>Function</small>
       
     </h1>
       <div class="container p-2 mb-4 bg-light border rounded-3">
@@ -88,21 +88,21 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 1.0% of total for procedures.">6 statements</a>
+                 title=" 1.3% of total for procedures.">8 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/check.f90"> Source File</a>
+              <a href="../src/concatenate.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/check.f90.html'>check.f90</a></li>
-                <li class="breadcrumb-item"><a href='../program/check.html'>check</a></li>
-            <li class="breadcrumb-item active" aria-current="page">checkit</li>
+                <li class="breadcrumb-item"><a href='../sourcefile/concatenate.f90.html'>concatenate.f90</a></li>
+                <li class="breadcrumb-item"><a href='../program/concatenate.html'>concatenate</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ucs4_to_ascii</li>
           </ol>
         </nav>
       </div>
@@ -123,7 +123,18 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/ucs4_to_ascii.html#variable-i~5">i</a>
+        </div>
+      </div>
+    </div>
+
   
   
   
@@ -145,7 +156,7 @@
     <div class="card card-primary">
       <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
       <div class="list-group">
-        <a class="list-group-item" href="../proc/checkit.html#src">checkit</a>
+        <a class="list-group-item" href="../proc/ucs4_to_ascii.html#src">ucs4_to_ascii</a>
       </div>
     </div>
 
@@ -155,7 +166,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2> subroutine checkit(label, test)  
+    <h2> function ucs4_to_ascii(ustr) result(astr)  
 </h2>
     
 
@@ -174,30 +185,15 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-label"></span>
-              character(len=*),
+              <span class="anchor" id="variable-ustr~2"></span>
+              character(kind=ucs4, len=*),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
               
             </td>
             <td>::</td>
-            <td><strong>label</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-test"></span>
-              logical,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>test</strong></td>
+            <td><strong>ustr</strong></td>
             <td>
                 
             </td>
@@ -205,9 +201,50 @@
     </tbody>
   </table>
 
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-astr~2"></span>
+          character(kind=ascii, len=len)
+        </small>
+      </h3>
+      
     <br>
 
 
+    <section>    
+      <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i~5"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
     
     
 
@@ -219,12 +256,15 @@
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="k">subroutine </span><span class="n">checkit</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">test</span><span class="p">)</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">label</span><span class="w"></span>
-<span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">test</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;PASSED&#39;</span><span class="p">,</span><span class="s1">&#39;FAILED&#39;</span><span class="p">,</span><span class="n">test</span><span class="p">),</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="n">label</span><span class="w"></span>
-<span class="w">   </span><span class="k">if</span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">test</span><span class="p">)</span><span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
-<span class="k">end subroutine </span><span class="n">checkit</span><span class="w"></span>
+    <div class="hl codehilite"><pre><span></span><span class="k">function </span><span class="n">ucs4_to_ascii</span><span class="p">(</span><span class="n">ustr</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">astr</span><span class="p">)</span><span class="w"></span>
+<span class="c">! @(#) make the same conversion as an assignment statement from UCS4 o ASCII</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">ustr</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">ustr</span><span class="p">),</span><span class="nb">kind</span><span class="o">=</span><span class="n">ascii</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">astr</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                                </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="w">   </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">ustr</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">astr</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="nb">achar</span><span class="p">(</span><span class="nb">iachar</span><span class="p">(</span><span class="n">ustr</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="nb">kind</span><span class="o">=</span><span class="n">ascii</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">enddo</span>
+<span class="k">end function </span><span class="n">ucs4_to_ascii</span><span class="w"></span>
 </pre></div>
 
     </section>

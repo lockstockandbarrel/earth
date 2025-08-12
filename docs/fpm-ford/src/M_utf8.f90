@@ -6,6 +6,7 @@ private
 public :: utf8_to_codepoints,  codepoints_to_utf8
 public :: utf8_to_ucs4,        ucs4_to_utf8
 public :: utf8_to_ucs4_via_io, ucs4_to_utf8_via_io
+public :: ascii_to_ucs4,       ucs4_to_ascii
 
 integer, parameter :: ucs4 = selected_char_kind('ISO_10646') ! The compiler must support UCS-4 characters
 integer, parameter :: ascii = selected_char_kind('ascii')    ! maybe should use default, as ASCII is technically 128, not 256 chars
@@ -275,5 +276,25 @@ integer                                        :: lun
    close(lun)
    corrected=trim(line)
 end function ucs4_to_utf8_via_io
+
+function ascii_to_ucs4(astr) result(ustr)
+! @(#) make the same conversion as an assignment statement from ASCII to UCS4
+character(len=*,kind=ascii),intent(in) :: astr
+character(len=len(astr),kind=ucs4)     :: ustr
+integer                                :: i
+   do i=1,len(astr)
+      ustr(i:i)=achar(iachar(astr(i:i)),kind=ucs4)
+   enddo
+end function ascii_to_ucs4
+
+function ucs4_to_ascii(ustr) result(astr)
+! @(#) make the same conversion as an assignment statement from UCS4 o ASCII
+character(len=*,kind=ucs4),intent(in)  :: ustr
+character(len=len(ustr),kind=ascii)    :: astr
+integer                                :: i
+   do i=1,len(ustr)
+      astr(i:i)=achar(iachar(ustr(i:i)),kind=ascii)
+   enddo
+end function ucs4_to_ascii
 
 end module M_utf8
