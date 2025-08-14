@@ -78,7 +78,7 @@
     <div class="container">
   <div class="row">
     <h1>utf8_to_utf32
-      <small>Subroutine</small>
+      <small>Function</small>
       
     </h1>
       <div class="container p-2 mb-4 bg-light border rounded-3">
@@ -93,15 +93,15 @@
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/odessa_unicode.f90"> Source File</a>
+              <a href="../src/supported.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/odessa_unicode.f90.html'>odessa_unicode.f90</a></li>
-                <li class="breadcrumb-item"><a href='../module/odessa_unicode.html'>odessa_unicode</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/supported.f90.html'>supported.f90</a></li>
+                <li class="breadcrumb-item"><a href='../program/demo_selected_char_kind.html'>demo_selected_char_kind</a></li>
             <li class="breadcrumb-item active" aria-current="page">utf8_to_utf32</li>
           </ol>
         </nav>
@@ -123,7 +123,19 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/utf8_to_utf32.html#variable-line~4">line</a>
+            <a class="list-group-item" href="../proc/utf8_to_utf32.html#variable-lun~5">lun</a>
+        </div>
+      </div>
+    </div>
+
   
   
   
@@ -155,7 +167,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>public  subroutine utf8_to_utf32(utf8, utf32, nerr)  
+    <h2> function utf8_to_utf32(string) result(corrected)  
 </h2>
     
 
@@ -174,45 +186,15 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~4"></span>
-              character(len=1),
+              <span class="anchor" id="variable-string~7"></span>
+              character(len=*),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
               
             </td>
             <td>::</td>
-            <td><strong>utf8</strong>(:)</td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf32"></span>
-              character(kind=u32, len=1),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>utf32</strong>(:)</td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-nerr~4"></span>
-              integer,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>nerr</strong></td>
+            <td><strong>string</strong></td>
             <td>
                 
             </td>
@@ -220,9 +202,67 @@
     </tbody>
   </table>
 
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-corrected~6"></span>
+          character(kind=ucs4, len=:), allocatable
+        </small>
+      </h3>
+      
     <br>
 
 
+    <section>    
+      <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-line~4"></span>
+              character(kind=ucs4, len=255),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>line</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-lun~5"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>lun</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
     
     
 
@@ -234,21 +274,19 @@
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="k">subroutine </span><span class="n">utf8_to_utf32</span><span class="p">(</span><span class="n">utf8</span><span class="p">,</span><span class="n">utf32</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
-<span class="kt">character</span><span class="w">                      </span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">utf8</span><span class="p">(:)</span><span class="w"></span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">u32</span><span class="p">),</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">utf32</span><span class="p">(:)</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                        </span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nerr</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">            </span><span class="p">,</span><span class="k">allocatable</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">unicode</span><span class="p">(:)</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">                                     </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">utf8_to_unicode</span><span class="p">(</span><span class="n">utf8</span><span class="p">,</span><span class="n">unicode</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">n</span><span class="o">=</span><span class="n">size</span><span class="p">(</span><span class="n">unicode</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">allocate</span><span class="p">(</span><span class="n">utf32</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="w"></span>
-<span class="w">   </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="w"></span>
-<span class="w">      </span><span class="n">utf32</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="nb">char</span><span class="p">(</span><span class="n">unicode</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="nb">kind</span><span class="o">=</span><span class="n">u32</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">enddo</span>
-
-<span class="k">end subroutine </span><span class="n">utf8_to_utf32</span><span class="w"></span>
+    <div class="hl codehilite"><pre><span></span><span class="k">function </span><span class="n">utf8_to_utf32</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">corrected</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
+<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lun</span><span class="w"></span>
+<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">lun</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;scratch&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">lun</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="n">string</span><span class="w"></span>
+<span class="w">   </span><span class="k">rewind</span><span class="p">(</span><span class="n">lun</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">read</span><span class="p">(</span><span class="n">lun</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="n">line</span><span class="w"></span>
+<span class="w">   </span><span class="k">close</span><span class="p">(</span><span class="n">lun</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">corrected</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">end function </span><span class="n">utf8_to_utf32</span><span class="w"></span>
 </pre></div>
 
     </section>
@@ -272,7 +310,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-12 11:51 +0000             </p>
+ on 2025-08-14 20:45 +0000             </p>
           </div>
         </div>
         <br>

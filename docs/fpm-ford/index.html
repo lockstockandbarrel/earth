@@ -111,23 +111,39 @@ encoding set to &ldquo;UTF-8&rdquo;.</p>
 containing UTF-8 encoded strings as standard Fortran Unicode characters
 instead of as ASCII byte streams that contain UTF-8 constant strings, such
 as the procedures</p>
+<h3 id="m_utf8-module">M_utf8 module</h3>
 <ul>
-<li>utf8_to_codepoints</li>
-<li>utf8_to_ucs4</li>
-<li>utf8_to_ucs4_via_io</li>
-<li>ucs4_to_utf8</li>
+<li>utf8_to_codepoints, codepoints_to_utf8</li>
+<li>utf8_to_ucs4, ucs4_to_utf8</li>
+<li>utf8_to_ucs4_via_io, ucs4_to_utf8_via_io</li>
+<li>ascii_to_ucs4, ucs4_to_ascii</li>
 </ul>
-<p>Fortran supports just using 4-byte UCS-4 encoding for characters/glyphs quite
-well, including an option to automatically encode and decode data read and written
-to UTF-8 files. Where the issues start is that the standard specifies default 
-character kinds for the OPEN FILE= specifier, filenames on INQUIRE, strings returned
-by GET_COMMAND_ARGUMENT, &hellip; . So you can not just forget about ASCII quite yet.
-And some systems might use other encodings like UTF-16, so basically Fortran still
-needs procedures or methods for converting between UCS-4, UTF-16, UTF-8, and possibly
-other encodings before you can just use Unicode everywhere in Fortran and forget about
-ASCII or other encodings. Plus there apparently is currently a dearth of documentation 
-about using Unicode from Fortran. This material is meant to fill in the gap with both
-issues.</p>
+<h3 id="odessa_unicode-module">odessa_unicode module</h3>
+<p>An alternate enhanced version from Francois Jacq, 2025-08
+presented in https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949, 2025-08.</p>
+<ul>
+<li>utf8_to_unicode, unicode_to_utf8</li>
+<li>utf8_to_utf32, utf32_to_utf8</li>
+<li>isolatin_to_unicode, unicode_to_isolatin</li>
+<li>utf8_to_isolatin, isolatin_to_utf8</li>
+<li>isolatin_to_utf32, utf32_to_isolatin</li>
+</ul>
+<p>It includes improvements being backfitted into M_utf8 as well as
+handling ASCII encoding extensions often used for internationalization
+that pre-date Unicode.</p>
+<h2 id="purpose">Purpose</h2>
+<p>Fortran optionally supports internal representation of Unicode using
+4-byte-per-character UCS-4 encoding for characters/glyphs quite well,
+including an option to automatically encode and decode data read and
+written to UTF-8 files. </p>
+<p>Where the issues start is that the standard
+specifies default character kinds for the OPEN FILE= specifier, filenames
+on INQUIRE, strings returned by GET_COMMAND_ARGUMENT, &hellip; . So you can
+not just forget about ASCII quite yet.  And some systems might use other
+encodings like UTF-16, so basically Fortran still needs procedures or
+methods for converting between UCS-4, UTF-16, UTF-8, and possibly other
+encodings before you can just use Unicode everywhere in Fortran and forget
+about ASCII or other encodings.</p>
 <p>The intent is for the information to useful for all Fortran processing, but currently
 is primarily tested with gfortran on Linux and Cygwin.</p>
 <div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">testit</span><span class="w"></span>
@@ -155,93 +171,13 @@ is primarily tested with gfortran on Linux and Cygwin.</p>
 </code></pre></div>
 
 <hr>
-<h2 id="fortran-unicode-tutorial">Fortran Unicode Tutorial</h2>
-<p>Here are some lessons that describe my experiences with Unicode and
-Fortran, including discussions of open questions concerning what is
-standardized, what extensions commonly used compilers provide to address
-some of the current gaps, and what is known to be non-portable but useful
-behavior from some compilers regarding undefined behaviors.</p>
-<p><strong>WIP Notice:</strong> this has barely been begin. I am still sorting out what is and is
-not standard.</p>
-<p>Once constructed and stable, the lessons will become a tutorial on the Fortran Wiki,
-and this project will contain the related modules and examples, but at this point
-this is just an incomplete outline so starting the Wiki entries would be premature.</p>
-<h3 id="introduction-to-fortran-unicode-support">Introduction to Fortran Unicode support</h3>
-<ul>
-<li><a href="docs/lesson1_ucs4.md"><strong>Lesson I:</strong></a> reading and writing UTF-8 Unicode files</li>
-<li><a href="docs/lesson2_ucs4.md"><strong>Lesson II:</strong></a> creating Unicode strings in ASCII Fortran source files</li>
-<li><a href="docs/lesson3_ucs4.md"><strong>Lesson III:</strong></a> mixing ASCII and UCS4 kinds as regards assignments,
-                 concatenation, passing arguments to external ASCII libraries, and I/O argument lists</li>
-<li><a href="docs/lesson4_ucs4.md"><strong>Lesson IV:</strong></a>what is and is not supported with internal READ and WRITE statements</li>
-<li><a href="docs/lesson5_ucs.md"><strong>Lesson V:</strong></a>processing Unicode file names on OPEN() statements</li>
-<li><a href="docs/lesson6_ucs4.md"><strong>Lesson VI:</strong></a> reading UTF-8 strings from command lines</li>
-<li>Lesson VII:  passing Unicode strings to and from C</li>
-<li>Lesson VIII: related utility programs</li>
-</ul>
-<h3 id="off-the-beaten-path">off the beaten path:</h3>
-<ul>
-<li>Lesson I: UTF-8 source files &ndash; just in comments and constants</li>
-<li>Lesson II: the backslash escape code extension</li>
-<li>Lesson III: converting between UCS-4 and UTF-8 with procedures</li>
-<li>Lesson IV: embedding BOM characters at the beginning of files</li>
-</ul>
-<h3 id="processing-unicode-when-iso-10646-is-not-supported-by-a-compiler">Processing Unicode when ISO-10646 is not supported by a compiler</h3>
-<ul>
-<li>Lesson I: converting UTF-8 codes to and from INTEGER values</li>
-<li>Lesson II: byte-oriented printing of 4-byte integers</li>
-<li>Lesson III: issues with terminal emulators, system locale settings, and
-                  other Unicode-related issues</li>
-<li>Lesson IV: working with ASCII extended encodings; particularly those
-                 commonly referred to as Extended, Latin, Latin1 and Latin2.</li>
-</ul>
-<hr>
-<h2 id="dusty-corners">Dusty Corners</h2>
-<p>Assigns between different character kinds, and an apparent
-lack of an ability to specify encoding=&rsquo;UTF-8&rsquo; when using
-internal reads and writes like you can with an OPEN(3f)
-statement are still a little murky; as well as how the T
-field descriptor works with multi-byte characters.</p>
-<p>Note that at least with the gfortran(1) compiler conversion
-to UCS4 internal representation works automatically when
-reading and writing from files with encoding=&rsquo;utf-8&rsquo; specified,
-this is just primarily concerned with UTF-8 string constants occurring
-in the code files themselves.</p>
-<h2 id="backslash-extension">backslash extension</h2>
-<p>The gfortran(1) compiler supports an extension that allows for building
-ucs4 strings more easily than using BOZ literals.</p>
-<p>The following example prints the Unicode symbol ☻ (black smiling face)
-of code point U+263B. The compiled binary must be executed in a terminal
-with Unicode support, like XTerm or sakura.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">main</span><span class="w"> </span><span class="c">! code to place in unicode.f90</span>
-<span class="w">    </span><span class="k">use</span><span class="p">,</span><span class="w"> </span><span class="k">intrinsic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span><span class="w"></span>
-<span class="w">    </span><span class="k">implicit none</span>
-<span class="k">    </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="p">(</span><span class="s1">&#39;ISO_10646&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">str</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! GFORTRAN EXTENSION:</span>
-<span class="w">    </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ucs4_</span><span class="s1">&#39;Unicode character: \u263B&#39;</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="s1">&#39;(a)&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="w"></span>
-<span class="k">end program </span><span class="n">main</span><span class="w"></span>
-</code></pre></div>
-
-<p>Build and run the executable with:</p>
-<div class="codehilite"><pre><span></span><code>$ gfortran -fbackslash -o unicode unicode.f90
-$ ./unicode
-Unicode character: ☻
-</code></pre></div>
-
-<p>The -fbackslash compiler flag is required for escaped Unicode
-characters. Otherwise, the type conversion has to be done manually using
-BOZ literals, for instance:</p>
-<div class="codehilite"><pre><span></span><code>str = ucs4_&#39;Unicode character: &#39; // char(int(z&#39;263B&#39;), kind=ucs4)
-</code></pre></div>
-
-<p>Or, simply by using the decimal value of the character code point, without BOZ literal:</p>
-<div class="codehilite"><pre><span></span><code>str = ucs4_&#39;Unicode character: &#39; // char(9787, kind=ucs2)
-</code></pre></div>
-
+<h2 id="tutorial">Tutorial</h2>
+<p>There apparently is currently a dearth of documentation about using
+Unicode from Fortran, so as this project progresses a companion tutorial
+is being produced as well that first describes the general challenges of
+using Unicode from Fortran when supported; and then using it from utf-8 files
+using Unicode when not supported.</p>
+<h2 id="unicode-tutorial"><a href="docs/lesson0.md">Unicode Tutorial</a></h2>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a href="https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949">https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949</a></li>
@@ -252,13 +188,7 @@ BOZ literals, for instance:</p>
  + [UTF-8 Everywhere Manifesto](http://utf8everywhere.org/)
 -->
 
-<p>Other languages, such as the Python encode() and decode() procedures, supply related functionality.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># extract discourse as text</span>
-lynx --dump https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949
-lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764
-</code></pre></div>
-
-<hr>
+<h2 id="other-languages-such-as-the-python-encode-and-decode-procedures-supply-related-functionality">Other languages, such as the Python encode() and decode() procedures, supply related functionality.</h2>
         </div>
           <div class="col-md-4">
             <div class="card card-body bg-light">
@@ -283,7 +213,7 @@ lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-f
           <div class="col-xs-6 col-sm-4">
             <div>
               <h3>Source Files</h3>
-              <ul><li><a href='sourcefile/asciiset.f90.html'>asciiset.f90</a></li><li><a href='sourcefile/assignment.f90.html'>assignment.f90</a></li><li><a href='sourcefile/boz.f90.html'>boz.f90</a></li><li><a href='sourcefile/check.f90.html'>check.f90</a></li><li><a href='sourcefile/codepoints.f90.html'>codepoints.f90</a></li><li><a href='sourcefile/concatenate.f90.html'>concatenate.f90</a></li><li><a href='sourcefile/count_glyphs.f90.html'>count_glyphs.f90</a></li><li><a href='sourcefile/count_glyphs.f90~2.html'>count_glyphs.f90</a></li><li><a href='sourcefile/euro.f90.html'>euro.f90</a></li><li><a href='sourcefile/hello.f90.html'>hello.f90</a></li></ul>
+              <ul><li><a href='sourcefile/ascii_round_trip.f90.html'>ascii_round_trip.f90</a></li><li><a href='sourcefile/asciiset.f90.html'>asciiset.f90</a></li><li><a href='sourcefile/assignment.f90.html'>assignment.f90</a></li><li><a href='sourcefile/boz.f90.html'>boz.f90</a></li><li><a href='sourcefile/check.f90.html'>check.f90</a></li><li><a href='sourcefile/codepoints.f90.html'>codepoints.f90</a></li><li><a href='sourcefile/concatenate.f90.html'>concatenate.f90</a></li><li><a href='sourcefile/count_glyphs.f90.html'>count_glyphs.f90</a></li><li><a href='sourcefile/count_glyphs.f90~2.html'>count_glyphs.f90</a></li><li><a href='sourcefile/euro.f90.html'>euro.f90</a></li></ul>
             </div>
             <div>
               <ul>
@@ -329,7 +259,7 @@ lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-f
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-12 11:51 +0000             </p>
+ on 2025-08-14 20:45 +0000             </p>
           </div>
         </div>
         <br>
