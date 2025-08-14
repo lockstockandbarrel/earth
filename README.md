@@ -15,22 +15,41 @@ containing UTF-8 encoded strings as standard Fortran Unicode characters
 instead of as ASCII byte streams that contain UTF-8 constant strings, such
 as the procedures
 
- + utf8_to_codepoints
- + utf8_to_ucs4
- + utf8_to_ucs4_via_io
- + ucs4_to_utf8
+### M_utf8 module
+ + utf8_to_codepoints, codepoints_to_utf8
+ + utf8_to_ucs4, ucs4_to_utf8
+ + utf8_to_ucs4_via_io, ucs4_to_utf8_via_io
+ + ascii_to_ucs4, ucs4_to_ascii
 
-Fortran supports just using 4-byte UCS-4 encoding for characters/glyphs quite
-well, including an option to automatically encode and decode data read and written
-to UTF-8 files. Where the issues start is that the standard specifies default 
-character kinds for the OPEN FILE= specifier, filenames on INQUIRE, strings returned
-by GET_COMMAND_ARGUMENT, ... . So you can not just forget about ASCII quite yet.
-And some systems might use other encodings like UTF-16, so basically Fortran still
-needs procedures or methods for converting between UCS-4, UTF-16, UTF-8, and possibly
-other encodings before you can just use Unicode everywhere in Fortran and forget about
-ASCII or other encodings. Plus there apparently is currently a dearth of documentation 
-about using Unicode from Fortran. This material is meant to fill in the gap with both
-issues.
+### odessa_unicode module
+An alternate enhanced version from Francois Jacq, 2025-08
+presented in https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949, 2025-08.
+
+ + utf8_to_unicode, unicode_to_utf8
+ + utf8_to_utf32, utf32_to_utf8
+ + isolatin_to_unicode, unicode_to_isolatin
+ + utf8_to_isolatin, isolatin_to_utf8
+ + isolatin_to_utf32, utf32_to_isolatin
+
+It includes improvements being backfitted into M_utf8 as well as
+handling ASCII encoding extensions often used for internationalization
+that pre-date Unicode.
+
+## Purpose
+
+Fortran optionally supports internal representation of Unicode using
+4-byte-per-character UCS-4 encoding for characters/glyphs quite well,
+including an option to automatically encode and decode data read and
+written to UTF-8 files. 
+
+Where the issues start is that the standard
+specifies default character kinds for the OPEN FILE= specifier, filenames
+on INQUIRE, strings returned by GET_COMMAND_ARGUMENT, ... . So you can
+not just forget about ASCII quite yet.  And some systems might use other
+encodings like UTF-16, so basically Fortran still needs procedures or
+methods for converting between UCS-4, UTF-16, UTF-8, and possibly other
+encodings before you can just use Unicode everywhere in Fortran and forget
+about ASCII or other encodings.
 
 The intent is for the information to useful for all Fortran processing, but currently
 is primarily tested with gfortran on Linux and Cygwin.
@@ -60,104 +79,16 @@ character(len=:,kind=ucs4),allocatable  :: str
 end program testit
 ```
 -------------------------------------------------------------
-## Fortran Unicode Tutorial
+## Tutorial
 
-Here are some lessons that describe my experiences with Unicode and
-Fortran, including discussions of open questions concerning what is
-standardized, what extensions commonly used compilers provide to address
-some of the current gaps, and what is known to be non-portable but useful
-behavior from some compilers regarding undefined behaviors.
+There apparently is currently a dearth of documentation about using
+Unicode from Fortran, so as this project progresses a companion tutorial
+is being produced as well that first describes the general challenges of
+using Unicode from Fortran when supported; and then using it from utf-8 files
+using Unicode when not supported.
 
-**WIP Notice:** this has barely been begin. I am still sorting out what is and is
-not standard.
-
-Once constructed and stable, the lessons will become a tutorial on the Fortran Wiki,
-and this project will contain the related modules and examples, but at this point
-this is just an incomplete outline so starting the Wiki entries would be premature.
-
-### Introduction to Fortran Unicode support
-   + [**Lesson I:**](docs/lesson1_ucs4.md) reading and writing UTF-8 Unicode files
-   + [**Lesson II:**](docs/lesson2_ucs4.md) creating Unicode strings in ASCII Fortran source files
-   + [**Lesson III:**](docs/lesson3_ucs4.md) mixing ASCII and UCS4 kinds as regards assignments,
-                 concatenation, passing arguments to external ASCII libraries, and I/O argument lists
-   + [**Lesson IV:**](docs/lesson4_ucs4.md)what is and is not supported with internal READ and WRITE statements
-   + [**Lesson V:**](docs/lesson5_ucs.md)processing Unicode file names on OPEN() statements
-   + [**Lesson VI:**](docs/lesson6_ucs4.md) reading UTF-8 strings from command lines
-   + Lesson VII:  passing Unicode strings to and from C
-   + Lesson VIII: related utility programs
-
-### off the beaten path:
-   + Lesson I: UTF-8 source files -- just in comments and constants
-   + Lesson II: the backslash escape code extension
-   + Lesson III: converting between UCS-4 and UTF-8 with procedures
-   + Lesson IV: embedding BOM characters at the beginning of files
-
-### Processing Unicode when ISO-10646 is not supported by a compiler
-   + Lesson I: converting UTF-8 codes to and from INTEGER values
-   + Lesson II: byte-oriented printing of 4-byte integers
-   + Lesson III: issues with terminal emulators, system locale settings, and
-                  other Unicode-related issues
-   + Lesson IV: working with ASCII extended encodings; particularly those
-                 commonly referred to as Extended, Latin, Latin1 and Latin2.
+   [Unicode Tutorial](docs/lesson0.md)
 -------------------------------------------------------------
-
-## Dusty Corners
-Assigns between different character kinds, and an apparent
-lack of an ability to specify encoding='UTF-8' when using
-internal reads and writes like you can with an OPEN(3f)
-statement are still a little murky; as well as how the T
-field descriptor works with multi-byte characters.
-
-Note that at least with the gfortran(1) compiler conversion
-to UCS4 internal representation works automatically when
-reading and writing from files with encoding='utf-8' specified,
-this is just primarily concerned with UTF-8 string constants occurring
-in the code files themselves.
-
-## backslash extension
-
-The gfortran(1) compiler supports an extension that allows for building
-ucs4 strings more easily than using BOZ literals.
-
-The following example prints the Unicode symbol ☻ (black smiling face)
-of code point U+263B. The compiled binary must be executed in a terminal
-with Unicode support, like XTerm or sakura.
-
-```fortran
-program main ! code to place in unicode.f90
-    use, intrinsic :: iso_fortran_env, only: output_unit
-    implicit none
-    integer, parameter :: ucs4 = selected_char_kind('ISO_10646')
-    character(kind=ucs4, len=:), allocatable :: str
-
-    ! GFORTRAN EXTENSION:
-    str = ucs4_'Unicode character: \u263B'
-
-    open (output_unit, encoding='utf-8')
-    print '(a)', str
-end program main
-```
-
-Build and run the executable with:
-
-```bash
-$ gfortran -fbackslash -o unicode unicode.f90
-$ ./unicode
-Unicode character: ☻
-```
-
-The -fbackslash compiler flag is required for escaped Unicode
-characters. Otherwise, the type conversion has to be done manually using
-BOZ literals, for instance:
-```text
-str = ucs4_'Unicode character: ' // char(int(z'263B'), kind=ucs4)
-```
-
-Or, simply by using the decimal value of the character code point, without BOZ literal:
-
-```text
-str = ucs4_'Unicode character: ' // char(9787, kind=ucs2)
-```
 ## See Also
 
  + [https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949](https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949)
@@ -168,9 +99,3 @@ str = ucs4_'Unicode character: ' // char(9787, kind=ucs2)
 -->
 
  Other languages, such as the Python encode() and decode() procedures, supply related functionality.
-
-```bash
-# extract discourse as text
-lynx --dump https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949
-lynx --dump https://fortran-lang.discourse.group/t/using-unicode-characters-in-fortran/2764
-```

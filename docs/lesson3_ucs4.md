@@ -1,6 +1,6 @@
 ## Introduction to Fortran Unicode support
-### Lesson III: mixing ASCII and UCS4 kinds as regards assignments,
-### concatenation, passing arguments to external ASCII libraries, and I/O argument lists
+### Lesson III: mixing ASCII and UCS4 kinds as regards concatenation, assignments,
+### passing arguments to external ASCII libraries, and I/O argument lists
 
 ** WIP!**
 
