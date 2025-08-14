@@ -15,8 +15,8 @@ integer                       :: i
 integer                       :: iostat
 !------
 ! NOTE: this character variable is the Unicode kind, not ASCII
-character(len=4096,kind=ucs4) :: uline ! specifies maximum line length of 4096 bytes,
-                                       ! which might be as few as 1024 (ie. 4096/4) glyphs
+character(len=1024,kind=ucs4) :: uline ! specifies maximum line length of 1024 glyphs
+                                       ! which would be 4*1024 bytes
 !------
 character(len=255)            :: iomsg
 
