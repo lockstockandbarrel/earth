@@ -70,7 +70,7 @@ are 1-byte.
 Many useful programs can adhere to these restrictions.
 
 A simplistic example that reads a UTF-8 file with lines up to 4096
-bytes and outputs the file prefixing each line with a glyph/character
+glyphs and outputs the file prefixing each line with a glyph/character
 count demonstrates that very little differs from a similar program which
 processes ASCII files:
 
@@ -92,8 +92,7 @@ integer                       :: i
 integer                       :: iostat
 !------
 ! NOTE: this character variable is the Unicode kind, not ASCII
-character(len=4096,kind=ucs4) :: uline ! specifies maximum line length of 4096 bytes,
-                                       ! which might be as few as 1024 (ie. 4096/4) glyphs
+character(len=4096,kind=ucs4) :: uline ! specifies maximum line length of 4096 glyphs not bytes
 !------
 character(len=255)            :: iomsg
 

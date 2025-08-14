@@ -5,14 +5,13 @@ implicit none
 intrinsic selected_char_kind
 intrinsic is_iostat_end
 intrinsic len_trim
-integer, parameter                     :: ucs4 = selected_char_kind ('ISO_10646')
-character(len=*),parameter             :: g= '(*(g0))'
-integer                                :: length
-integer                                :: i
-integer                                :: iostat
-character(len=4096,kind=ucs4)          :: uline ! specifies maximum line length of 4096 bytes,
-                                                ! which might be as few as 1024 (ie. 4096/4) glyphs
-character(len=255)                     :: iomsg
+integer, parameter            :: ucs4 = selected_char_kind ('ISO_10646')
+character(len=*),parameter    :: g= '(*(g0))'
+integer                       :: length
+integer                       :: i
+integer                       :: iostat
+character(len=4096,kind=ucs4) :: uline ! specifies maximum line length of 4096 glyphs not bytes
+character(len=255)            :: iomsg
 
    open (input_unit, encoding='UTF-8')
    open (output_unit, encoding='UTF-8')
