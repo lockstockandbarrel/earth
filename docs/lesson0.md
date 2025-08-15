@@ -30,8 +30,8 @@ starting the Wiki entries would be premature.
 
 ### off the beaten path:
    + Lesson I: UTF-8 source files -- just in comments and constants
-   + [**Lesson II:**](backslash_ucs4.md) the backslash escape code extension
-   + Lesson III: embedding BOM characters at the beginning of files
+   + [**Lesson II:**](backslash_ext.md) the backslash escape code extension
+   + [**Lesson III:**](bom_ext.md) embedding BOM characters at the beginning of files
 
 ### Processing Unicode when ISO-10646 is not supported by a compiler
    + Lesson I: converting UTF-8 codes to and from INTEGER values

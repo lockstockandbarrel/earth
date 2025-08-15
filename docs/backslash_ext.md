@@ -1,0 +1,60 @@
+## backslash extension
+
+A common Fortran extension is to support Unicode escape sequences which
+specify characters by their hexadecimal code points.  This allows for
+building ucs4 strings more easily than using BOZ literals and the CHAR()
+function. Usually the form is
+
+    \xnn: Unicode character with 8-bit hexadecimal code nn
+    \unnnn: Unicode character with 16-bit hexadecimal code nnnn
+    \Unnnnnnnn: Unicode character with 32-bit hexadecimal code nnnnnnnn 
+
+To enable this generally requires a compiler switch such as -fbackslash
+or -Mbackslash. Without this option, backslashes within string literals
+are probably treated as literal backslash characters. In at least one
+case the default is to enable backslash escape sequences and a switch
+is required to cause standard-conforming behavior. Other C-style escape
+sequences such as "\n" for a newline and "\t" or a tab character are
+also typically supported.
+
+The following example prints the Unicode symbol ☻ (black smiling face)
+of code point U+263B. The compiled binary must be executed in a terminal
+with Unicode support, like XTerm or sakura.
+
+```fortran
+program backslash_escape 
+use,intrinsic :: iso_fortran_env, only: output_unit
+implicit none
+integer,parameter :: ucs4 = selected_char_kind('ISO_10646')
+character(kind=ucs4,len=:),allocatable :: str
+
+   ! EXTENSION:
+   str = ucs4_'Unicode character: \u263B'
+
+   open (output_unit, encoding='utf-8')
+   print '(a)', str
+   print '(a)', ucs4_'Unicode character: \U0000263B'
+end program backslash_escape 
+```
+
+When using gfortran(1) build and run the executable with:
+```bash
+$ gfortran -fbackslash -o unicode unicode.f90
+$ ./unicode
+Unicode character: ☻
+```
+
+This is equivalent to BOZ literals, for instance:
+```text
+str = ucs4_'Unicode character: ' // char(int(z'263B'), kind=ucs4)
+```
+Or, simply by using the decimal character code point:
+
+```text
+str = ucs4_'Unicode character: ' // char(9787,ucs4)
+
+Since these strings require an extension and may require specific compiler
+options using a standard method is preferred but it is important to be
+aware that code might be using C-like escape sequences, as building
+such code without the extension active can produce incorrect strings
+that can initially go unnoticed.
