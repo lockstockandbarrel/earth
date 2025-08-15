@@ -32,7 +32,12 @@ integer, parameter :: ucs4  =   selected_char_kind ('ISO_10646')
 
    write(*,*)'with encoding="ASCII"'
    open(output_unit,encoding='ascii',iostat=iostat)
+   write(*,*)'ADE:'
    write(*,'(10(i3,1x,a,1x))')(i,i,i=0,255)
+   write(*,*)'CHAR():'
+   write(*,'(10(i3,1x,a,1x))')(i,char(i),i=0,255)
+   write(*,*)'ACHAR():'
+   write(*,'(10(i3,1x,a,1x))')(i,achar(i),i=0,255)
 
    write(*,*)'UCS-4 with encoding="UTF-8"'
    open(output_unit,encoding='utf-8',iostat=iostat)

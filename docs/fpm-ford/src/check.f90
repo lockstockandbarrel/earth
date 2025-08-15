@@ -17,7 +17,7 @@ character(len=:),allocatable           :: astr
 integer                                :: total
 integer                                :: err
 
-! OUTPUT:七転び八起き。転んでもまた立ち上がる。くじけずに前を向いて歩いていこう。 
+! OUTPUT:七転び八起き。転んでもまた立ち上がる。くじけずに前を向いて歩いていこう。
  character(len=*,kind=ucs4),parameter :: boz= &
  char(int(z'4E03'),kind=ucs4)// char(int(z'8EE2'),kind=ucs4)// char(int(z'3073'),kind=ucs4)// &
  char(int(z'516B'),kind=ucs4)// char(int(z'8D77'),kind=ucs4)// char(int(z'304D'),kind=ucs4)// &
@@ -31,7 +31,7 @@ integer                                :: err
  char(int(z'3044'),kind=ucs4)// char(int(z'3066'),kind=ucs4)// char(int(z'6B69'),kind=ucs4)// &
  char(int(z'3044'),kind=ucs4)// char(int(z'3066'),kind=ucs4)// char(int(z'3044'),kind=ucs4)// &
  char(int(z'3053'),kind=ucs4)// char(int(z'3046'),kind=ucs4)// char(int(z'3002'),kind=ucs4)
-   
+
    total = 0
 
    write(*,*)'## utf8_to_ucs4'
@@ -68,7 +68,9 @@ integer                                :: err
       write(*,*)total,'failures'
       stop 1
    endif
+
 contains
+
 subroutine checkit(label,test)
 character(len=*),intent(in) :: label
 logical,intent(in)          :: test
@@ -77,4 +79,3 @@ logical,intent(in)          :: test
 end subroutine checkit
 
 end program check
-
