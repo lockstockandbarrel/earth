@@ -162,5 +162,5 @@ Nanakorobi yaoki. Koronde mo mata tachiagaru. Kujikezu ni mae o muite aruite iko
 Even if you fall down, you will get up again.
 Don't be discouraged, just keep walking forward."
 
-+ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
++ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
 + [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson2_ucs4.md)

@@ -1,3 +1,5 @@
+### off the beaten path:
+## Lesson III: embedding BOM characters at the beginning of files
 ## Byte Order Mark (BOM):
 
 ## Background
@@ -5,9 +7,10 @@
 At its simplest, Unicode basically assigns a unique integer code to
 each glyph or character. Basically ASCII files are just that -- composed
 of one-byte unsigned integer values. But this limits you to 255 characters.
+Unicode codes go far beyond 255.
 
 So the ISO/IEC-10646 specification defines several ways of encoding
-Unicode characters as computer bytes (ie., UTF-8, UTF-2/UTF-16, and
+each Unicode character as a set of computer bytes (ie., UTF-8, UTF-2/UTF-16, and
 UCS-4/UTF-32).  Each method has pros and cons, primarily being trade-offs
 between the amount of data required versus how simply or efficiently the
 data can be processed; but including other factors such as how well it
@@ -34,8 +37,8 @@ If a BOM is absent, one can attempt to decode the file using each encoding
 and check for validity. For instance, a sequence of bytes that is valid
 UTF-8 might be invalid or produce nonsensical characters when interpreted
 as UTF-16 or UTF-32. Because of Unicodes' design this can be done with a
-high degree of reliability, decreasing the need for the "Unicode Signature"
-defined by the magic string of bytes placed at the beginning of the file.
+high degree of reliability, decreasing the need for the BOM "Unicode Signature"
+defined by the "magic string" of bytes placed at the beginning of the file.
 
 In practice UTF-8 has many advantages over the other encodings when
 used for file data. It is not effected by endianness, contains
@@ -53,17 +56,18 @@ So UTF-8 has become so dominant as the Unicode file encoding scheme the
 use of a BOM character is no longer even recommended unless required
 to work properly with particular applications. Even
 when a file is started with encoding='UTF-8', a Byte Order Mark (BOM)
-is not generated automatically by any current Fortran compiler.
+is not generated automatically by any (current) Fortran compiler.
 
-Note BOM characters are found most often in MicroSoft Windows environments
-than others.  The BOM character as a magic number was used in virtually
-all Unicode files initially, partly because Microsoft supported multiple
-Unicode text file formats early on, before UTF-8 was seen as the de-facto
-text file encoding.
+BOM characters are found most often in MicroSoft Windows environments.
+The BOM character as a "magic string" was used in virtually all Unicode
+files on MSWindows when initially introduces, partly because Microsoft
+supported multiple Unicode text file formats early on, before UTF-8 was
+seen as the de-facto text file encoding.
 
-If the BOM appears in the middle of a
-data stream. Unicode says it should be interpreted as a normal
-codepoint (namely a word joiner), not as a BOM.
+Note to qualify as a BOM the string must appear at the beginning of
+the file, not the middle of a data stream. Unicode says it should be
+interpreted as a normal codepoint (namely a word joiner), not as a BOM
+if it does not appear first.
 
 ### BOM as it applies to Fortran source files
 
@@ -86,8 +90,6 @@ compiler has an extension where it formally supports UTF-8 source files,
 which are supposed to require with a BOM character to distinguish them
 from ASCII files.
 
-## BOM as it regards Fortran source files
-
 Determining whether a text is encoded in UTF-8, UTF-16, or UTF-32,
 especially without explicit metadata, often relies on analyzing the byte
 sequence for patterns specific to each encoding.
@@ -102,6 +104,7 @@ designed for extended ASCII. For instance many programming
 languages permit non-ASCII bytes in string literals but not
 at the start of the file.
 
+### prefix code with a BOM Unicode signature using bytes
 ```fortran
 program bom_exe
 !
@@ -122,7 +125,7 @@ character(len=*),parameter :: &
 
 end program bom_exe
 ```
-
+### prefix code with a BOM using standard ISO-10646
 ```fortran
 program bom_exe
 !
@@ -151,3 +154,6 @@ end program bom_exe
 See [Wikipedia](https://en.wikipedia.org/wiki/Byte_order_mark) for
 more information on the Unicode character code, U+FEFF 
 (aka. ZERO WIDTH NO-BREAK SPACE), 
+
++ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
++ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/backslash_ext.md)

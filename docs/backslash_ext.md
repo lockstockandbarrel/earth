@@ -1,4 +1,6 @@
-## backslash extension
+
+### off the beaten path:
+## Lesson II: backslash extension
 
 A common Fortran extension is to support Unicode escape sequences which
 specify characters by their hexadecimal code points.  This allows for
@@ -58,3 +60,8 @@ options using a standard method is preferred but it is important to be
 aware that code might be using C-like escape sequences, as building
 such code without the extension active can produce incorrect strings
 that can initially go unnoticed.
+
++ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
++ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/aaaaa.md)
++ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/bom_ext.md)
+

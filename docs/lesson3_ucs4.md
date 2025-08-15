@@ -187,5 +187,6 @@ character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) !
 
 end program assignment
 ```
++ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
 + [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson2_ucs4.md)
 + [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson4_ucs4.md)
