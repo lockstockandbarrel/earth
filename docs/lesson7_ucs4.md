@@ -1,0 +1,115 @@
+## Introduction to Fortran Unicode support
+### **Lesson VII:** passing Unicode strings to and from C
+
+# WIP (Work in Progress) -- this is a placeholder
+
+Passing Unicode strings from Fortran to C involves careful handling of
+character encoding and memory management due to the differences in how
+Fortran and C handle strings.
+
+### Encoding Considerations:
+
+Fortran character variables can be declared with
+selected_char_kind('ISO_10646') to explicitly indicate a Unicode encoding
+(typically UTF-32, depending on the compiler and system).
+
+### C Unicode Handling:
+.
+C can handle Unicode through wchar_t for wide characters or by treating
+UTF-8 encoded strings as arrays of char. The <uchar.h> header and
+functions like mbrtoc32 or c32rtomb can be used for conversion between
+encodings if necessary.
+
+### Passing the String Data:
+
+#### Using iso_c_binding:
+
+The iso_c_binding module in Fortran is crucial for interoperability. It
+provides types like c_char and c_ptr and functions like c_loc for
+obtaining C-compatible pointers.  Character Array and Length:
+
+The most common approach is to pass the Fortran character variable as a
+c_ptr (pointing to the beginning of the character data) and also pass
+its length as an integer(c_int) to the C function. This allows the C
+function to know the exact length of the string, which is essential for
+handling non-null-terminated Fortran strings.
+
+#### Null Termination (Optional but Recommended for C):
+.
+If the C function expects a null-terminated string, the Fortran code can
+explicitly add a null terminator (char(0)) at the end of the character
+array before passing it to C. However, ensure sufficient memory is
+allocated in Fortran to accommodate the null terminator.
+
+
+### Example Structure (Conceptual):
+
+Fortran Side:
+
+```fortran
+module my_fortran_module
+    use iso_c_binding
+    implicit none
+
+    interface
+        subroutine process_unicode_string(c_string_ptr, string_length) &
+	& bind(C, name='process_unicode_string')
+            import c_ptr, c_int
+            type(c_ptr), intent(in), value :: c_string_ptr
+            integer(c_int), intent(in), value :: string_length
+        end subroutine process_unicode_string
+    end interface
+
+contains
+
+    subroutine send_unicode_to_c()
+        character(len=20, kind=selected_char_kind('ISO_10646')) :: unicode_str
+        integer(c_int) :: str_len
+
+        unicode_str = 'Hello, Unicode!😊'
+        str_len = len(unicode_str, kind=c_int)
+
+        call process_unicode_string(c_loc(unicode_str), str_len)
+    end subroutine send_unicode_to_c
+
+end module my_fortran_module
+```
+C Side:
+
+```C
+#include <stdio.h>
+#include <string.h> // For strlen if you add null termination
+
+// Function signature must match Fortran's bind(C)
+void process_unicode_string(char *c_string_ptr, int string_length) {
+    // Treat c_string_ptr as a pointer to a sequence of bytes representing the Unicode string
+    // string_length provides the length of the string in bytes
+
+    // Example: Print the string (assuming UTF-8)
+    printf("Received Unicode string from Fortran: %.*s\n", string_length, c_string_ptr);
+
+    // If Fortran adds a null terminator, you could use strlen:
+    // printf("Received Unicode string from Fortran: %s\n", c_string_ptr);
+}
+```
+
+### Key Points:
+
+    **Memory Ownership**:
+
+    Decide whether Fortran or C is responsible for allocating and
+    deallocating the memory for the string. If Fortran allocates, C should
+    not free it. If C allocates (e.g., using malloc), C must free it.
+
+    **Character Kind**:
+
+    Using selected_char_kind('ISO_10646') in Fortran is crucial for
+    proper Unicode handling.
+
+    **Length Parameter**:
+
+    Always pass the string length explicitly, as Fortran strings are
+    not inherently null-terminated like C strings.
+
++ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
++ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson6_ucs4.md)

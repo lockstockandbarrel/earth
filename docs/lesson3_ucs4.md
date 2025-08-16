@@ -72,7 +72,7 @@ character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) !
    a1='ascii strings' // 'appended together'
    ! the ASCII string can be converted to UCS4 with an assign
    u2=a1 ! use allocation to convert ASCII to UCS4
-   ! now with a copy of everthing as UCS4 the append will work
+   ! now with a copy of everything as UCS4 the append will work
    uline=u1//u2 ! now append together the two strings which are now of the same kind
    write(stdout,'(a)') uline
    ! 

@@ -1,6 +1,5 @@
-
-### off the beaten path:
-## Lesson II: backslash extension
+## off the beaten path:
+### Lesson II: backslash extension
 
 A common Fortran extension is to support Unicode escape sequences which
 specify characters by their hexadecimal code points.  This allows for

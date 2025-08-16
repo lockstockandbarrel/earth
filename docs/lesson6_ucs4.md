@@ -100,3 +100,4 @@ Note that modules of related functions can be found at
 
 + [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
 + [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson5_ucs4.md)
++ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson7_ucs4.md)

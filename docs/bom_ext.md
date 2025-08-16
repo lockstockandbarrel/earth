@@ -1,8 +1,7 @@
-### off the beaten path:
-## Lesson III: embedding BOM characters at the beginning of files
-## Byte Order Mark (BOM):
+## off the beaten path:
+### Lesson III: embedding BOM characters at the beginning of files
 
-## Background
+## Byte Order Mark (BOM) Background :
 
 At its simplest, Unicode basically assigns a unique integer code to
 each glyph or character. Basically ASCII files are just that -- composed

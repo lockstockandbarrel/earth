@@ -26,10 +26,10 @@ starting the Wiki entries would be premature.
    + [**Lesson IV:**](lesson4_ucs4.md)what is and is not supported with internal READ and WRITE statements
    + [**Lesson V:**](lesson5_ucs.md)processing Unicode file names on OPEN() statements
    + [**Lesson VI:**](lesson6_ucs4.md) reading UTF-8 strings from command lines
-   + Lesson VII:  passing Unicode strings to and from C
+   + [**Lesson VII:**](lesson7_ucs4.md)  passing Unicode strings to and from C
 
 ### off the beaten path:
-   + Lesson I: UTF-8 source files -- just in comments and constants
+   + [**Lesson I:**](utf8_source_ext.md) UTF-8 source files -- just in comments and constants
    + [**Lesson II:**](backslash_ext.md) the backslash escape code extension
    + [**Lesson III:**](bom_ext.md) embedding BOM characters at the beginning of files
 
