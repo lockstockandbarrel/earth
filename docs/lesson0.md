@@ -34,11 +34,11 @@ starting the Wiki entries would be premature.
    + [**Lesson III:**](bom_ext.md) embedding BOM characters at the beginning of files
 
 ### Processing Unicode when ISO-10646 is not supported by a compiler
-   + Lesson I: converting UTF-8 codes to and from INTEGER values
-   + Lesson II: byte-oriented printing of 4-byte integers
-   + Lesson III: issues with terminal emulators, system locale settings, and
+   + [**Lesson I:**](toint.md) converting UTF-8 codes to and from INTEGER values
+   + [**Lesson II:**](printing.md) byte-oriented printing of integers as UTF-8 byte sequences
+   + [**Lesson III:**](locale.md) issues with terminal emulators, system locale settings, and
                   other Unicode-related issues
-   + Lesson IV: working with ASCII extended encodings; particularly those
+   + [**Lesson IV:**](latin.md) working with ASCII extended encodings; particularly those
                  commonly referred to as Extended, Latin, Latin1 and Latin2.
 
 ### The M_utf8 module
