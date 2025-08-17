@@ -1,7 +1,10 @@
 program asciiset
 use iso_fortran_env, only : stdout=>output_unit
-use M_utf8
-use odessa_unicode
+use M_utf8, only : utf8_to_ucs4, utf8_to_ucs4_via_io
+!utf8_to_ucs4,        ucs4_to_utf8
+!utf8_to_codepoints,  codepoints_to_utf8
+!utf8_to_ucs4_via_io, ucs4_to_utf8_via_io
+!ascii_to_ucs4,       ucs4_to_ascii
 implicit none
 
 intrinsic selected_char_kind
@@ -12,7 +15,6 @@ integer, parameter :: ucs4  =   selected_char_kind ('ISO_10646')
 
 character(len=:),allocatable           :: aline
 character(len=:,kind=ucs4),allocatable :: uline
-character(len=1),allocatable           :: ch(:)
 character(len=1,kind=ucs4),allocatable :: glyph(:)
 integer                                :: i
 integer                                :: nerr
@@ -38,15 +40,13 @@ integer                                :: nerr
       write(stdout,'(10(g0,1x,g0,1x))')(char(i),i=0,255)
       write(stdout,'(10(g0,1x,g0,1x))')(char(i,kind=ucs4),i=0,255)
       
-      write(stdout,'(a)') 'utf8_to_utf32:'
-      ch= [(char(i),i=0,255)]
-      call utf8_to_utf32(ch,glyph,nerr)
-      write(stdout,'(10(g0,1x,g0,1x))')glyph
+      aline=repeat(' ',256)
+      write(aline,'(256a1)') (char(i),i=0,255)
 
       write(stdout,'(a)') 'utf8_to_ucs4_via_io:'
-      write(stdout,'(10(g0,1x,g0,1x))')(utf8_to_ucs4_via_io(char(i)),i=0,255)
+      write(stdout,'(10(g0,1x,g0,1x))')utf8_to_ucs4_via_io(aline)
 
       write(stdout,'(a)') 'utf8_to_ucs4:'
-      write(stdout,'(10(g0,1x,g0,1x))')(utf8_to_ucs4(char(i)),i=0,255)
+      write(stdout,'(10(g0,1x,g0,1x))')utf8_to_ucs4(aline)
 
 end program asciiset

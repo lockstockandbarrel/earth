@@ -16,24 +16,25 @@ instead of as ASCII byte streams that contain UTF-8 constant strings, such
 as the procedures
 
 ### M_utf8 module
+
  + utf8_to_codepoints, codepoints_to_utf8
+
  + utf8_to_ucs4, ucs4_to_utf8
  + utf8_to_ucs4_via_io, ucs4_to_utf8_via_io
+
  + ascii_to_ucs4, ucs4_to_ascii
 
-### odessa_unicode module
-An alternate enhanced version from Francois Jacq, 2025-08
-presented in https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949, 2025-08.
-
- + utf8_to_unicode, unicode_to_utf8
- + utf8_to_utf32, utf32_to_utf8
  + isolatin_to_unicode, unicode_to_isolatin
  + utf8_to_isolatin, isolatin_to_utf8
  + isolatin_to_utf32, utf32_to_isolatin
 
-It includes improvements being backfitted into M_utf8 as well as
-handling ASCII encoding extensions often used for internationalization
-that pre-date Unicode.
+Initially based on a discussion begun in
+https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949, 2025-08;
+including features and enhancements from Francois Jacq.
+
+The improvements include procedures for handling ASCII encoding extensions
+often used for internationalization that pre-date Unicode, such as the
+Latin encoudings.
 
 ## Purpose
 

@@ -21,6 +21,7 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 # Define the library
 add_library(M_utf8 STATIC
     M_utf8.f90
+    M_unicode.f90
 )
 
 # Set output directory for the library to build/lib

@@ -9,8 +9,20 @@ integer code points.
 
 Fortran also lacks an intrinsic string type of variable length.
 
-This all points to creating a user-defined type that contains Unicode strings as an integer array, with functions similar to the Fortran CHARACTER
-intrinsics.
+This all points to creating a user-defined type that contains Unicode
+strings as an integer array, with functions similar to the Fortran
+CHARACTER intrinsics.
+
+## UTF-8 bytes to codes
+
+The first thing to do with the UTF-8 file is to convert it to Unicode
+code values; that is to find the integer value that identifies that glyph
+using Unicode encoding. We have placed procedures that do that conversion
+in M_unicode.f90:
+
+   + utf8_to_codepoints()
+   + codepoints_to_utf8()
+
 
 + [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
 + [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/aaaaa.md)
