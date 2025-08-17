@@ -62,6 +62,9 @@
                   <a class="nav-link" href="../lists/procedures.html">Procedures</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="../lists/programs.html">Programs</a>
                 </li>
             </ul>
@@ -88,20 +91,20 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 1.3% of total for procedures.">8 statements</a>
+                 title=" 2.9% of total for procedures.">8 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/odessa_unicode.f90"> Source File</a>
+              <a href="../src/M_unicode.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/odessa_unicode.f90.html'>odessa_unicode.f90</a></li>
-                <li class="breadcrumb-item"><a href='../module/odessa_unicode.html'>odessa_unicode</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/m_unicode.f90.html'>M_unicode.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/m_unicode.html'>M_unicode</a></li>
             <li class="breadcrumb-item active" aria-current="page">isolatin_to_utf8</li>
           </ol>
         </nav>
@@ -142,6 +145,12 @@
   
   
   
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/isolatin_to_utf8.html#src">isolatin_to_utf8</a>
+      </div>
+    </div>
 
 
   </div>
@@ -149,7 +158,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>public  subroutine isolatin_to_utf8(isolatin, utf8, nerr)  
+    <h2>public pure subroutine isolatin_to_utf8(isolatin, utf8, nerr)  
 </h2>
     
 
@@ -183,7 +192,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~5"></span>
+              <span class="anchor" id="variable-utf8~3"></span>
               character(len=1),
             </td>
 <td>intent(out),</td>
@@ -198,7 +207,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~7"></span>
+              <span class="anchor" id="variable-nerr~8"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -226,6 +235,22 @@
 
 
     
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="k">pure subroutine </span><span class="n">isolatin_to_utf8</span><span class="p">(</span><span class="n">isolatin</span><span class="p">,</span><span class="n">utf8</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
+<span class="kt">character</span><span class="w">            </span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">isolatin</span><span class="p">(:)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">,</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">utf8</span><span class="p">(:)</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">              </span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nerr</span><span class="w"></span>
+<span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unicode</span><span class="p">(:)</span><span class="w"></span>
+
+<span class="w">   </span><span class="k">call </span><span class="n">isolatin_to_unicode</span><span class="p">(</span><span class="n">isolatin</span><span class="p">,</span><span class="n">unicode</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">call </span><span class="n">codepoints_to_utf8</span><span class="p">(</span><span class="n">unicode</span><span class="p">,</span><span class="n">utf8</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
+
+<span class="k">end subroutine </span><span class="n">isolatin_to_utf8</span><span class="w"></span>
+</pre></div>
+
+    </section>
+    <br>
     
     </div>
   </div>
@@ -245,7 +270,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-16 22:20 +0000             </p>
+ on 2025-08-17 08:37 +0000             </p>
           </div>
         </div>
         <br>

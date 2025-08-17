@@ -10,7 +10,7 @@
     <meta name="author" content="John S. Urban" >
     <link rel="icon" href="../favicon.png">
 
-    <title>odessa_unicode &ndash; M_time</title>
+    <title>M_unicode &ndash; M_time</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -62,6 +62,9 @@
                   <a class="nav-link" href="../lists/procedures.html">Procedures</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="../lists/programs.html">Programs</a>
                 </li>
             </ul>
@@ -77,7 +80,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>odessa_unicode
+    <h1>M_unicode
       <small>Module</small>
       
     </h1>
@@ -88,20 +91,20 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="58.6% of total for modules and submodules.">314 statements</a>
+                 title="79.5% of total for modules and submodules.">350 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/odessa_unicode.f90"> Source File</a>
+              <a href="../src/M_unicode.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/odessa_unicode.f90.html'>odessa_unicode.f90</a></li>
-            <li class="breadcrumb-item active" aria-current="page">odessa_unicode</li>
+                <li class="breadcrumb-item"><a href='../sourcefile/m_unicode.f90.html'>M_unicode.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">M_unicode</li>
           </ol>
         </nav>
       </div>
@@ -122,27 +125,43 @@
         <div id="sidebar">
       <h3>Contents</h3>
   
+  
+  
+  
+  
+  
+  
+  
       <div class="card mb-4">
-      <a data-bs-toggle="collapse" href="#vars-0"
-         aria-expanded="false" aria-controls="vars-0">
-         <h4 class="card-header bg-primary text-white">Variables</h4>
+      <a data-bs-toggle="collapse" href="#inters-0"
+         aria-expanded="false" aria-controls="inters-0">
+         <h4 class="card-header bg-primary text-white">Interfaces</h4>
       </a>
-      <div id="vars-0" class="collapse">
+      <div id="inters-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/odessa_unicode.html#variable-u32">u32</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-assignment%28%3D%29">assignment(=)</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-character">character</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-codepoints_to_utf8">codepoints_to_utf8</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-len">len</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-unicode_type">unicode_type</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-utf8_to_codepoints">utf8_to_codepoints</a>
         </div>
       </div>
     </div>
 
   
-  
-  
-  
-  
-  
-  
-  
-  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/m_unicode.html#type-unicode_type">unicode_type</a>
+        </div>
+      </div>
+    </div>
+
   
       <div class="card mb-4">
       <a data-bs-toggle="collapse" href="#subs-0"
@@ -151,16 +170,10 @@
       </a>
       <div id="subs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-isolatin_to_unicode">isolatin_to_unicode</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-isolatin_to_utf32">isolatin_to_utf32</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-isolatin_to_utf8">isolatin_to_utf8</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-unicode_to_isolatin">unicode_to_isolatin</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-unicode_to_utf8">unicode_to_utf8</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-utf32_to_isolatin">utf32_to_isolatin</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-utf32_to_utf8">utf32_to_utf8</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-utf8_to_isolatin">utf8_to_isolatin</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-utf8_to_unicode">utf8_to_unicode</a>
-            <a class="list-group-item" href="../module/odessa_unicode.html#proc-utf8_to_utf32">utf8_to_utf32</a>
+            <a class="list-group-item" href="../module/m_unicode.html#proc-isolatin_to_unicode">isolatin_to_unicode</a>
+            <a class="list-group-item" href="../module/m_unicode.html#proc-isolatin_to_utf8">isolatin_to_utf8</a>
+            <a class="list-group-item" href="../module/m_unicode.html#proc-unicode_to_isolatin">unicode_to_isolatin</a>
+            <a class="list-group-item" href="../module/m_unicode.html#proc-utf8_to_isolatin">utf8_to_isolatin</a>
         </div>
       </div>
     </div>
@@ -185,31 +198,61 @@
       <br>
 
 
+
+
         <section>
-          <h2>Variables</h2>
-            <table class="table table-striped varlist">
+          <h2>Interfaces</h2>
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-assignment%28%3D%29"></span>
+      <h3>public        interface <a href='../interface/assignment(=).html'>assignment(=)</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental subroutine assign_string_char(lhs, rhs)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
     <thead>
       <tr>
         <th scope="col">Type</th>
-<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
         <th scope="col"></th>
         <th scope="col">Name</th>
-<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-u32"></span>
-              integer,
+              <span class="anchor" id="variable-lhs"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
             </td>
-              <td>public,</td>
-            <td>
-parameter               
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
             </td>
             <td>::</td>
-            <td><strong>u32</strong></td>
-<td> =</td>
-                <td>selected_char_kind(&#39;ISO_10646&#39;)</td>
+            <td><strong>lhs</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rhs"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>rhs</strong></td>
             <td>
                 
             </td>
@@ -217,18 +260,588 @@ parameter
     </tbody>
   </table>
 
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-character"></span>
+      <h3>public        interface <a href='../interface/character.html'>character</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private pure function char_string(string) result(aline)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~9"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+          </li>
+          <li class="list-group-item">
+                <h3>
+    private pure function char_string_range(string, first, last) result(aline)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~10"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-first"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>first</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>last</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-codepoints_to_utf8"></span>
+      <h3>public        interface <a href='../interface/codepoints_to_utf8.html'>codepoints_to_utf8</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private pure subroutine codepoints_to_utf8_string(unicode, utf8, nerr)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-unicode~7"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>unicode</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-utf8~5"></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>utf8</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nerr~10"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nerr</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+          <li class="list-group-item">
+                <h3>
+    private pure subroutine codepoints_to_utf8_chars(unicode, utf8, nerr)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-unicode"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>unicode</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-utf8"></span>
+              character(len=1),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>utf8</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nerr~4"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nerr</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-len"></span>
+      <h3>public        interface <a href='../interface/len.html'>len</a> 
+      </h3>
+    </div>
+      <div class="card-body">
+        <p>Return length of the character sequence in glyphs 
+This method is elemental as each string element can have a different length ; returns a default integer scalar value.</p>
+      </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental function len_string(string) result(length)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~8"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-unicode_type"></span>
+      <h3>public        interface <a href='../interface/unicode_type.html'>unicode_type</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental module function new_string(string) result(new)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~4"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/unicode_type.html'>unicode_type</a>)</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-utf8_to_codepoints"></span>
+      <h3>public        interface <a href='../interface/utf8_to_codepoints.html'>utf8_to_codepoints</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private pure subroutine utf8_to_codepoints_string(utf8, unicode, nerr)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-utf8~6"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>utf8</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-unicode~8"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>unicode</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nerr~11"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nerr</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+          <li class="list-group-item">
+                <h3>
+    private pure subroutine utf8_to_codepoints_chars(utf8, unicode, nerr)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-utf8~2"></span>
+              character(len=1),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>utf8</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-unicode~2"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>unicode</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nerr~5"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nerr</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+    </ul>
+  </div>
+
         </section>
         <br>
 
 
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-unicode_type"></span>
+      <h3>
+        type, public, sequence &nbsp;::&nbsp;
+        <a href='../type/unicode_type.html'>unicode_type</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      
 
 
+        <h4>Constructor</h4>
+          
+        <table class="table table-striped varlist">
+          <tbody>
+                <tr>
+                  <td>
+                        private
+
+                    elemental, module
+                    function
+                    <strong>new_string</strong>
+                    (string)
+                  </td>
+                  <td></td>
+                </tr>
+          </tbody>
+        </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
 
 
         <section>
           <h2>Subroutines</h2>
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-isolatin_to_unicode"></span> <h3>public  subroutine <a href='../proc/isolatin_to_unicode.html'>isolatin_to_unicode</a>(isolatin, unicode, nerr)  
+    <div class="card-header codesum"><span class="anchor" id="proc-isolatin_to_unicode"></span> <h3>public pure subroutine <a href='../proc/isolatin_to_unicode.html'>isolatin_to_unicode</a>(isolatin, unicode, nerr)  
 </h3></div>
     <div class="card-body">
           
@@ -262,7 +875,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-unicode~5"></span>
+              <span class="anchor" id="variable-unicode~3"></span>
               integer,
             </td>
 <td>intent(out),</td>
@@ -277,7 +890,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~5"></span>
+              <span class="anchor" id="variable-nerr~6"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -298,77 +911,7 @@ parameter
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-isolatin_to_utf32"></span> <h3>public  subroutine <a href='../proc/isolatin_to_utf32.html'>isolatin_to_utf32</a>(isolatin, utf32, nerr)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-isolatin~5"></span>
-              character(len=1),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>isolatin</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf32~3"></span>
-              character(kind=u32, len=1),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>utf32</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-nerr~9"></span>
-              integer,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>nerr</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-isolatin_to_utf8"></span> <h3>public  subroutine <a href='../proc/isolatin_to_utf8.html'>isolatin_to_utf8</a>(isolatin, utf8, nerr)  
+    <div class="card-header codesum"><span class="anchor" id="proc-isolatin_to_utf8"></span> <h3>public pure subroutine <a href='../proc/isolatin_to_utf8.html'>isolatin_to_utf8</a>(isolatin, utf8, nerr)  
 </h3></div>
     <div class="card-body">
           
@@ -402,7 +945,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~5"></span>
+              <span class="anchor" id="variable-utf8~3"></span>
               character(len=1),
             </td>
 <td>intent(out),</td>
@@ -417,7 +960,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~7"></span>
+              <span class="anchor" id="variable-nerr~8"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -438,7 +981,7 @@ parameter
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-unicode_to_isolatin"></span> <h3>public  subroutine <a href='../proc/unicode_to_isolatin.html'>unicode_to_isolatin</a>(unicode, isolatin, nerr)  
+    <div class="card-header codesum"><span class="anchor" id="proc-unicode_to_isolatin"></span> <h3>public pure subroutine <a href='../proc/unicode_to_isolatin.html'>unicode_to_isolatin</a>(unicode, isolatin, nerr)  
 </h3></div>
     <div class="card-body">
           
@@ -457,7 +1000,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-unicode~6"></span>
+              <span class="anchor" id="variable-unicode~4"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -487,7 +1030,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~6"></span>
+              <span class="anchor" id="variable-nerr~7"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -508,7 +1051,7 @@ parameter
   </div>
 
               <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-unicode_to_utf8"></span> <h3>public  subroutine <a href='../proc/unicode_to_utf8.html'>unicode_to_utf8</a>(unicode, utf8, nerr)  
+    <div class="card-header codesum"><span class="anchor" id="proc-utf8_to_isolatin"></span> <h3>public pure subroutine <a href='../proc/utf8_to_isolatin.html'>utf8_to_isolatin</a>(utf8, isolatin, nerr)  
 </h3></div>
     <div class="card-body">
           
@@ -525,219 +1068,9 @@ parameter
         <th scope="col"></th>
     </thead>
     <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-unicode"></span>
-              integer,
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>unicode</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf8"></span>
-              character(len=1),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>utf8</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-nerr"></span>
-              integer,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>nerr</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-utf32_to_isolatin"></span> <h3>public  subroutine <a href='../proc/utf32_to_isolatin.html'>utf32_to_isolatin</a>(utf32, isolatin, nerr)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf32~4"></span>
-              character(kind=u32, len=1),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>utf32</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-isolatin~6"></span>
-              character(len=1),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>isolatin</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-nerr~10"></span>
-              integer,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>nerr</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-utf32_to_utf8"></span> <h3>public  subroutine <a href='../proc/utf32_to_utf8.html'>utf32_to_utf8</a>(utf32, utf8, nerr)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf32~2"></span>
-              character(kind=u32, len=1),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>utf32</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
         <tr>
             <td>
               <span class="anchor" id="variable-utf8~4"></span>
-              character(len=1),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>utf8</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-nerr~4"></span>
-              integer,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>nerr</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-utf8_to_isolatin"></span> <h3>public  subroutine <a href='../proc/utf8_to_isolatin.html'>utf8_to_isolatin</a>(utf8, isolatin, nerr)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf8~6"></span>
               character(len=1),
             </td>
 <td>intent(in)</td>
@@ -767,147 +1100,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~8"></span>
-              integer,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>nerr</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-utf8_to_unicode"></span> <h3>public  subroutine <a href='../proc/utf8_to_unicode.html'>utf8_to_unicode</a>(utf8, unicode, nerr)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf8~2"></span>
-              character(len=1),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>utf8</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-unicode~2"></span>
-              integer,
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>unicode</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-nerr~2"></span>
-              integer,
-            </td>
-<td>intent(out)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>nerr</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-    </div>
-  </div>
-
-              <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-utf8_to_utf32"></span> <h3>public  subroutine <a href='../proc/utf8_to_utf32.html'>utf8_to_utf32</a>(utf8, utf32, nerr)  
-</h3></div>
-    <div class="card-body">
-          
-  
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf8~3"></span>
-              character(len=1),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>utf8</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-utf32"></span>
-              character(kind=u32, len=1),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>utf32</strong>(:)</td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-nerr~3"></span>
+              <span class="anchor" id="variable-nerr~9"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -950,7 +1143,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-16 22:20 +0000             </p>
+ on 2025-08-17 08:37 +0000             </p>
           </div>
         </div>
         <br>
