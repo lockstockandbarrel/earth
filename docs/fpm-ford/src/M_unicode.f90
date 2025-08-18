@@ -33,14 +33,20 @@ end type unicode_type
 interface unicode_type
    elemental module function new_string(string) result(new)
       character(len=*), intent(in), optional :: string
-      type(unicode_type) :: new
+      type(unicode_type)                     :: new
    end function new_string
+
+   module function new_codes(codes) result(new)
+      integer, intent(in)                    :: codes(:)
+      type(unicode_type)                     :: new
+   end function new_codes
 
 end interface unicode_type        
 
 ! Assign a character sequence to a string.
 interface assignment(=)
    module procedure :: assign_string_char
+   module procedure :: assign_string_codes
 end interface assignment(=)
 
 !> Return length of the character sequence in glyphs 
@@ -55,6 +61,29 @@ interface character
    module procedure :: char_string_range
 end interface character
 public :: character
+
+interface range
+   module procedure :: string_range
+end interface range
+public :: range
+
+interface repeat
+   module procedure :: repeat_string
+end interface repeat
+public :: repeat
+
+! Returns length of character sequence without trailing spaces represented by the string.
+!
+! This method is elemental and returns a default integer scalar value.
+interface len_trim
+   module procedure :: len_trim_string
+end interface len_trim
+public :: len_trim
+
+interface trim
+   module procedure :: trim_string
+end interface trim
+public :: trim
 
 contains
 !===================================================================================================================================
@@ -408,6 +437,13 @@ integer                                :: nerr
    endif
 end function new_string
 !===================================================================================================================================
+! Constructor for new string instance from a vector integer value.
+module function new_codes(codes) result(new)
+integer,intent(in) :: codes(:)
+type(unicode_type) :: new
+   new%codes=codes
+end function new_codes
+!===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! Assign a character sequence to a string.
@@ -417,6 +453,14 @@ character(len=*), intent(in)      :: rhs
 integer                           :: nerr
    call utf8_to_codepoints_string(rhs,lhs%codes,nerr)
 end subroutine assign_string_char
+!===================================================================================================================================
+! Assign a character sequence to a string.
+subroutine assign_string_codes(lhs, rhs)
+type(unicode_type), intent(inout) :: lhs
+integer, intent(in)               :: rhs(:)
+integer                           :: nerr
+   lhs%codes=rhs
+end subroutine assign_string_codes
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -460,6 +504,127 @@ integer                        :: nerr
    call codepoints_to_utf8_string(string%codes(first:last),aline,nerr)
 
 end function char_string_range
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Return the character sequence represented by the string.
+pure function string_range(string, first, last) result(uline)
+type(unicode_type), intent(in) :: string
+integer, intent(in)            :: first
+integer, intent(in)            :: last
+type(unicode_type)             :: uline
+integer                        :: nerr
+
+   uline%codes = string%codes(first:last)
+
+end function string_range
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Repeats the character sequence held by the string by the number of specified copies.
+! This method is elemental and returns a scalar character value.
+elemental function repeat_string(string, ncopies) result(repeated_string)
+type(unicode_type), intent(in) :: string
+integer, intent(in)            :: ncopies
+type(unicode_type)             :: repeated_string
+integer                        :: i
+
+   repeated_string%codes=[(string%codes,i=1,ncopies)]
+
+end function repeat_string
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Returns length of character sequence without trailing spaces represented by the string.
+!
+! space U+0020 32 Common Basic Latin Separator, Most common (normal
+! ASCII space)
+! 
+! no-break space U+00A0 160 Common Latin-1 Supplement Separator,
+! Non-breaking space: identical to U+0020, but not a point at which a line
+! may be broken.
+! 
+! en quad U+2000 8192 General Punctuation Separator, Width of one en. U+2002
+! is canonically equivalent to this character; U+2002 is preferred.
+! 
+! em quad U+2001 8193   Common General Punctuation Separator,
+! Also known as "mutton quad". Width of one em. U+2003 is
+! canonically equivalent to this character; U+2003 is preferred.
+! 
+! en space U+2002 8194   Common General Punctuation Separator,
+! space Also known as "nut". Width of one en. U+2000 En Quad is
+! canonically equivalent to this character; U+2002 is preferred.
+! 
+! em space U+2003 8195  Common General Punctuation Separator,
+! space Also known as "mutton". Width of one em. U+2001 Em Quad is
+! canonically equivalent to this character; U+2003 is preferred.
+! 
+! three-per-em space U+2004 8196 Common General Punctuation Separator,
+! Also known as "thick space". One third of an em wide.
+! 
+! four-per-em space U+2005 8197 Common General Punctuation Separator,
+! space Also known as "mid space". One fourth of an em wide.
+! 
+! six-per-em space U+2006 8198 Common General Punctuation Separator,
+! space One sixth of an em wide. In computer typography, sometimes equated
+! to U+2009.
+! 
+! figure space U+2007 8199 Common General Punctuation Separator, In fonts
+! with monospaced digits, equal to the width of one digit.
+! 
+! punctuation space U+2008 8200 Common General Punctuation Separator,
+! As wide as the narrow punctuation in a font, i.e. the advance width of
+! the period or comma.
+! 
+! thin space U+2009 8201 Common General Punctuation Separator, one-fifth
+! (sometimes one-sixth) of an em wide.  Recommended for use as a thousands
+! separator for measures made with SI units. Unlike U+2002 to U+2008,
+! its width may get adjusted in typesetting.
+! 
+! hair space U+200A 8202 Common General Punctuation Separator, space
+! Thinner than a thin space.
+! 
+! narrow no-break space U+202F 8239 Common General Punctuation Separator,
+! Similar in function to U+00A0
+! 
+! No-Break Space. When used with Mongolian, its width is usually one third
+! of the normal space; in other context, its width sometimes resembles
+! that of the Thin Space (U+2009).
+! 
+! medium mathematical space U+205F 8287   Common General Punctuation
+! Separator, space MMSP. Used in mathematical formulae. Four-eighteenths
+! of an em. In mathematical typography, the widths of spaces are usually
+! given in integral multiples of an eighteenth of an em, and 4/18 em
+! may be used in several situations, for example between the a and the +
+! and between the + and the b in the expression a + b.
+! 
+! ideographic space U+3000 12288 　 Yes No Common CJK Symbols and
+! Punctuation Separator, As wide as a CJK character cell (fullwidth). Used,
+! for example, in tai tou.
+
+elemental function len_trim_string(string) result(length)
+type(unicode_type), intent(in) :: string
+integer                        :: length
+
+   do length=size(string%codes),1,-1
+      if(any(string%codes(length).eq.[ 32,160,8192,8193,8194,8195,8196,8197,8198,8199,8200,8201,8202,8239,8287,12288 ]))cycle
+      exit
+   enddo
+
+end function len_trim_string
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! This method is elemental and returns a scalar character value.
+elemental function trim_string(string) result(trimmed_string)
+type(unicode_type), intent(in) :: string
+type(unicode_type)             :: trimmed_string
+integer                        :: last
+
+   last=len_trim_string(string)
+   trimmed_string%codes=string%codes(:last)
+
+end function trim_string
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

@@ -91,7 +91,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="79.5% of total for modules and submodules.">350 statements</a>
+                 title="82.1% of total for modules and submodules.">412 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -143,6 +143,10 @@
             <a class="list-group-item" href="../module/m_unicode.html#interface-character">character</a>
             <a class="list-group-item" href="../module/m_unicode.html#interface-codepoints_to_utf8">codepoints_to_utf8</a>
             <a class="list-group-item" href="../module/m_unicode.html#interface-len">len</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-len_trim">len_trim</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-range">range</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-repeat">repeat</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-trim">trim</a>
             <a class="list-group-item" href="../module/m_unicode.html#interface-unicode_type">unicode_type</a>
             <a class="list-group-item" href="../module/m_unicode.html#interface-utf8_to_codepoints">utf8_to_codepoints</a>
         </div>
@@ -262,6 +266,59 @@
 
 
           </li>
+          <li class="list-group-item">
+                <h3>
+    private  subroutine assign_string_codes(lhs, rhs)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-lhs~2"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>lhs</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rhs~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>rhs</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
     </ul>
   </div>
 
@@ -292,7 +349,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-string~9"></span>
+              <span class="anchor" id="variable-string~13"></span>
               type(<a href='../type/unicode_type.html'>unicode_type</a>),
             </td>
 <td>intent(in)</td>
@@ -335,7 +392,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-string~10"></span>
+              <span class="anchor" id="variable-string~14"></span>
               type(<a href='../type/unicode_type.html'>unicode_type</a>),
             </td>
 <td>intent(in)</td>
@@ -433,7 +490,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~5"></span>
+              <span class="anchor" id="variable-utf8~6"></span>
               character(len=:),
             </td>
 <td>intent(out),</td>
@@ -501,7 +558,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8"></span>
+              <span class="anchor" id="variable-utf8~2"></span>
               character(len=1),
             </td>
 <td>intent(out),</td>
@@ -568,7 +625,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-string~8"></span>
+              <span class="anchor" id="variable-string~12"></span>
               type(<a href='../type/unicode_type.html'>unicode_type</a>),
             </td>
 <td>intent(in)</td>
@@ -596,11 +653,311 @@ This method is elemental as each string element can have a different length ; re
 
               <div class="card">
     <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-len_trim"></span>
+      <h3>public        interface <a href='../interface/len_trim.html'>len_trim</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental function len_trim_string(string) result(length)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~17"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-range"></span>
+      <h3>public        interface <a href='../interface/range.html'>range</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private pure function string_range(string, first, last) result(uline)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~15"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-first~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>first</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>last</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/unicode_type.html'>unicode_type</a>)</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-repeat"></span>
+      <h3>public        interface <a href='../interface/repeat.html'>repeat</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental function repeat_string(string, ncopies) result(repeated_string)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~16"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ncopies"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ncopies</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/unicode_type.html'>unicode_type</a>)</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-trim"></span>
+      <h3>public        interface <a href='../interface/trim.html'>trim</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental function trim_string(string) result(trimmed_string)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~18"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/unicode_type.html'>unicode_type</a>)</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
       <span class="anchor" id="interface-unicode_type"></span>
       <h3>public        interface <a href='../interface/unicode_type.html'>unicode_type</a> 
       </h3>
     </div>
     <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private module function new_codes(codes) result(new)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-codes~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>codes</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/unicode_type.html'>unicode_type</a>)</small>
+    </h4>
+    
+
+          </li>
           <li class="list-group-item">
                 <h3>
     private elemental module function new_string(string) result(new)  
@@ -621,7 +978,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-string~4"></span>
+              <span class="anchor" id="variable-string~8"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -674,7 +1031,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~6"></span>
+              <span class="anchor" id="variable-utf8~7"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -742,7 +1099,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~2"></span>
+              <span class="anchor" id="variable-utf8~3"></span>
               character(len=1),
             </td>
 <td>intent(in)</td>
@@ -816,6 +1173,17 @@ This method is elemental as each string element can have a different length ; re
           
         <table class="table table-striped varlist">
           <tbody>
+                <tr>
+                  <td>
+                        private
+
+                    module
+                    function
+                    <strong>new_codes</strong>
+                    (codes)
+                  </td>
+                  <td></td>
+                </tr>
                 <tr>
                   <td>
                         private
@@ -945,7 +1313,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~3"></span>
+              <span class="anchor" id="variable-utf8~4"></span>
               character(len=1),
             </td>
 <td>intent(out),</td>
@@ -1070,7 +1438,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~4"></span>
+              <span class="anchor" id="variable-utf8~5"></span>
               character(len=1),
             </td>
 <td>intent(in)</td>
@@ -1143,7 +1511,7 @@ This method is elemental as each string element can have a different length ; re
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-17 08:37 +0000             </p>
+ on 2025-08-18 13:02 +0000             </p>
           </div>
         </div>
         <br>
