@@ -4,6 +4,8 @@ use M_utf8, only : utf8_to_codepoints, utf8_to_ucs4, ucs4_to_utf8, utf8_to_ucs4_
 implicit none
 integer,parameter          :: ucs4 = selected_char_kind ('ISO_10646')
 integer,parameter          :: ascii = selected_char_kind ("ascii")
+character(len=*),parameter :: g0='(*(g0))'
+character(len=*),parameter :: gx='(*(g0,1x))'
 !
 character(len=*),parameter :: upagain="七転び八起き。転んでもまた立ち上がる。くじけずに前を向いて歩いていこう。"
 ! Romanization:
@@ -34,28 +36,29 @@ integer                                :: err
 
    total = 0
 
-   write(*,*)'## utf8_to_ucs4'
+   write(*,g0)'utf8_to_ucs4'
    ustr=utf8_to_ucs4(upagain)
 
-   write(*,*)'if file is not open for utf-8 encoding automatic conversion does not occur'
-   write(*,*)'utf8:',upagain  ! these are the bytes to represent the utf-8 characters
-   write(*,*)'ucs4:',ustr     ! this is 4-byte unicode that needs converted. Does it print as noise or all "?"?
-   write(*,*)
-   write(*,*)'encoding can be altered on an open file'
+   write(*,g0)'if file is not open for utf-8 encoding automatic conversion does not occur'
+   write(*,g0)'utf8:',upagain  ! these are the bytes to represent the utf-8 characters
+   write(*,g0)'ucs4:',ustr     ! this is 4-byte unicode that needs converted. Does it print as noise or all "?"?
+   write(*,g0)
+   write(*,g0)'encoding can be altered on an open file'
    open (output_unit, encoding='UTF-8')
-   write(*,*)'utf8:',upagain
-   write(*,*)'ucs4:',ustr     ! so this should get "automatically" printed properly now
-   write(*,*)
+   write(*,g0)'utf8:',upagain
+   write(*,g0)'ucs4:',ustr     ! so this should get "automatically" printed properly now
+   write(*,g0)
    stop=ustr(7:7)
    call checkit('check len() is 36 :',len(ustr) == 36)
    call checkit('check index       :',index(ustr,stop,kind=ucs4,back=.false.) == 7)
    call checkit('check index       :',index(ustr,stop,back=.true.,kind=ucs4) == len(ustr) )
    call checkit('storage_size      :',storage_size(ustr) == len(ustr)*4*8 )
 
-   write(*,*)'## ucs4_to_utf8'
-   write(*,*)
-   write(*,*)'converted by external routine:',ucs4_to_utf8(boz)     ! it is converted by the routine
-   write(*,*)'converted because file is encoded to utf-8:',boz                   ! converted by standard Fortran
+   write(*,g0)'## ucs4_to_utf8'
+   write(*,g0)
+   write(*,g0)'boz=',boz
+   write(*,g0)'converted by external routine:',ucs4_to_utf8(boz)     ! it is converted by the routine
+   write(*,g0)'converted because file is encoded to utf-8:',boz                   ! converted by standard Fortran
 
    ! standard method. Note ASCII one-byte characters become 4-byte characters, but multi-byte characters are not recognized
    ustr  = ucs4_'Hello World and Ni Hao -- ' &
@@ -65,7 +68,7 @@ integer                                :: err
    call checkit('convert to ASCII bytes representing utf8',astr == 'Hello World and Ni Hao -- 你好')
 
    if(total.ne.0)then
-      write(*,*)total,'failures'
+      write(*,g0)total,'failures'
       stop 1
    endif
 
@@ -74,7 +77,7 @@ contains
 subroutine checkit(label,test)
 character(len=*),intent(in) :: label
 logical,intent(in)          :: test
-   write(*,*)merge('PASSED','FAILED',test),' ',label
+   write(*,g0)merge('PASSED','FAILED',test),' ',label
    if(.not.test)total=total+1
 end subroutine checkit
 

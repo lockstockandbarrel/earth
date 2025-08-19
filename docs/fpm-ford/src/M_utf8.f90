@@ -5,14 +5,17 @@ use M_unicode, only : utf8_to_codepoints,  codepoints_to_utf8
 implicit none
 
 private
-public :: utf8_to_ucs4,        ucs4_to_utf8
-public :: utf8_to_ucs4_via_io, ucs4_to_utf8_via_io
-public :: ascii_to_ucs4,       ucs4_to_ascii
+public :: utf8_to_ucs4,            ucs4_to_utf8
+public :: utf8_to_ucs4_via_io,     ucs4_to_utf8_via_io
+public :: ascii_to_ucs4,           ucs4_to_ascii
+public :: extended_ascii_to_ucs4,  ucs4_to_extended_ascii
+
 ! imported from M_unicode
 public :: utf8_to_codepoints,  codepoints_to_utf8
 
 integer,parameter :: ucs4=selected_char_kind('ISO_10646') ! The compiler must support UCS-4 characters
 integer,parameter :: ascii=selected_char_kind('ascii') ! maybe should use default, as ASCII is technically 128, not 256 chars
+integer,parameter :: default=selected_char_kind('default') 
 
 contains
 
@@ -43,9 +46,15 @@ integer, intent(out),optional           :: err
 character(len=:),allocatable            :: string
 integer                                 :: codepoints(len(ucs4_string))
 integer                                 :: i
+integer                                 :: nerr
 
    codepoints=[(ichar(ucs4_string(i:i)),i=1,len(ucs4_string))]
-   call codepoints_to_utf8(codepoints,string,err)
+   call codepoints_to_utf8(codepoints,string,nerr)
+   if(present(err))then
+      err=nerr
+   elseif(nerr.ne.0)then
+      stop '<ERROR>*ucs4_to_utf8*'
+   endif
 
 end function ucs4_to_utf8
 
@@ -98,7 +107,7 @@ integer                                :: i
 end function ascii_to_ucs4
 
 function ucs4_to_ascii(ustr) result(astr)
-! @(#) make the same conversion as an assignment statement from UCS4 o ASCII
+! @(#) make the same conversion as an assignment statement from UCS4 to ASCII
 character(len=*,kind=ucs4),intent(in)  :: ustr
 character(len=len(ustr),kind=ascii)    :: astr
 integer                                :: i
@@ -106,5 +115,25 @@ integer                                :: i
       astr(i:i)=achar(iachar(ustr(i:i)),kind=ascii)
    enddo
 end function ucs4_to_ascii
+
+function extended_ascii_to_ucs4(astr) result(ustr)
+! @(#) make the conversion extended_ascii to UCS4
+character(len=*,kind=default),intent(in) :: astr
+character(len=len(astr),kind=ucs4)       :: ustr
+integer                                  :: i
+   do i=1,len(astr)
+      ustr(i:i)=char(ichar(astr(i:i)),kind=ucs4)
+   enddo
+end function extended_ascii_to_ucs4
+
+function ucs4_to_extended_ascii(ustr) result(astr)
+! @(#) make the conversion from UCS4 to extended_ascii
+character(len=*,kind=ucs4),intent(in)  :: ustr
+character(len=len(ustr),kind=default)  :: astr
+integer                                :: i
+   do i=1,len(ustr)
+      astr(i:i)=char(ichar(ustr(i:i)),kind=default)
+   enddo
+end function ucs4_to_extended_ascii
 
 end module M_utf8

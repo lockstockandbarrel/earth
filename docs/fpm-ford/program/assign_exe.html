@@ -90,7 +90,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 3.4% of total for programs.">31 statements</a>
+                 title=" 5.4% of total for programs.">50 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -131,13 +131,16 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/assign_exe.html#variable-aline">aline</a>
+            <a class="list-group-item" href="../program/assign_exe.html#variable-aline~6">aline</a>
             <a class="list-group-item" href="../program/assign_exe.html#variable-codes">codes</a>
-            <a class="list-group-item" href="../program/assign_exe.html#variable-g">g</a>
+            <a class="list-group-item" href="../program/assign_exe.html#variable-g~6">g</a>
             <a class="list-group-item" href="../program/assign_exe.html#variable-glyphs">glyphs</a>
-            <a class="list-group-item" href="../program/assign_exe.html#variable-smiley">smiley</a>
+            <a class="list-group-item" href="../program/assign_exe.html#variable-smiley~2">smiley</a>
             <a class="list-group-item" href="../program/assign_exe.html#variable-substring">substring</a>
-            <a class="list-group-item" href="../program/assign_exe.html#variable-uline">uline</a>
+            <a class="list-group-item" href="../program/assign_exe.html#variable-uline~6">uline</a>
+            <a class="list-group-item" href="../program/assign_exe.html#variable-uline1">uline1</a>
+            <a class="list-group-item" href="../program/assign_exe.html#variable-uline2">uline2</a>
+            <a class="list-group-item" href="../program/assign_exe.html#variable-uline3">uline3</a>
         </div>
       </div>
     </div>
@@ -203,7 +206,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-aline"></span>
+              <span class="anchor" id="variable-aline~6"></span>
               character(len=:),
             </td>
             <td>
@@ -235,7 +238,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-g"></span>
+              <span class="anchor" id="variable-g~6"></span>
               character(len=*),
             </td>
             <td>
@@ -267,7 +270,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-smiley"></span>
+              <span class="anchor" id="variable-smiley~2"></span>
               character(len=*),
             </td>
             <td>
@@ -299,7 +302,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-uline"></span>
+              <span class="anchor" id="variable-uline~6"></span>
               type(<a href='../type/unicode_type.html'>unicode_type</a>)
             </td>
             <td>
@@ -307,6 +310,54 @@ parameter
             </td>
             <td>::</td>
             <td><strong>uline</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-uline1"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>uline1</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-uline2"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>uline2</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-uline3"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>uline3</strong></td>
                 <td></td>
                 <td></td>
             <td>
@@ -330,12 +381,12 @@ parameter
     <section>
     <h2 id="src">Source Code</h2>
     <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">assign_exe</span><span class="w"></span>
-<span class="k">use </span><span class="n">M_unicode</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nb">len</span><span class="p">,</span><span class="w"> </span><span class="nb">len_trim</span><span class="p">,</span><span class="w"> </span><span class="nb">repeat</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span>
-<span class="k">use </span><span class="n">M_unicode</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kt">character</span><span class="p">,</span><span class="w"> </span><span class="nb">range</span><span class="p">,</span><span class="w"> </span><span class="nb">repeat </span>
+<span class="k">use </span><span class="n">M_unicode</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nb">len</span><span class="p">,</span><span class="w"> </span><span class="nb">len_trim</span><span class="p">,</span><span class="w"> </span><span class="nb">repeat</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">,</span><span class="w"> </span><span class="nb">adjustr</span><span class="p">,</span><span class="w"> </span><span class="nb">adjustl</span>
+<span class="k">use </span><span class="n">M_unicode</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kt">character</span><span class="p">,</span><span class="w"> </span><span class="nb">range </span>
 <span class="k">use </span><span class="n">M_unicode</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">assignment</span><span class="p">(</span><span class="o">=</span><span class="p">),</span><span class="w"> </span><span class="n">unicode_type</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="o">=</span><span class="s1">&#39;(*(g0))&#39;</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">aline</span><span class="w"></span>
-<span class="k">type</span><span class="p">(</span><span class="n">unicode_type</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">uline</span><span class="p">,</span><span class="w"> </span><span class="n">substring</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">unicode_type</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">uline</span><span class="p">,</span><span class="w"> </span><span class="n">substring</span><span class="p">,</span><span class="w"> </span><span class="n">uline1</span><span class="p">,</span><span class="w"> </span><span class="n">uline2</span><span class="p">,</span><span class="w"> </span><span class="n">uline3</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">smiley</span><span class="o">=</span><span class="s1">&#39;😃&#39;</span><span class="w"></span>
 <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">codes</span><span class="p">(:)</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">glyphs</span><span class="w"></span>
@@ -362,12 +413,36 @@ parameter
 <span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="w"> </span><span class="nb">len_trim</span><span class="p">(</span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">   </span><span class="n">uline</span><span class="o">=</span><span class="p">[</span><span class="mi">32</span><span class="p">,</span><span class="mi">160</span><span class="p">,</span><span class="mi">8192</span><span class="p">,</span><span class="mi">8193</span><span class="p">,</span><span class="mi">8194</span><span class="p">,</span><span class="mi">8195</span><span class="p">,</span><span class="mi">8196</span><span class="p">,</span><span class="mi">8197</span><span class="p">,</span><span class="mi">8198</span><span class="p">,</span><span class="mi">8199</span><span class="p">,</span><span class="mi">8200</span><span class="p">,</span><span class="mi">8201</span><span class="p">,</span><span class="mi">8202</span><span class="p">,</span><span class="mi">8239</span><span class="p">,</span><span class="mi">8287</span><span class="p">,</span><span class="mi">12288</span><span class="p">]</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;spaces:&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;spaces:&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">   </span><span class="n">uline</span><span class="o">=</span><span class="p">[</span><span class="mi">32</span><span class="p">,</span><span class="mi">160</span><span class="p">,</span><span class="mi">8192</span><span class="p">,</span><span class="mi">8193</span><span class="p">,</span><span class="mi">8194</span><span class="p">,</span><span class="mi">8195</span><span class="p">,</span><span class="mi">8196</span><span class="p">,</span><span class="mi">8197</span><span class="p">,</span><span class="mi">8198</span><span class="p">,</span><span class="mi">8199</span><span class="p">,</span><span class="mi">8200</span><span class="p">,</span><span class="mi">8201</span><span class="p">,</span><span class="mi">8202</span><span class="p">,</span><span class="mi">8239</span><span class="p">,</span><span class="mi">8287</span><span class="p">,</span><span class="mi">12288</span><span class="p">]</span><span class="w"></span>
 <span class="w">   </span><span class="n">uline</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;trim:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;trim:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
 
+<span class="w">   </span><span class="n">uline</span><span class="o">=</span><span class="s1">&#39;    this  is just a    string        &#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustr:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="s1">&#39;] &lt;&lt; starts with&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;adjustr:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustr</span><span class="p">(</span><span class="n">uline</span><span class="p">)),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="n">uline</span><span class="o">=</span><span class="kt">character</span><span class="p">(</span><span class="n">uline</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;adjustr:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustr</span><span class="p">(</span><span class="n">uline</span><span class="p">)),</span><span class="s1">&#39;] &lt;&lt; repeat&#39;</span><span class="w"></span>
+
+<span class="w">   </span><span class="n">uline1</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustr:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustr</span><span class="p">(</span><span class="n">uline1</span><span class="p">)),</span><span class="s1">&#39;] &lt;&lt; call with null string&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="n">uline1</span><span class="o">=</span><span class="s1">&#39;        &#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustr:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustr</span><span class="p">(</span><span class="n">uline1</span><span class="p">)),</span><span class="s1">&#39;] &lt;&lt; call with blank string&#39;</span><span class="w"></span>
+
+<span class="w">   </span><span class="n">uline1</span><span class="o">=</span><span class="s1">&#39;abcdefghij&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustr:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustr</span><span class="p">(</span><span class="n">uline1</span><span class="p">)),</span><span class="s1">&#39;] &lt;&lt; start with full string&#39;</span><span class="w"></span>
+
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">uline</span><span class="o">=</span><span class="s1">&#39;    this  is just a    string        &#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustl:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="n">uline</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustl:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">uline</span><span class="p">)),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
+
+<span class="w">   </span><span class="n">uline1</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustl:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">uline1</span><span class="p">)),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
+
+<span class="w">   </span><span class="n">uline1</span><span class="o">=</span><span class="s1">&#39;abcdefghij&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="s1">&#39;adjustl:&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="kt">character</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">uline1</span><span class="p">)),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
 
 <span class="w">   </span><span class="c">!write(*,g)uline%codes</span>
 <span class="w">   </span><span class="c">!write(*,g)uline</span>
@@ -394,7 +469,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-18 13:02 +0000             </p>
+ on 2025-08-19 05:48 +0000             </p>
           </div>
         </div>
         <br>

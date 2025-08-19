@@ -91,7 +91,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="82.1% of total for modules and submodules.">412 statements</a>
+                 title="67.5% of total for modules and submodules.">447 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -139,6 +139,8 @@
       </a>
       <div id="inters-0" class="collapse">
         <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/m_unicode.html#interface-adjustl">adjustl</a>
+            <a class="list-group-item" href="../module/m_unicode.html#interface-adjustr">adjustr</a>
             <a class="list-group-item" href="../module/m_unicode.html#interface-assignment%28%3D%29">assignment(=)</a>
             <a class="list-group-item" href="../module/m_unicode.html#interface-character">character</a>
             <a class="list-group-item" href="../module/m_unicode.html#interface-codepoints_to_utf8">codepoints_to_utf8</a>
@@ -206,6 +208,112 @@
 
         <section>
           <h2>Interfaces</h2>
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-adjustl"></span>
+      <h3>public        interface <a href='../interface/adjustl.html'>adjustl</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental function adjustl_string(string) result(adjusted)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~20"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/unicode_type.html'>unicode_type</a>)</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
+              <div class="card">
+    <div class="card-header bg-light codesum">
+      <span class="anchor" id="interface-adjustr"></span>
+      <h3>public        interface <a href='../interface/adjustr.html'>adjustr</a> 
+      </h3>
+    </div>
+    <ul class="list-group">
+          <li class="list-group-item">
+                <h3>
+    private elemental function adjustr_string(string) result(adjusted)  
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~19"></span>
+              type(<a href='../type/unicode_type.html'>unicode_type</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/unicode_type.html'>unicode_type</a>)</small>
+    </h4>
+    
+
+          </li>
+    </ul>
+  </div>
+
               <div class="card">
     <div class="card-header bg-light codesum">
       <span class="anchor" id="interface-assignment%28%3D%29"></span>
@@ -407,7 +515,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-first"></span>
+              <span class="anchor" id="variable-first~3"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -422,7 +530,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-last"></span>
+              <span class="anchor" id="variable-last~3"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -490,7 +598,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~6"></span>
+              <span class="anchor" id="variable-utf8~5"></span>
               character(len=:),
             </td>
 <td>intent(out),</td>
@@ -505,7 +613,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~10"></span>
+              <span class="anchor" id="variable-nerr~11"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -558,7 +666,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~2"></span>
+              <span class="anchor" id="variable-utf8"></span>
               character(len=1),
             </td>
 <td>intent(out),</td>
@@ -573,7 +681,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~4"></span>
+              <span class="anchor" id="variable-nerr~5"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -600,10 +708,6 @@
       <h3>public        interface <a href='../interface/len.html'>len</a> 
       </h3>
     </div>
-      <div class="card-body">
-        <p>Return length of the character sequence in glyphs 
-This method is elemental as each string element can have a different length ; returns a default integer scalar value.</p>
-      </div>
     <ul class="list-group">
           <li class="list-group-item">
                 <h3>
@@ -746,7 +850,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-first~2"></span>
+              <span class="anchor" id="variable-first~4"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -761,7 +865,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-last~2"></span>
+              <span class="anchor" id="variable-last~4"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -1031,7 +1135,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~7"></span>
+              <span class="anchor" id="variable-utf8~6"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1061,7 +1165,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~11"></span>
+              <span class="anchor" id="variable-nerr~12"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1099,7 +1203,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~3"></span>
+              <span class="anchor" id="variable-utf8~2"></span>
               character(len=1),
             </td>
 <td>intent(in)</td>
@@ -1129,7 +1233,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~5"></span>
+              <span class="anchor" id="variable-nerr~6"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1258,7 +1362,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~6"></span>
+              <span class="anchor" id="variable-nerr~7"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1313,7 +1417,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~4"></span>
+              <span class="anchor" id="variable-utf8~3"></span>
               character(len=1),
             </td>
 <td>intent(out),</td>
@@ -1328,7 +1432,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~8"></span>
+              <span class="anchor" id="variable-nerr~9"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1398,7 +1502,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~7"></span>
+              <span class="anchor" id="variable-nerr~8"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1438,7 +1542,7 @@ This method is elemental as each string element can have a different length ; re
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~5"></span>
+              <span class="anchor" id="variable-utf8~4"></span>
               character(len=1),
             </td>
 <td>intent(in)</td>
@@ -1468,7 +1572,7 @@ This method is elemental as each string element can have a different length ; re
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~9"></span>
+              <span class="anchor" id="variable-nerr~10"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1511,7 +1615,7 @@ This method is elemental as each string element can have a different length ; re
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-18 13:02 +0000             </p>
+ on 2025-08-19 05:48 +0000             </p>
           </div>
         </div>
         <br>
