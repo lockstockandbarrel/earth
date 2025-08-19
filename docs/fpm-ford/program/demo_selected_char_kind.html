@@ -90,19 +90,19 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 4.3% of total for programs.">40 statements</a>
+                 title=" 7.0% of total for programs.">66 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/ascii_round_trip.f90"> Source File</a>
+              <a href="../src/supported.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/ascii_round_trip.f90.html'>ascii_round_trip.f90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/supported.f90.html'>supported.f90</a></li>
             <li class="breadcrumb-item active" aria-current="page">demo_selected_char_kind</li>
           </ol>
         </nav>
@@ -131,11 +131,16 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-ascii~2">ascii</a>
-            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-default~2">default</a>
-            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-i~8">i</a>
-            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-iostat~2">iostat</a>
-            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-ucs4~2">ucs4</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-alphabet">alphabet</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-ascii~3">ascii</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-corrected">corrected</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-default">default</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-hello_world">hello_world</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-i~2">i</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-not_ascii">not_ascii</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-string">string</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-ucs4~5">ucs4</a>
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#variable-utf8">utf8</a>
         </div>
       </div>
     </div>
@@ -149,8 +154,30 @@
   
   
   
-  
-  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#proc-utf8_to_utf32">utf8_to_utf32</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../program/demo_selected_char_kind.html#proc-create_date_string">create_date_string</a>
+        </div>
+      </div>
+    </div>
+
   
   
   
@@ -201,7 +228,23 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ascii~2"></span>
+              <span class="anchor" id="variable-alphabet"></span>
+              character(kind=ascii, len=26)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alphabet</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ascii~3"></span>
               integer,
             </td>
             <td>
@@ -217,7 +260,23 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~2"></span>
+              <span class="anchor" id="variable-corrected"></span>
+              character(kind=ucs4, len=:),
+            </td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>corrected</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-default"></span>
               integer,
             </td>
             <td>
@@ -233,7 +292,23 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~8"></span>
+              <span class="anchor" id="variable-hello_world"></span>
+              character(kind=ucs4, len=30)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hello_world</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i~2"></span>
               integer
             </td>
             <td>
@@ -249,14 +324,30 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iostat~2"></span>
-              integer
+              <span class="anchor" id="variable-not_ascii"></span>
+              character(len=*),
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>not_ascii</strong></td>
+<td> =</td>
+                <td>&#34;ľščťžýáßĄĘ®™√🙂&#34;</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string"></span>
+              character(kind=ucs4, len=30)
             </td>
             <td>
               
             </td>
             <td>::</td>
-            <td><strong>iostat</strong></td>
+            <td><strong>string</strong></td>
                 <td></td>
                 <td></td>
             <td>
@@ -265,7 +356,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ucs4~2"></span>
+              <span class="anchor" id="variable-ucs4~5"></span>
               integer,
             </td>
             <td>
@@ -275,6 +366,22 @@ parameter
             <td><strong>ucs4</strong></td>
 <td> =</td>
                 <td>selected_char_kind(&#39;ISO_10646&#39;)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-utf8"></span>
+              integer,
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>utf8</strong></td>
+<td> =</td>
+                <td>selected_char_kind(&#39;utf-8&#39;)</td>
             <td>
                 
             </td>
@@ -289,63 +396,202 @@ parameter
     
 
     
+ 
+    <section>
+    <h2>Functions</h2>
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-utf8_to_utf32"></span> <h3> function <a href='../proc/utf8_to_utf32.html'>utf8_to_utf32</a>(string) result(corrected)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(kind=ucs4, len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+    </section>
+    <br>
 
 
+    <section>
+    <h2>Subroutines</h2>
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-create_date_string"></span> <h3> subroutine <a href='../proc/create_date_string.html'>create_date_string</a>(string)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~2"></span>
+              character(kind=ucs4, len=*)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+    </section>    
     
 
     <section>
     <h2 id="src">Source Code</h2>
     <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">demo_selected_char_kind</span><span class="w"></span>
-<span class="c">! @(#) report if ISO_10646 is supported</span>
 <span class="k">use </span><span class="n">iso_fortran_env</span><span class="w"></span>
 <span class="k">implicit none</span>
 
-<span class="k">intrinsic </span><span class="nb">selected_char_kind</span>
+<span class="k">intrinsic </span><span class="nb">date_and_time</span><span class="p">,</span><span class="nb">selected_char_kind</span><span class="w"></span>
 
-<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span><span class="w"></span>
+<span class="c">! set some aliases for common character kinds</span>
+<span class="c">! as the numbers can vary from platform to platform</span>
 
 <span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span><span class="w"></span>
 <span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span><span class="w"></span>
 <span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w">  </span><span class="o">=</span><span class="w">   </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ISO_10646&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">utf8</span><span class="w">  </span><span class="o">=</span><span class="w">   </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;print 1-byte values (from 0 to 255) as characters:&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39; only 0 to 127 is defined in ASCII, 128-255&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39; often used for extended ASCII such as latin1 or latin2 encoding, or extended&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39; characters such as box characters. If your default output is utf-8 values above&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39; 127 should be a question mark or a shaded box&#39;</span><span class="w"></span>
+<span class="c">! assuming ASCII and UCS4 are supported (ie. not equal to -1)</span>
+<span class="c">! define some string variables</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">ascii</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">alphabet</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hello_world</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
 
-<span class="c">!  ENCODING= might not be supported</span>
-<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">iostat</span><span class="p">.</span><span class="n">ne</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
-<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;utf-8 encoding not supported&#39;</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="kd">::</span><span class="w"> </span><span class="n">not_ascii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ľščťžýáßĄĘ®™√🙂&quot;</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">corrected</span><span class="w"></span>
+<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ASCII     &#39;</span><span class="p">,&amp;</span><span class="w"></span>
+<span class="w">    </span><span class="p">&amp;</span><span class="w"> </span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">ascii</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ISO_10646 &#39;</span><span class="p">,&amp;</span><span class="w"></span>
+<span class="w">    </span><span class="p">&amp;</span><span class="w"> </span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">ucs4</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;UTF-8     &#39;</span><span class="p">,&amp;</span><span class="w"></span>
+<span class="w">    </span><span class="p">&amp;</span><span class="w"> </span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">utf8</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">default</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ascii</span><span class="p">)</span><span class="k">then</span>
+<span class="k">       write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ASCII is the default on this processor&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">endif</span><span class="w"></span>
+
+<span class="w">   </span><span class="c">! for constants the kind precedes the value, somewhat like a</span>
+<span class="w">   </span><span class="c">! BOZ constant</span>
+<span class="w">   </span><span class="n">alphabet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ascii_</span><span class="s2">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">alphabet</span><span class="w"></span>
+
+<span class="w">   </span><span class="n">hello_world</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ucs4_</span><span class="s1">&#39;Hello World and Ni Hao -- &#39;</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                 </span><span class="o">//</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="p">(</span><span class="nb">int</span><span class="w"> </span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;4F60&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">ucs4</span><span class="p">)</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                 </span><span class="o">//</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="p">(</span><span class="nb">int</span><span class="w"> </span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;597D&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">ucs4</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">   </span><span class="c">! an encoding option is required on OPEN for non-default I/O</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">ucs4</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="k">then</span>
+<span class="k">      open</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">trim</span><span class="w"> </span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span><span class="w"></span>
 <span class="w">   </span><span class="k">else</span>
-<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(10(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="w"></span>
+<span class="k">      write</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s1">&#39;cannot use utf-8&#39;</span><span class="w"></span>
 <span class="w">   </span><span class="k">endif</span>
 
-<span class="k">   write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;printing the bytes directly&#39;</span><span class="w"></span>
+<span class="k">   call </span><span class="n">create_date_string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="nb">trim</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;with encoding=&quot;ASCII&quot;&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ADE:&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(10(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;CHAR():&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(10(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ACHAR():&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(10(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">achar</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;NOT_ASCII:&#39;</span><span class="p">,</span><span class="n">not_ascii</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;LEN NOT_ASCII:&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">not_ascii</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;STORAGE_SIZE:&#39;</span><span class="p">,</span><span class="nb">storage_size</span><span class="p">(</span><span class="n">not_ascii</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">corrected</span><span class="o">=</span><span class="n">utf8_to_utf32</span><span class="p">(</span><span class="n">not_ascii</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;CORRECTED:&#39;</span><span class="p">,</span><span class="n">corrected</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;LEN CORRECTED:&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;STORAGE_SIZE:&#39;</span><span class="p">,</span><span class="nb">storage_size</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(&quot;z&#39;&#39;&quot;,z0,&quot;&#39;&#39;&quot;)&#39;</span><span class="p">)</span><span class="n">corrected</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">enddo</span>
 
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;UCS-4 with encoding=&quot;UTF-8&quot;&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(10(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="w"></span>
+<span class="k">contains</span><span class="w"></span>
 
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;with encoding=&quot;UTF-8&quot;&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(10(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="w"></span>
+<span class="c">! The following produces a Japanese date stamp.</span>
 
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;Smiling face with open mouth&#39;</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;1F603&#39;</span><span class="p">),</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="c">! 😃</span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;Smiling face with open mouth&#39;</span><span class="p">,</span><span class="nb">char</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;F0&#39;</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;9F&#39;</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;98&#39;</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="s1">&#39;83&#39;</span><span class="p">)],</span><span class="nb">kind</span><span class="o">=</span><span class="n">ascii</span><span class="p">)</span><span class="w"> </span><span class="c">! 😃</span>
+<span class="k">subroutine </span><span class="n">create_date_string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"></span>
+<span class="k">intrinsic </span><span class="nb">date_and_time</span><span class="p">,</span><span class="nb">selected_char_kind</span>
+<span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="p">(</span><span class="s2">&quot;ISO_10646&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">   </span><span class="n">nen</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nb">char</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;5e74&#39;</span><span class="w"> </span><span class="p">),</span><span class="n">ucs4</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"> </span><span class="c">! year</span>
+<span class="w">   </span><span class="n">gatsu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;6708&#39;</span><span class="w"> </span><span class="p">),</span><span class="n">ucs4</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"> </span><span class="c">! month</span>
+<span class="w">   </span><span class="n">nichi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="w"> </span><span class="n">z</span><span class="s1">&#39;65e5&#39;</span><span class="w"> </span><span class="p">),</span><span class="n">ucs4</span><span class="p">)</span><span class="w">    </span><span class="c">! day</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="w"> </span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<span class="kt">integer </span><span class="n">values</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="nb">date_and_time</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span><span class="w"> </span><span class="n">values</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">nen</span><span class="p">,</span><span class="n">values</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="n">gatsu</span><span class="p">,</span><span class="n">values</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="n">nichi</span><span class="w"></span>
+<span class="mi">101</span><span class="w"> </span><span class="k">format</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">i0</span><span class="p">,</span><span class="n">a</span><span class="p">))</span><span class="w"></span>
+<span class="k">end subroutine </span><span class="n">create_date_string</span><span class="w"></span>
+
+<span class="k">function </span><span class="n">utf8_to_utf32</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">corrected</span><span class="p">)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">corrected</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
+<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lun</span><span class="w"></span>
+<span class="w">   </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">lun</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;scratch&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="n">lun</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="n">string</span><span class="w"></span>
+<span class="w">   </span><span class="k">rewind</span><span class="p">(</span><span class="n">lun</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">read</span><span class="p">(</span><span class="n">lun</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="n">line</span><span class="w"></span>
+<span class="w">   </span><span class="k">close</span><span class="p">(</span><span class="n">lun</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">corrected</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">open</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">end function </span><span class="n">utf8_to_utf32</span><span class="w"></span>
 
 <span class="k">end program </span><span class="n">demo_selected_char_kind</span><span class="w"></span>
 </pre></div>
@@ -370,7 +616,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-19 07:03 +0000             </p>
+ on 2025-08-19 07:17 +0000             </p>
           </div>
         </div>
         <br>
