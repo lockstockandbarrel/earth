@@ -1,8 +1,9 @@
 program check
 use iso_fortran_env, only : output_unit
 use M_utf8, only : utf8_to_codepoints, utf8_to_ucs4, ucs4_to_utf8, utf8_to_ucs4_via_io, ucs4_to_utf8_via_io
-use M_unicode, only : unicode_type, character
-use M_unicode
+use M_unicode, only : adjustl, adjustr
+use M_unicode, only : character
+use M_unicode, only : assignment(=), unicode_type
 implicit none
 integer,parameter          :: ucs4 = selected_char_kind ('ISO_10646')
 integer,parameter          :: ascii = selected_char_kind ("ascii")
@@ -18,7 +19,7 @@ character(len=*),parameter :: upagain="七転び八起き。転んでもまた�
 character(len=1,kind=ucs4)             :: stop
 character(len=:,kind=ucs4),allocatable :: ustr
 character(len=:),allocatable           :: astr
-type(unicode_type)                     :: ut_line
+type(unicode_type)                     :: ut_str
 integer                                :: total
 integer                                :: err
 
@@ -71,28 +72,33 @@ integer                                :: err
    call checkit('convert to ASCII bytes representing utf8',astr == 'Hello World and Ni Hao -- 你好')
 
    astr="  this is a string    "
-   ut_line=astr
-   call checkit('adjustl:'//astr//':','['//character(ut_line%adjustl())//']' == '[this is a string      ]' )
+   ut_str=astr
+   call checkit('adjustl:'//astr//':','['//character(ut_str%adjustl())//']' == '[this is a string      ]' )
 
    astr="  "
-   ut_line=astr
-   call checkit('adjustl:'//astr//':','['//character(ut_line%adjustl())//']' == '[  ]' )
+   ut_str=astr
+   call checkit('adjustl:'//astr//':','['//character(ut_str%adjustl())//']' == '[  ]' )
 
    astr="ALLFULL"
-   ut_line=astr
-   call checkit('adjustl:'//astr//':','['//character(ut_line%adjustl())//']' == '[ALLFULL]' )
+   ut_str=astr
+   call checkit('adjustl:'//astr//':','['//character(ut_str%adjustl())//']' == '[ALLFULL]' )
 
    astr="  this is a string    "
-   ut_line=astr
-   call checkit('adjustr:'//astr//':','['//character(ut_line%adjustr())//']' == '[      this is a string]' )
+   ut_str=astr
+   call checkit('adjustr:'//astr//':','['//character(ut_str%adjustr())//']' == '[      this is a string]' )
 
    astr="  "
-   ut_line=astr
-   call checkit('adjustr:'//astr//':','['//character(ut_line%adjustr())//']' == '[  ]' )
+   ut_str=astr
+   call checkit('adjustr:'//astr//':','['//character(ut_str%adjustr())//']' == '[  ]' )
 
    astr="ALLFULL"
-   ut_line=astr
-   call checkit('adjustr:'//astr//':','['//character(ut_line%adjustr())//']' == '[ALLFULL]' )
+   ut_str=astr
+   call checkit('adjustr:'//astr//':','['//character(ut_str%adjustr())//']' == '[ALLFULL]' )
+
+   ut_str=[32,32,int(z'1F603'),32,32,32]
+   astr=character(ut_str)
+   call checkit('adjustr:'//astr//':','['//character(ut_str%adjustr())//']' == '[     😃]' )
+   call checkit('adjustl:'//astr//':','['//character(ut_str%adjustl())//']' == '[😃     ]' )
 
    if(total.ne.0)then
       write(*,g0)total,'failures'
