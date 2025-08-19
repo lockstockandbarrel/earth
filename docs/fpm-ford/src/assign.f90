@@ -38,29 +38,9 @@ character(len=:),allocatable :: glyphs
    write(*,g)'trim:','[',character(uline),']'
 
    uline='    this  is just a    string        '
-   write(*,g)'adjustr:','[',character(uline),'] << starts with'
-   write(*,*)'adjustr:','[',character(adjustr(uline)),']'
-   uline=character(uline)
-   write(*,*)'adjustr:','[',character(adjustr(uline)),'] << repeat'
-
-   uline1=''
-   write(*,g)'adjustr:','[',character(adjustr(uline1)),'] << call with null string'
-   uline1='        '
-   write(*,g)'adjustr:','[',character(adjustr(uline1)),'] << call with blank string'
-
-   uline1='abcdefghij'
-   write(*,g)'adjustr:','[',character(adjustr(uline1)),'] << start with full string'
-
-   write(*,g)
+   write(*,g)'adjustr:','[',character(uline),'] ==> [',character(adjustr(uline)),']'
    uline='    this  is just a    string        '
-   write(*,g)'adjustl:','[',character(uline),']'
-   write(*,g)'adjustl:','[',character(adjustl(uline)),']'
-
-   uline1=''
-   write(*,g)'adjustl:','[',character(adjustl(uline1)),']'
-
-   uline1='abcdefghij'
-   write(*,g)'adjustl:','[',character(adjustl(uline1)),']'
+   write(*,g)'adjustl:','[',character(uline),'] ==> [',character(adjustl(uline)),']'
 
    !write(*,g)uline%codes
    !write(*,g)uline

@@ -2,7 +2,8 @@ module M_unicode
 ! Unicode-related procedures not requiring compiler support of ISO-10646
 ! first presented in https://fortran-lang.discourse.group/t/how-to-use-utf-8-in-gfortran/9949
 ! including enhancements and latin support from Francois Jacq, 2025-08
-
+!
+use iso_fortran_env, only: error_unit, stderr=>error_unit
 implicit none
 
 private
@@ -24,9 +25,41 @@ interface codepoints_to_utf8
 end interface codepoints_to_utf8
 
 type :: unicode_type ! Unicode string type holding an arbitrary sequence of integer codes.
-   sequence ! not used for storage association; a kludge to prevent extending this type. 
+   !sequence ! not used for storage association; a kludge to prevent extending this type. 
    private
    integer, allocatable :: codes(:)
+contains
+   ! METHODS:
+   procedure  ::  adjustl        =>  oop_adjustl
+   procedure  ::  adjustr        =>  oop_adjustr
+!   procedure  ::  len          !  =>  oop_len
+!   procedure  ::  len_trim     !  =>  oop_len_trim
+!   procedure  ::  reverse      !  =>  oop_reverse
+!   procedure  ::  trim         !  =>  oop_trim
+   !DECLARATION OF OVERLOADED OPERATORS FOR TYPE(UNICODE_TYPE)
+!   procedure,private :: eq
+!   generic           :: operator(==) => eq
+!   procedure,private :: lt
+!   generic           :: operator(<)  => lt
+!   procedure,private :: gt
+!   generic           :: operator(>)  => gt
+!   procedure,private :: ge
+!   generic           :: operator(>=) => ge
+!   procedure,private :: le
+!   generic           :: operator(<=) => le
+!   procedure,private :: ne
+!   generic           :: operator(/=) => ne
+
+!   procedure,private :: string_plus_value
+!   generic           :: operator(+) => string_plus_value   ! string + integer|real|doubleprecision|string|character
+!   procedure,private :: string_minus_value
+!   generic           :: operator(-) => string_minus_value  ! string - integer|real|doubleprecision|string|character
+!   procedure,private :: string_multiply_value
+!   generic           :: operator(*) => string_multiply_value  ! string * integer|real|doubleprecision
+!   procedure,private :: string_append_value
+!   generic           :: operator(//) => string_append_value
+!-!   procedure,private :: minus_string
+!-!   generic           :: operator(-)  => minus_string
 end type unicode_type
 
 ! Constructor for new string instances
@@ -616,7 +649,7 @@ end function trim_string
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! This method is elemental and returns a scalar character value.
-elemental function adjustr_string(string) result(adjusted)
+impure elemental function adjustr_string(string) result(adjusted)
 type(unicode_type), intent(in) :: string
 type(unicode_type)             :: adjusted
 integer                        :: last
@@ -640,13 +673,31 @@ integer                        :: i
       if(any(string%codes(first).eq.G_SPACES))cycle
       exit
    enddo
-   if(first.gt.size(string%codes))then
-      adjusted%codes=[integer :: ] ! all blank   
-   else
-      adjusted%codes=[string%codes(first:),(G_SPACE,i=1,first-1)]
-   endif
+   adjusted%codes=[string%codes(first:),(G_SPACE,i=1,first-1)]
 
 end function adjustl_string
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+function oop_adjustl(self) result (string_out)
+
+! ident_12="@(#) M_strings oop_adjustl(3f) adjust string to left"
+
+class(unicode_type),intent(in)     :: self
+type(unicode_type)                 :: string_out
+   string_out=adjustl_string(self)
+end function oop_adjustl
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+function oop_adjustr(self) result (string_out)
+
+! ident_13="@(#) M_strings oop_adjustr(3f) adjust string to right"
+
+class(unicode_type),intent(in)     :: self
+type(unicode_type)                 :: string_out
+   string_out=adjustr_string(self)
+end function oop_adjustr
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

@@ -1,6 +1,8 @@
 program check
 use iso_fortran_env, only : output_unit
 use M_utf8, only : utf8_to_codepoints, utf8_to_ucs4, ucs4_to_utf8, utf8_to_ucs4_via_io, ucs4_to_utf8_via_io
+use M_unicode, only : unicode_type, character
+use M_unicode
 implicit none
 integer,parameter          :: ucs4 = selected_char_kind ('ISO_10646')
 integer,parameter          :: ascii = selected_char_kind ("ascii")
@@ -16,6 +18,7 @@ character(len=*),parameter :: upagain="七転び八起き。転んでもまた�
 character(len=1,kind=ucs4)             :: stop
 character(len=:,kind=ucs4),allocatable :: ustr
 character(len=:),allocatable           :: astr
+type(unicode_type)                     :: ut_line
 integer                                :: total
 integer                                :: err
 
@@ -66,6 +69,30 @@ integer                                :: err
       // char (int (z'597D'), ucs4)
    astr=ucs4_to_utf8(ustr,err)
    call checkit('convert to ASCII bytes representing utf8',astr == 'Hello World and Ni Hao -- 你好')
+
+   astr="  this is a string    "
+   ut_line=astr
+   call checkit('adjustl:'//astr//':','['//character(ut_line%adjustl())//']' == '[this is a string      ]' )
+
+   astr="  "
+   ut_line=astr
+   call checkit('adjustl:'//astr//':','['//character(ut_line%adjustl())//']' == '[  ]' )
+
+   astr="ALLFULL"
+   ut_line=astr
+   call checkit('adjustl:'//astr//':','['//character(ut_line%adjustl())//']' == '[ALLFULL]' )
+
+   astr="  this is a string    "
+   ut_line=astr
+   call checkit('adjustr:'//astr//':','['//character(ut_line%adjustr())//']' == '[      this is a string]' )
+
+   astr="  "
+   ut_line=astr
+   call checkit('adjustr:'//astr//':','['//character(ut_line%adjustr())//']' == '[  ]' )
+
+   astr="ALLFULL"
+   ut_line=astr
+   call checkit('adjustr:'//astr//':','['//character(ut_line%adjustr())//']' == '[ALLFULL]' )
 
    if(total.ne.0)then
       write(*,g0)total,'failures'
