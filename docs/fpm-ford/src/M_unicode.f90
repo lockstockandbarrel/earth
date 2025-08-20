@@ -15,6 +15,7 @@ private :: a2s, s2a
 
 public :: unicode_type
 public :: assignment(=)
+public :: operator(//)
 
 interface utf8_to_codepoints
    module procedure utf8_to_codepoints_string,utf8_to_codepoints_chars
@@ -25,17 +26,19 @@ interface codepoints_to_utf8
 end interface codepoints_to_utf8
 
 type :: unicode_type ! Unicode string type holding an arbitrary sequence of integer codes.
-   !sequence ! not used for storage association; a kludge to prevent extending this type. 
+   !sequence ! not used for storage association; a kludge to prevent extending this type.
    private
    integer, allocatable :: codes(:)
 contains
    ! METHODS:
+   procedure  ::  character      =>  oop_character
+   procedure  ::  bytes          =>  oop_bytes
+
    procedure  ::  adjustl        =>  oop_adjustl
    procedure  ::  adjustr        =>  oop_adjustr
-!   procedure  ::  len          !  =>  oop_len
-!   procedure  ::  len_trim     !  =>  oop_len_trim
-!   procedure  ::  reverse      !  =>  oop_reverse
-!   procedure  ::  trim         !  =>  oop_trim
+   procedure  ::  trim           =>  oop_trim
+   procedure  ::  len            =>  oop_len
+   procedure  ::  len_trim       =>  oop_len_trim
    !DECLARATION OF OVERLOADED OPERATORS FOR TYPE(UNICODE_TYPE)
 !   procedure,private :: eq
 !   generic           :: operator(==) => eq
@@ -74,7 +77,7 @@ interface unicode_type
       type(unicode_type)                     :: new
    end function new_codes
 
-end interface unicode_type        
+end interface unicode_type
 
 ! Assign a character sequence to a string.
 interface assignment(=)
@@ -86,11 +89,13 @@ end interface assignment(=)
 interface character
    module procedure :: char_string
    module procedure :: char_string_range
+   module procedure :: char_string_range_step
 end interface character
 public :: character
 
 interface range
    module procedure :: string_range
+   module procedure :: string_range_step
 end interface range
 public :: range
 
@@ -101,67 +106,75 @@ interface trim;      module procedure :: trim_string;      end interface trim;  
 interface adjustr;   module procedure :: adjustr_string;   end interface adjustr;   public :: adjustr
 interface adjustl;   module procedure :: adjustl_string;   end interface adjustl;   public :: adjustl
 
+! Concatenate two character sequences, LHS, RHS or both can be represented by a byte string or unicode_type.
+!
+    interface operator(//)
+        module procedure :: concat_string_string
+        module procedure :: concat_string_char
+        module procedure :: concat_char_string
+    end interface operator(//)
+
 ! space U+0020 32 Common Basic Latin Separator, Most common (normal
 ! ASCII space)
-! 
+!
 ! no-break space U+00A0 160 Common Latin-1 Supplement Separator,
 ! Non-breaking space: identical to U+0020, but not a point at which a line
 ! may be broken.
-! 
+!
 ! en quad U+2000 8192 General Punctuation Separator, Width of one en. U+2002
 ! is canonically equivalent to this character; U+2002 is preferred.
-! 
+!
 ! em quad U+2001 8193   Common General Punctuation Separator,
 ! Also known as "mutton quad". Width of one em. U+2003 is
 ! canonically equivalent to this character; U+2003 is preferred.
-! 
+!
 ! en space U+2002 8194   Common General Punctuation Separator,
 ! space Also known as "nut". Width of one en. U+2000 En Quad is
 ! canonically equivalent to this character; U+2002 is preferred.
-! 
+!
 ! em space U+2003 8195  Common General Punctuation Separator,
 ! space Also known as "mutton". Width of one em. U+2001 Em Quad is
 ! canonically equivalent to this character; U+2003 is preferred.
-! 
+!
 ! three-per-em space U+2004 8196 Common General Punctuation Separator,
 ! Also known as "thick space". One third of an em wide.
-! 
+!
 ! four-per-em space U+2005 8197 Common General Punctuation Separator,
 ! space Also known as "mid space". One fourth of an em wide.
-! 
+!
 ! six-per-em space U+2006 8198 Common General Punctuation Separator,
 ! space One sixth of an em wide. In computer typography, sometimes equated
 ! to U+2009.
-! 
+!
 ! figure space U+2007 8199 Common General Punctuation Separator, In fonts
 ! with monospaced digits, equal to the width of one digit.
-! 
+!
 ! punctuation space U+2008 8200 Common General Punctuation Separator,
 ! As wide as the narrow punctuation in a font, i.e. the advance width of
 ! the period or comma.
-! 
+!
 ! thin space U+2009 8201 Common General Punctuation Separator, one-fifth
 ! (sometimes one-sixth) of an em wide.  Recommended for use as a thousands
 ! separator for measures made with SI units. Unlike U+2002 to U+2008,
 ! its width may get adjusted in typesetting.
-! 
+!
 ! hair space U+200A 8202 Common General Punctuation Separator, space
 ! Thinner than a thin space.
-! 
+!
 ! narrow no-break space U+202F 8239 Common General Punctuation Separator,
 ! Similar in function to U+00A0
-! 
+!
 ! No-Break Space. When used with Mongolian, its width is usually one third
 ! of the normal space; in other context, its width sometimes resembles
 ! that of the Thin Space (U+2009).
-! 
+!
 ! medium mathematical space U+205F 8287   Common General Punctuation
 ! Separator, space MMSP. Used in mathematical formulae. Four-eighteenths
 ! of an em. In mathematical typography, the widths of spaces are usually
 ! given in integral multiples of an eighteenth of an em, and 4/18 em
 ! may be used in several situations, for example between the a and the +
 ! and between the + and the b in the expression a + b.
-! 
+!
 ! ideographic space U+3000 12288 　 Yes No Common CJK Symbols and
 ! Punctuation Separator, As wide as a CJK character cell (fullwidth). Used,
 ! for example, in tai tou.
@@ -574,8 +587,6 @@ call codepoints_to_utf8_string(string%codes,aline,nerr)
 
 end function char_string
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 ! Return the character sequence represented by the string.
 pure function char_string_range(string, first, last) result(aline)
 type(unicode_type), intent(in) :: string
@@ -589,6 +600,20 @@ integer                        :: nerr
 
 end function char_string_range
 !===================================================================================================================================
+! Return the character sequence represented by the string.
+pure function char_string_range_step(string, first, last, step) result(aline)
+type(unicode_type), intent(in) :: string
+integer, intent(in)            :: first
+integer, intent(in)            :: last
+integer, intent(in)            :: step
+!character(len=last-first+1)    :: aline
+character(len=:),allocatable   :: aline
+integer                        :: nerr
+
+   call codepoints_to_utf8_string(string%codes(first:last:step),aline,nerr)
+
+end function char_string_range_step
+!===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! Return the character sequence represented by the string.
@@ -597,11 +622,22 @@ type(unicode_type), intent(in) :: string
 integer, intent(in)            :: first
 integer, intent(in)            :: last
 type(unicode_type)             :: uline
-integer                        :: nerr
 
    uline%codes = string%codes(first:last)
 
 end function string_range
+!===================================================================================================================================
+! Return the character sequence represented by the string.
+pure function string_range_step(string, first, last, step) result(uline)
+type(unicode_type), intent(in) :: string
+integer, intent(in)            :: first
+integer, intent(in)            :: last
+integer, intent(in)            :: step
+type(unicode_type)             :: uline
+
+   uline%codes=string%codes(first:last:step)
+
+end function string_range_step
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -648,21 +684,21 @@ end function trim_string
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! This method is elemental and returns a scalar character value.
-impure elemental function adjustr_string(string) result(adjusted)
+! right-justify string by moving trailing spaces to beginning of string so length is retained even if spaces are of varied width
+elemental function adjustr_string(string) result(adjusted)
 type(unicode_type), intent(in) :: string
 type(unicode_type)             :: adjusted
 integer                        :: last
 integer                        :: i
 
    last=len_trim_string(string)
-   adjusted%codes=[(G_SPACE,i=1,size(string%codes)-last),string%codes(:last)]
+   adjusted%codes=cshift(string%codes,-(size(adjusted%codes)-last-1))
 
 end function adjustr_string
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! This method is elemental and returns a scalar character value.
+!left-justify string by  moving leading spaces to end of string so length is retained even if spaces are of varied width
 elemental function adjustl_string(string) result(adjusted)
 type(unicode_type), intent(in) :: string
 type(unicode_type)             :: adjusted
@@ -673,9 +709,34 @@ integer                        :: i
       if(any(string%codes(first).eq.G_SPACES))cycle
       exit
    enddo
-   adjusted%codes=[string%codes(first:),(G_SPACE,i=1,first-1)]
+   adjusted%codes=cshift(string%codes,first-1)
 
 end function adjustl_string
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+elemental function concat_string_string(lhs, rhs) result(lhsrhs)
+type(unicode_type), intent(in) :: lhs
+type(unicode_type), intent(in) :: rhs
+type(unicode_type)             :: lhsrhs
+   lhsrhs%codes = [lhs%codes,rhs%codes]
+end function concat_string_string
+!===================================================================================================================================
+elemental function concat_string_char(lhs, rhs) result(lhsrhs)
+type(unicode_type), intent(in) :: lhs
+character(len=*), intent(in)   :: rhs
+type(unicode_type)             :: lhsrhs
+   lhsrhs = unicode_type(rhs)
+   lhsrhs%codes = [lhs%codes, lhsrhs%codes]
+end function concat_string_char
+!===================================================================================================================================
+elemental function concat_char_string(lhs, rhs) result(lhsrhs)
+character(len=*), intent(in)   :: lhs
+type(unicode_type), intent(in) :: rhs
+type(unicode_type)             :: lhsrhs
+   lhsrhs = unicode_type(lhs)
+   lhsrhs%codes = [lhsrhs%codes,rhs%codes]
+end function concat_char_string
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -688,8 +749,6 @@ type(unicode_type)                 :: string_out
    string_out=adjustl_string(self)
 end function oop_adjustl
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 function oop_adjustr(self) result (string_out)
 
 ! ident_13="@(#) M_strings oop_adjustr(3f) adjust string to right"
@@ -698,6 +757,36 @@ class(unicode_type),intent(in)     :: self
 type(unicode_type)                 :: string_out
    string_out=adjustr_string(self)
 end function oop_adjustr
+!===================================================================================================================================
+pure function oop_character(self) result(bytes_out)
+class(unicode_type), intent(in) :: self
+character(len=:),allocatable    :: bytes_out
+   bytes_out=char_string(self)
+end function oop_character
+!===================================================================================================================================
+pure function oop_trim(self) result(string_out)
+class(unicode_type), intent(in) :: self
+type(unicode_type)              :: string_out
+   string_out=trim(self)
+end function oop_trim
+!===================================================================================================================================
+pure function oop_bytes(self) result(bytes_out)
+class(unicode_type), intent(in) :: self
+character(len=:),allocatable    :: bytes_out(:)
+   bytes_out=s2a(char_string(self))
+end function oop_bytes
+!===================================================================================================================================
+pure function oop_len_trim(self) result(len_trim_out)
+class(unicode_type), intent(in) :: self
+integer                         :: len_trim_out
+   len_trim_out=len_trim(self)
+end function oop_len_trim
+!===================================================================================================================================
+pure function oop_len(self) result(len_out)
+class(unicode_type), intent(in) :: self
+integer                         :: len_out
+   len_out=len(self)
+end function oop_len
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
