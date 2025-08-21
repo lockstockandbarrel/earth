@@ -24,6 +24,71 @@ interface codepoints_to_utf8
    module procedure codepoints_to_utf8_str,codepoints_to_utf8_chars
 end interface codepoints_to_utf8
 
+! Assign a character sequence to a string.
+interface assignment(=)
+   module procedure :: assign_str_char
+   module procedure :: assign_str_codes
+end interface assignment(=)
+
+interface character
+   module procedure :: char_str
+   module procedure :: char_str_range
+   module procedure :: char_str_range_step
+end interface character
+public :: character
+
+interface range
+   module procedure :: string_range
+   module procedure :: string_range_step
+end interface range
+public :: range
+
+interface adjustl;      module procedure :: adjustl_str;  end interface adjustl
+interface adjustr;      module procedure :: adjustr_str;  end interface adjustr
+interface len;          module procedure :: len_str;      end interface len
+interface len_trim;     module procedure :: len_trim_str; end interface len_trim
+interface repeat;       module procedure :: repeat_str;   end interface repeat
+interface trim;         module procedure :: trim_str;     end interface trim
+
+public :: adjustl
+public :: adjustr
+public :: len
+public :: len_trim
+public :: repeat
+public :: trim
+
+interface index;        module procedure :: index_str_str,  index_str_char,  index_char_str;  end interface index
+
+public :: index
+
+interface lle;          module procedure :: lle_str_str,    lle_str_char,    lle_char_str;    end interface lle
+interface llt;          module procedure :: llt_str_str,    llt_str_char,    llt_char_str;    end interface llt
+interface lne;          module procedure :: lne_char_str,   lne_str_char,    lne_str_str;     end interface lne
+interface leq;          module procedure :: leq_char_str,   leq_str_char,    leq_str_str;     end interface leq
+interface lgt;          module procedure :: lgt_str_str,    lgt_str_char,    lgt_char_str;    end interface lgt
+interface lge;          module procedure :: lge_str_str,    lge_str_char,    lge_char_str;    end interface lge
+interface operator(<=); module procedure :: lle_str_str,    lle_str_char,    lle_char_str;    end interface operator(<=)
+interface operator(<);  module procedure :: llt_str_str,    llt_str_char,    llt_char_str;    end interface operator(<)
+interface operator(/=); module procedure :: lne_char_str,   lne_str_char,    lne_str_str;     end interface operator(/=)
+interface operator(==); module procedure :: leq_char_str,   leq_str_char,    leq_str_str;     end interface operator(==)
+interface operator(>);  module procedure :: lgt_str_str,    lgt_str_char,    lgt_char_str;    end interface operator(>)
+interface operator(>=); module procedure :: lge_str_str,    lge_str_char,    lge_char_str;    end interface operator(>=)
+interface operator(//); module procedure :: concat_str_str, concat_str_char, concat_char_str; end interface operator(//)
+
+public :: lle
+public :: llt
+public :: lne
+public :: leq
+public :: lgt
+public :: lge
+public :: operator(<=)
+public :: operator(<)
+public :: operator(/=)
+public :: operator(==)
+public :: operator(>)
+public :: operator(>=)
+public :: operator(//)
+
 type :: unicode_type ! Unicode string type holding an arbitrary sequence of integer codes.
    !sequence ! not used for storage association; a kludge to prevent extending this type.
    private
@@ -38,6 +103,7 @@ contains
    procedure  ::  trim           =>  oop_trim
    procedure  ::  len            =>  oop_len
    procedure  ::  len_trim       =>  oop_len_trim
+   procedure  ::  index          =>  oop_index
    !DECLARATION OF OVERLOADED OPERATORS FOR TYPE(UNICODE_TYPE)
 !   procedure,private :: eq
 !   generic           :: operator(==) => eq
@@ -69,61 +135,6 @@ interface unicode_type
    end function new_codes
 
 end interface unicode_type
-
-! Assign a character sequence to a string.
-interface assignment(=)
-   module procedure :: assign_str_char
-   module procedure :: assign_str_codes
-end interface assignment(=)
-
-interface character
-   module procedure :: char_str
-   module procedure :: char_str_range
-   module procedure :: char_str_range_step
-end interface character
-public :: character
-
-interface range
-   module procedure :: string_range
-   module procedure :: string_range_step
-end interface range
-public :: range
-
-interface repeat;       module procedure :: repeat_str;   end interface repeat;    public :: repeat
-interface len;          module procedure :: len_str;      end interface len;       public :: len;
-interface len_trim;     module procedure :: len_trim_str; end interface len_trim;  public :: len_trim
-interface trim;         module procedure :: trim_str;     end interface trim;      public :: trim
-interface adjustr;      module procedure :: adjustr_str;  end interface adjustr;   public :: adjustr
-interface adjustl;      module procedure :: adjustl_str;  end interface adjustl;   public :: adjustl
-
-interface lle;          module procedure :: lle_str_str,    lle_str_char,    lle_char_str;    end interface lle
-interface llt;          module procedure :: llt_str_str,    llt_str_char,    llt_char_str;    end interface llt
-interface lne;          module procedure :: lne_char_str,   lne_str_char,    lne_str_str;     end interface lne
-interface leq;          module procedure :: leq_char_str,   leq_str_char,    leq_str_str;     end interface leq
-interface lgt;          module procedure :: lgt_str_str,    lgt_str_char,    lgt_char_str;    end interface lgt
-interface lge;          module procedure :: lge_str_str,    lge_str_char,    lge_char_str;    end interface lge
-interface operator(<=); module procedure :: lle_str_str,    lle_str_char,    lle_char_str;    end interface operator(<=)
-interface operator(<);  module procedure :: llt_str_str,    llt_str_char,    llt_char_str;    end interface operator(<)
-interface operator(/=); module procedure :: lne_char_str,   lne_str_char,    lne_str_str;     end interface operator(/=)
-interface operator(==); module procedure :: leq_char_str,   leq_str_char,    leq_str_str;     end interface operator(==)
-interface operator(>);  module procedure :: lgt_str_str,    lgt_str_char,    lgt_char_str;    end interface operator(>)
-interface operator(>=); module procedure :: lge_str_str,    lge_str_char,    lge_char_str;    end interface operator(>=)
-interface operator(//); module procedure :: concat_str_str, concat_str_char, concat_char_str; end interface operator(//)
-
-public :: lle
-public :: llt
-public :: lne
-public :: leq
-public :: lgt
-public :: lge
-public :: operator(<=)
-public :: operator(<)
-public :: operator(/=)
-public :: operator(==)
-public :: operator(>)
-public :: operator(>=)
-public :: operator(//)
-
 
 ! space U+0020 32 Common Basic Latin Separator, Most common (normal
 ! ASCII space)
@@ -910,7 +921,7 @@ end function lle_char_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! Lexically compare two character sequences for being less than 
+! Lexically compare two character sequences for being less than
 elemental function llt_str_str(lhs, rhs) result(is_llt)
 type(unicode_type), intent(in) :: lhs
 type(unicode_type), intent(in) :: rhs
@@ -959,7 +970,7 @@ end function llt_char_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! Lexically compare two character sequences for being greater than 
+! Lexically compare two character sequences for being greater than
 elemental function lgt_str_str(lhs, rhs) result(is_lgt)
 type(unicode_type), intent(in) :: lhs
 type(unicode_type), intent(in) :: rhs
@@ -1005,6 +1016,45 @@ type(unicode_type), intent(in) :: rhs
 logical                        :: is_lgt
    is_lgt = lgt_str_str(unicode_type(lhs), rhs )
 end function lgt_char_str
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! find location of substring within string
+
+elemental function index_str_str(string, substring) result(foundat)
+type(unicode_type), intent(in) :: string
+type(unicode_type), intent(in) :: substring
+integer                        :: foundat
+integer                        :: i
+integer                        :: strlen
+integer                        :: sublen
+
+   strlen=string%len()
+   sublen=substring%len()
+   foundat=0
+
+   do i=1,strlen - sublen + 1
+      if ( all(string%codes(i:i+sublen-1) .eq. substring%codes) )then
+         foundat=i
+         exit
+      endif
+   enddo
+
+end function index_str_str
+
+elemental function index_str_char(string, substring) result(foundat)
+type(unicode_type), intent(in) :: string
+character(len=*), intent(in)   :: substring
+integer                        :: foundat
+   foundat = index_str_str(string, unicode_type(substring))
+end function index_str_char
+
+elemental function index_char_str(string, substring) result(foundat)
+character(len=*), intent(in)   :: string
+type(unicode_type), intent(in) :: substring
+integer                        :: foundat
+   foundat = index_str_str(unicode_type(string), substring )
+end function index_char_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1055,6 +1105,20 @@ class(unicode_type), intent(in) :: self
 integer                         :: len_out
    len_out=len(self)
 end function oop_len
+!===================================================================================================================================
+impure function oop_index(self,substring) result(index_out)
+class(unicode_type), intent(in) :: self
+class(*), intent(in)            :: substring
+integer                         :: index_out
+   select type(substring)
+      type is (character(len=*))
+         index_out=index(self,unicode_type(substring))
+      type is (unicode_type)
+         index_out=index(self,substring)
+      class default
+         stop '<ERROR>*oop_index* unknown type'
+   end select
+end function oop_index
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
