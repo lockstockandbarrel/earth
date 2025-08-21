@@ -15,14 +15,13 @@ private :: a2s, s2a
 
 public :: unicode_type
 public :: assignment(=)
-public :: operator(//)
 
 interface utf8_to_codepoints
-   module procedure utf8_to_codepoints_string,utf8_to_codepoints_chars
+   module procedure utf8_to_codepoints_str,utf8_to_codepoints_chars
 end interface utf8_to_codepoints
 
 interface codepoints_to_utf8
-   module procedure codepoints_to_utf8_string,codepoints_to_utf8_chars
+   module procedure codepoints_to_utf8_str,codepoints_to_utf8_chars
 end interface codepoints_to_utf8
 
 type :: unicode_type ! Unicode string type holding an arbitrary sequence of integer codes.
@@ -42,35 +41,27 @@ contains
    !DECLARATION OF OVERLOADED OPERATORS FOR TYPE(UNICODE_TYPE)
 !   procedure,private :: eq
 !   generic           :: operator(==) => eq
+!   procedure,private :: ge
+!   generic           :: operator(>=) => ge
 !   procedure,private :: lt
 !   generic           :: operator(<)  => lt
 !   procedure,private :: gt
 !   generic           :: operator(>)  => gt
-!   procedure,private :: ge
-!   generic           :: operator(>=) => ge
 !   procedure,private :: le
 !   generic           :: operator(<=) => le
 !   procedure,private :: ne
 !   generic           :: operator(/=) => ne
 
-!   procedure,private :: string_plus_value
-!   generic           :: operator(+) => string_plus_value   ! string + integer|real|doubleprecision|string|character
-!   procedure,private :: string_minus_value
-!   generic           :: operator(-) => string_minus_value  ! string - integer|real|doubleprecision|string|character
-!   procedure,private :: string_multiply_value
-!   generic           :: operator(*) => string_multiply_value  ! string * integer|real|doubleprecision
 !   procedure,private :: string_append_value
 !   generic           :: operator(//) => string_append_value
-!-!   procedure,private :: minus_string
-!-!   generic           :: operator(-)  => minus_string
 end type unicode_type
 
 ! Constructor for new string instances
 interface unicode_type
-   elemental module function new_string(string) result(new)
+   elemental module function new_str(string) result(new)
       character(len=*), intent(in), optional :: string
       type(unicode_type)                     :: new
-   end function new_string
+   end function new_str
 
    module function new_codes(codes) result(new)
       integer, intent(in)                    :: codes(:)
@@ -81,15 +72,14 @@ end interface unicode_type
 
 ! Assign a character sequence to a string.
 interface assignment(=)
-   module procedure :: assign_string_char
-   module procedure :: assign_string_codes
+   module procedure :: assign_str_char
+   module procedure :: assign_str_codes
 end interface assignment(=)
 
-
 interface character
-   module procedure :: char_string
-   module procedure :: char_string_range
-   module procedure :: char_string_range_step
+   module procedure :: char_str
+   module procedure :: char_str_range
+   module procedure :: char_str_range_step
 end interface character
 public :: character
 
@@ -99,20 +89,41 @@ interface range
 end interface range
 public :: range
 
-interface repeat;    module procedure :: repeat_string;    end interface repeat;    public :: repeat
-interface len;       module procedure :: len_string;       end interface len;       public :: len;
-interface len_trim;  module procedure :: len_trim_string;  end interface len_trim;  public :: len_trim
-interface trim;      module procedure :: trim_string;      end interface trim;      public :: trim
-interface adjustr;   module procedure :: adjustr_string;   end interface adjustr;   public :: adjustr
-interface adjustl;   module procedure :: adjustl_string;   end interface adjustl;   public :: adjustl
+interface repeat;       module procedure :: repeat_str;   end interface repeat;    public :: repeat
+interface len;          module procedure :: len_str;      end interface len;       public :: len;
+interface len_trim;     module procedure :: len_trim_str; end interface len_trim;  public :: len_trim
+interface trim;         module procedure :: trim_str;     end interface trim;      public :: trim
+interface adjustr;      module procedure :: adjustr_str;  end interface adjustr;   public :: adjustr
+interface adjustl;      module procedure :: adjustl_str;  end interface adjustl;   public :: adjustl
 
-! Concatenate two character sequences, LHS, RHS or both can be represented by a byte string or unicode_type.
-!
-    interface operator(//)
-        module procedure :: concat_string_string
-        module procedure :: concat_string_char
-        module procedure :: concat_char_string
-    end interface operator(//)
+interface lle;          module procedure :: lle_str_str,    lle_str_char,    lle_char_str;    end interface lle
+interface llt;          module procedure :: llt_str_str,    llt_str_char,    llt_char_str;    end interface llt
+interface lne;          module procedure :: lne_char_str,   lne_str_char,    lne_str_str;     end interface lne
+interface leq;          module procedure :: leq_char_str,   leq_str_char,    leq_str_str;     end interface leq
+interface lgt;          module procedure :: lgt_str_str,    lgt_str_char,    lgt_char_str;    end interface lgt
+interface lge;          module procedure :: lge_str_str,    lge_str_char,    lge_char_str;    end interface lge
+interface operator(<=); module procedure :: lle_str_str,    lle_str_char,    lle_char_str;    end interface operator(<=)
+interface operator(<);  module procedure :: llt_str_str,    llt_str_char,    llt_char_str;    end interface operator(<)
+interface operator(/=); module procedure :: lne_char_str,   lne_str_char,    lne_str_str;     end interface operator(/=)
+interface operator(==); module procedure :: leq_char_str,   leq_str_char,    leq_str_str;     end interface operator(==)
+interface operator(>);  module procedure :: lgt_str_str,    lgt_str_char,    lgt_char_str;    end interface operator(>)
+interface operator(>=); module procedure :: lge_str_str,    lge_str_char,    lge_char_str;    end interface operator(>=)
+interface operator(//); module procedure :: concat_str_str, concat_str_char, concat_char_str; end interface operator(//)
+
+public :: lle
+public :: llt
+public :: lne
+public :: leq
+public :: lgt
+public :: lge
+public :: operator(<=)
+public :: operator(<)
+public :: operator(/=)
+public :: operator(==)
+public :: operator(>)
+public :: operator(>=)
+public :: operator(//)
+
 
 ! space U+0020 32 Common Basic Latin Separator, Most common (normal
 ! ASCII space)
@@ -192,7 +203,6 @@ integer,intent(out)               :: nerr
 character(len=256)                :: nerrmsg
 integer                           :: i, n_unicode, n_utf8, cp
 character, allocatable            :: temp_utf8(:)
-
 
    n_unicode = size(unicode)
 
@@ -469,7 +479,7 @@ end subroutine utf8_to_isolatin
 !===================================================================================================================================
 pure function a2s(array)  result (string)
 
-! @(#) M_strings a2s(3fp) function to copy char array to string
+! @(#) M_strs a2s(3fp) function to copy char array to string
 
 character(len=1),intent(in) :: array(:)
 character(len=SIZE(array))  :: string
@@ -484,7 +494,7 @@ end function a2s
 !===================================================================================================================================
 pure function s2a(string)  RESULT (array)
 
-! @(#) M_strings s2a(3fp) function to copy string(1 Clen(string)) to char array
+! @(#) M_strs s2a(3fp) function to copy string(1 Clen(string)) to char array
 
 character(len=*),intent(in) :: string
 character(len=1)            :: array(len(string))
@@ -497,7 +507,7 @@ end function s2a
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-pure subroutine codepoints_to_utf8_string(unicode,utf8,nerr)
+pure subroutine codepoints_to_utf8_str(unicode,utf8,nerr)
 
 integer,intent(in)                       :: unicode(:)
 character(len=:),allocatable,intent(out) :: utf8
@@ -506,11 +516,11 @@ character, allocatable                   :: utf8_chars(:)
    nerr=0
    call codepoints_to_utf8_chars(unicode,utf8_chars,nerr)
    utf8=a2s(utf8_chars)
-end subroutine codepoints_to_utf8_string
+end subroutine codepoints_to_utf8_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-pure subroutine utf8_to_codepoints_string(utf8,unicode,nerr)
+pure subroutine utf8_to_codepoints_str(utf8,unicode,nerr)
 
 ! in fact, this routine is also able to decode an ISOLATIN string
 
@@ -520,20 +530,20 @@ integer,intent(out)             :: nerr
 character,allocatable           :: temp(:)
    temp=s2a(utf8)
    call utf8_to_codepoints_chars(temp,unicode,nerr)
-end subroutine utf8_to_codepoints_string
+end subroutine utf8_to_codepoints_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! Constructor for new string instances from a scalar character value.
-elemental module function new_string(string) result(new)
+elemental module function new_str(string) result(new)
 character(len=*), intent(in), optional :: string
 type(unicode_type)                     :: new
 integer                                :: nerr
    if (present(string)) then
-      call utf8_to_codepoints_string(string,new%codes,nerr)
+      call utf8_to_codepoints_str(string,new%codes,nerr)
    endif
-end function new_string
-!===================================================================================================================================
+end function new_str
+
 ! Constructor for new string instance from a vector integer value.
 module function new_codes(codes) result(new)
 integer,intent(in) :: codes(:)
@@ -544,26 +554,26 @@ end function new_codes
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! Assign a character sequence to a string.
-elemental subroutine assign_string_char(lhs, rhs)
+elemental subroutine assign_str_char(lhs, rhs)
 type(unicode_type), intent(inout) :: lhs
 character(len=*), intent(in)      :: rhs
 integer                           :: nerr
-   call utf8_to_codepoints_string(rhs,lhs%codes,nerr)
-end subroutine assign_string_char
-!===================================================================================================================================
+   call utf8_to_codepoints_str(rhs,lhs%codes,nerr)
+end subroutine assign_str_char
+
 ! Assign a character sequence to a string.
-subroutine assign_string_codes(lhs, rhs)
+subroutine assign_str_codes(lhs, rhs)
 type(unicode_type), intent(inout) :: lhs
 integer, intent(in)               :: rhs(:)
 integer                           :: nerr
    lhs%codes=rhs
-end subroutine assign_string_codes
+end subroutine assign_str_codes
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 
 ! Returns the length of the character sequence represented by the string.
-elemental function len_string(string) result(length)
+elemental function len_str(string) result(length)
 type(unicode_type), intent(in) :: string
 integer :: length
 
@@ -573,22 +583,21 @@ integer :: length
       length = 0
    endif
 
-end function len_string
+end function len_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! Return the character sequence represented by the string.
-pure function char_string(string) result(aline)
+pure function char_str(string) result(aline)
 type(unicode_type), intent(in) :: string
 character(len=:),allocatable   :: aline
 integer                        :: nerr
 
-call codepoints_to_utf8_string(string%codes,aline,nerr)
+call codepoints_to_utf8_str(string%codes,aline,nerr)
 
-end function char_string
-!===================================================================================================================================
-! Return the character sequence represented by the string.
-pure function char_string_range(string, first, last) result(aline)
+end function char_str
+
+pure function char_str_range(string, first, last) result(aline)
 type(unicode_type), intent(in) :: string
 integer, intent(in)            :: first
 integer, intent(in)            :: last
@@ -596,12 +605,11 @@ integer, intent(in)            :: last
 character(len=:),allocatable   :: aline
 integer                        :: nerr
 
-   call codepoints_to_utf8_string(string%codes(first:last),aline,nerr)
+   call codepoints_to_utf8_str(string%codes(first:last),aline,nerr)
 
-end function char_string_range
-!===================================================================================================================================
-! Return the character sequence represented by the string.
-pure function char_string_range_step(string, first, last, step) result(aline)
+end function char_str_range
+
+pure function char_str_range_step(string, first, last, step) result(aline)
 type(unicode_type), intent(in) :: string
 integer, intent(in)            :: first
 integer, intent(in)            :: last
@@ -610,9 +618,9 @@ integer, intent(in)            :: step
 character(len=:),allocatable   :: aline
 integer                        :: nerr
 
-   call codepoints_to_utf8_string(string%codes(first:last:step),aline,nerr)
+   call codepoints_to_utf8_str(string%codes(first:last:step),aline,nerr)
 
-end function char_string_range_step
+end function char_str_range_step
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -626,7 +634,7 @@ type(unicode_type)             :: uline
    uline%codes = string%codes(first:last)
 
 end function string_range
-!===================================================================================================================================
+
 ! Return the character sequence represented by the string.
 pure function string_range_step(string, first, last, step) result(uline)
 type(unicode_type), intent(in) :: string
@@ -643,22 +651,22 @@ end function string_range_step
 !===================================================================================================================================
 ! Repeats the character sequence held by the string by the number of specified copies.
 ! This method is elemental and returns a scalar character value.
-elemental function repeat_string(string, ncopies) result(repeated_string)
+elemental function repeat_str(string, ncopies) result(repeated_str)
 type(unicode_type), intent(in) :: string
 integer, intent(in)            :: ncopies
-type(unicode_type)             :: repeated_string
+type(unicode_type)             :: repeated_str
 integer                        :: i
 
-   repeated_string%codes=[(string%codes,i=1,ncopies)]
+   repeated_str%codes=[(string%codes,i=1,ncopies)]
 
-end function repeat_string
+end function repeat_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! Returns length of character sequence without trailing spaces represented by the string.
 !
 
-elemental function len_trim_string(string) result(length)
+elemental function len_trim_str(string) result(length)
 type(unicode_type), intent(in) :: string
 integer                        :: length
 
@@ -667,39 +675,39 @@ integer                        :: length
       exit
    enddo
 
-end function len_trim_string
+end function len_trim_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! This method is elemental and returns a scalar character value.
-elemental function trim_string(string) result(trimmed_string)
+elemental function trim_str(string) result(trimmed_str)
 type(unicode_type), intent(in) :: string
-type(unicode_type)             :: trimmed_string
+type(unicode_type)             :: trimmed_str
 integer                        :: last
 
-   last=len_trim_string(string)
-   trimmed_string%codes=string%codes(:last)
+   last=len_trim_str(string)
+   trimmed_str%codes=string%codes(:last)
 
-end function trim_string
+end function trim_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! right-justify string by moving trailing spaces to beginning of string so length is retained even if spaces are of varied width
-elemental function adjustr_string(string) result(adjusted)
+elemental function adjustr_str(string) result(adjusted)
 type(unicode_type), intent(in) :: string
 type(unicode_type)             :: adjusted
 integer                        :: last
 integer                        :: i
 
-   last=len_trim_string(string)
+   last=len_trim_str(string)
    adjusted%codes=cshift(string%codes,-(size(adjusted%codes)-last-1))
 
-end function adjustr_string
+end function adjustr_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !left-justify string by  moving leading spaces to end of string so length is retained even if spaces are of varied width
-elemental function adjustl_string(string) result(adjusted)
+elemental function adjustl_str(string) result(adjusted)
 type(unicode_type), intent(in) :: string
 type(unicode_type)             :: adjusted
 integer                        :: first
@@ -711,57 +719,317 @@ integer                        :: i
    enddo
    adjusted%codes=cshift(string%codes,first-1)
 
-end function adjustl_string
+end function adjustl_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-elemental function concat_string_string(lhs, rhs) result(lhsrhs)
+! Concatenate two character sequences, LHS, RHS or both can be represented by a byte string or unicode_type.
+!
+elemental function concat_str_str(lhs, rhs) result(lhsrhs)
 type(unicode_type), intent(in) :: lhs
 type(unicode_type), intent(in) :: rhs
 type(unicode_type)             :: lhsrhs
    lhsrhs%codes = [lhs%codes,rhs%codes]
-end function concat_string_string
-!===================================================================================================================================
-elemental function concat_string_char(lhs, rhs) result(lhsrhs)
+end function concat_str_str
+
+elemental function concat_str_char(lhs, rhs) result(lhsrhs)
 type(unicode_type), intent(in) :: lhs
 character(len=*), intent(in)   :: rhs
 type(unicode_type)             :: lhsrhs
    lhsrhs = unicode_type(rhs)
    lhsrhs%codes = [lhs%codes, lhsrhs%codes]
-end function concat_string_char
-!===================================================================================================================================
-elemental function concat_char_string(lhs, rhs) result(lhsrhs)
+end function concat_str_char
+
+elemental function concat_char_str(lhs, rhs) result(lhsrhs)
 character(len=*), intent(in)   :: lhs
 type(unicode_type), intent(in) :: rhs
 type(unicode_type)             :: lhsrhs
    lhsrhs = unicode_type(lhs)
    lhsrhs%codes = [lhsrhs%codes,rhs%codes]
-end function concat_char_string
+end function concat_char_str
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Compare two character sequences for non-equality; LHS, RHS or both sequences can be a unicode string or character variable.
+!
+elemental function lne_str_str(lhs, rhs) result(is_equal)
+type(unicode_type), intent(in) :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_equal
+integer                        :: icount
+   if(lhs%len_trim().eq.rhs%len_trim())then
+      icount=lhs%len_trim()
+      is_equal = .not.all( lhs%codes(:icount) .eq. rhs%codes(:icount) )
+   else
+      is_equal = .true.
+   endif
+end function lne_str_str
+
+elemental function lne_str_char(lhs, rhs) result(is_equal)
+type(unicode_type), intent(in) :: lhs
+character(len=*), intent(in)   :: rhs
+logical                        :: is_equal
+   is_equal = lne_str_str(lhs, unicode_type(rhs))
+end function lne_str_char
+
+elemental function lne_char_str(lhs, rhs) result(is_equal)
+character(len=*), intent(in)   :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_equal
+   is_equal = lne_str_str(unicode_type(lhs), rhs)
+end function lne_char_str
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Compare two character sequences for equality; LHS, RHS or both sequences can be a unicode string or character variable.
+!
+elemental function leq_str_str(lhs, rhs) result(is_equal)
+type(unicode_type), intent(in) :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_equal
+integer                        :: icount
+   if(lhs%len_trim().eq.rhs%len_trim())then
+      icount=lhs%len_trim()
+      is_equal = all( lhs%codes(:icount) .eq. rhs%codes(:icount) )
+   else
+      is_equal = .false.
+   endif
+end function leq_str_str
+
+elemental function leq_str_char(lhs, rhs) result(is_equal)
+type(unicode_type), intent(in) :: lhs
+character(len=*), intent(in)   :: rhs
+logical                        :: is_equal
+   is_equal = leq_str_str(lhs, unicode_type(rhs))
+end function leq_str_char
+
+elemental function leq_char_str(lhs, rhs) result(is_equal)
+character(len=*), intent(in)   :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_equal
+   is_equal = leq_str_str(unicode_type(lhs), rhs)
+end function leq_char_str
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Lexically compare two character sequences for being greater or equal
+elemental function lge_str_str(lhs, rhs) result(is_lge)
+type(unicode_type), intent(in) :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_lge
+integer                        :: i
+integer                        :: llen
+integer                        :: rlen
+
+   llen=len_trim(lhs)
+   rlen=len_trim(rhs)
+
+   FOUND: block
+
+   do i=1,min(llen,rlen)
+      select case(lhs%codes(i)-rhs%codes(i))
+      case(0);   cycle
+      case(1:);  is_lge=.true.;  exit FOUND
+      case(:-1); is_lge=.false.; exit FOUND
+      end select
+   enddo
+
+   ! all equal, decide based on difference in length
+   select case( llen - rlen )
+   case(0);   is_lge=.true.
+   case(1:);  is_lge=.true.
+   case(:-1); is_lge=.false.
+   end select
+
+   endblock FOUND
+
+end function lge_str_str
+
+elemental function lge_str_char(lhs, rhs) result(is_lge)
+type(unicode_type), intent(in) :: lhs
+character(len=*), intent(in)   :: rhs
+logical                        :: is_lge
+   is_lge = lge_str_str(lhs, unicode_type(rhs))
+end function lge_str_char
+
+elemental function lge_char_str(lhs, rhs) result(is_lge)
+character(len=*), intent(in)   :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_lge
+   is_lge = lge_str_str(unicode_type(lhs), rhs )
+end function lge_char_str
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Lexically compare two character sequences for being less than or equal
+elemental function lle_str_str(lhs, rhs) result(is_lle)
+type(unicode_type), intent(in) :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_lle
+integer                        :: i
+integer                        :: llen
+integer                        :: rlen
+
+   llen=len_trim(lhs)
+   rlen=len_trim(rhs)
+
+   FOUND: block
+
+   do i=1,min(llen,rlen)
+      select case( lhs%codes(i) - rhs%codes(i) )
+      case(0);   cycle
+      case(1:);  is_lle = .false.;  exit FOUND
+      case(:-1); is_lle = .true.;   exit FOUND
+      end select
+   enddo
+
+   ! all equal, decide based on difference in length
+   select case( llen - rlen )
+   case(:-1); is_lle = .true.
+   case(0);   is_lle = .true.
+   case(1:);  is_lle = .false.
+   end select
+
+   endblock FOUND
+
+end function lle_str_str
+
+elemental function lle_str_char(lhs, rhs) result(is_lle)
+type(unicode_type), intent(in) :: lhs
+character(len=*), intent(in)   :: rhs
+logical                        :: is_lle
+   is_lle = lle_str_str(lhs, unicode_type(rhs))
+end function lle_str_char
+
+elemental function lle_char_str(lhs, rhs) result(is_lle)
+character(len=*), intent(in)   :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_lle
+   is_lle = lle_str_str(unicode_type(lhs), rhs )
+end function lle_char_str
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Lexically compare two character sequences for being less than 
+elemental function llt_str_str(lhs, rhs) result(is_llt)
+type(unicode_type), intent(in) :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_llt
+integer                        :: i
+integer                        :: llen
+integer                        :: rlen
+
+   llen=len_trim(lhs)
+   rlen=len_trim(rhs)
+
+   FOUND: block
+
+   do i=1,min(llen,rlen)
+      select case(lhs%codes(i)-rhs%codes(i))
+      case(0);   cycle;
+      case(1:);  is_llt=.false.;  exit FOUND
+      case(:-1); is_llt=.true.;   exit FOUND
+      end select
+   enddo
+
+   ! all equal, decide based on difference in length
+   select case( llen - rlen )
+   case(0);   is_llt=.false.
+   case(1:);  is_llt=.false.
+   case(:-1); is_llt=.true.
+   end select
+
+   endblock FOUND
+
+end function llt_str_str
+
+elemental function llt_str_char(lhs, rhs) result(is_llt)
+type(unicode_type), intent(in) :: lhs
+character(len=*), intent(in)   :: rhs
+logical                        :: is_llt
+   is_llt = llt_str_str(lhs, unicode_type(rhs))
+end function llt_str_char
+
+elemental function llt_char_str(lhs, rhs) result(is_llt)
+character(len=*), intent(in)   :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_llt
+   is_llt = llt_str_str(unicode_type(lhs), rhs )
+end function llt_char_str
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Lexically compare two character sequences for being greater than 
+elemental function lgt_str_str(lhs, rhs) result(is_lgt)
+type(unicode_type), intent(in) :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_lgt
+integer                        :: i
+integer                        :: llen
+integer                        :: rlen
+
+   llen=len_trim(lhs)
+   rlen=len_trim(rhs)
+
+   FOUND: block
+
+   do i=1,min(llen,rlen)
+      select case(lhs%codes(i)-rhs%codes(i))
+      case(0);   cycle;
+      case(1:);  is_lgt=.true.;  exit FOUND
+      case(:-1); is_lgt=.false.; exit FOUND
+      end select
+   enddo
+
+   ! all equal, decide based on difference in length
+   select case( llen - rlen )
+   case(0);   is_lgt=.false.
+   case(1:);  is_lgt=.true.
+   case(:-1); is_lgt=.false.
+   end select
+
+   endblock FOUND
+
+end function lgt_str_str
+
+elemental function lgt_str_char(lhs, rhs) result(is_lgt)
+type(unicode_type), intent(in) :: lhs
+character(len=*), intent(in)   :: rhs
+logical                        :: is_lgt
+   is_lgt = lgt_str_str(lhs, unicode_type(rhs))
+end function lgt_str_char
+
+elemental function lgt_char_str(lhs, rhs) result(is_lgt)
+character(len=*), intent(in)   :: lhs
+type(unicode_type), intent(in) :: rhs
+logical                        :: is_lgt
+   is_lgt = lgt_str_str(unicode_type(lhs), rhs )
+end function lgt_char_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_adjustl(self) result (string_out)
 
-! ident_12="@(#) M_strings oop_adjustl(3f) adjust string to left"
+! ident_12="@(#) M_strs oop_adjustl(3f) adjust string to left"
 
 class(unicode_type),intent(in)     :: self
 type(unicode_type)                 :: string_out
-   string_out=adjustl_string(self)
+   string_out=adjustl_str(self)
 end function oop_adjustl
 !===================================================================================================================================
 function oop_adjustr(self) result (string_out)
 
-! ident_13="@(#) M_strings oop_adjustr(3f) adjust string to right"
+! ident_13="@(#) M_strs oop_adjustr(3f) adjust string to right"
 
 class(unicode_type),intent(in)     :: self
 type(unicode_type)                 :: string_out
-   string_out=adjustr_string(self)
+   string_out=adjustr_str(self)
 end function oop_adjustr
 !===================================================================================================================================
 pure function oop_character(self) result(bytes_out)
 class(unicode_type), intent(in) :: self
 character(len=:),allocatable    :: bytes_out
-   bytes_out=char_string(self)
+   bytes_out=char_str(self)
 end function oop_character
 !===================================================================================================================================
 pure function oop_trim(self) result(string_out)
@@ -773,7 +1041,7 @@ end function oop_trim
 pure function oop_bytes(self) result(bytes_out)
 class(unicode_type), intent(in) :: self
 character(len=:),allocatable    :: bytes_out(:)
-   bytes_out=s2a(char_string(self))
+   bytes_out=s2a(char_str(self))
 end function oop_bytes
 !===================================================================================================================================
 pure function oop_len_trim(self) result(len_trim_out)

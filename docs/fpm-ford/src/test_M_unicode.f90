@@ -3,10 +3,18 @@ use iso_fortran_env, only : output_unit
 use M_unicode, only : adjustl, adjustr, trim
 use M_unicode, only : character
 use M_unicode, only : assignment(=), unicode_type, operator(//)
+use M_unicode, only : operator(<=), lle
+use M_unicode, only : operator(<),  llt
+use M_unicode, only : operator(/=), lne
+use M_unicode, only : operator(==), leq
+use M_unicode, only : operator(>),  lgt
+use M_unicode, only : operator(>=), lge
 implicit none
 integer,parameter          :: ascii = selected_char_kind ("ascii")
 character(len=*),parameter :: g0='(*(g0))'
 character(len=*),parameter :: gx='(*(g0,1x))'
+logical,parameter          :: T=.true.
+logical,parameter          :: F=.false.
 !
 character(len=*),parameter :: upagain="七転び八起き。転んでもまた立ち上がる。くじけずに前を向いて歩いていこう。"
 ! Romanization:
@@ -19,6 +27,7 @@ type(unicode_type)             :: ut_str
 type(unicode_type)             :: smiley
 integer                        :: total
 integer                        :: err
+type(unicode_type)             :: lhs, rhs
 
    smiley='😃'
    total = 0
@@ -80,6 +89,23 @@ integer                        :: err
    astr='😃 and 😃and😃😃is it'
    call checkit('concatenation',astr,character(ut_str), '😃 and 😃and😃😃is it')
 
+   lhs='this is the left'
+   rhs='this is the right'
+   call checkits_l('LLE',' ', [ lle(lhs,rhs),lhs <= rhs,lle(rhs,lhs),rhs <= lhs ] , [T,T,F,F] )
+   call checkits_l('LLT',' ', [ llt(lhs,rhs),lhs <  rhs,llt(rhs,lhs),rhs <  lhs ] , [T,T,F,F] )
+   call checkits_l('LNE',' ', [ lne(lhs,rhs),lhs /= rhs,lne(rhs,lhs),rhs /= lhs ] , [T,T,T,T] )
+   call checkits_l('LEQ',' ', [ leq(lhs,rhs),lhs == rhs,leq(rhs,lhs),rhs == lhs ] , [F,F,F,F] )
+   call checkits_l('LGT',' ', [ lgt(lhs,rhs),lhs >  rhs,lgt(rhs,lhs),rhs >  lhs ] , [F,F,T,T] )
+   call checkits_l('LGE',' ', [ lge(lhs,rhs),lhs >= rhs,lge(rhs,lhs),rhs >= lhs ] , [F,F,T,T] )
+   lhs='abc'
+   rhs='abc '
+   call checkits_l('LLE',' ', [ lle(lhs,rhs),lhs <= rhs,lle(rhs,lhs),rhs <= lhs ] , [T,T,T,T] )
+   call checkits_l('LLT',' ', [ llt(lhs,rhs),lhs <  rhs,llt(rhs,lhs),rhs <  lhs ] , [F,F,F,F] )
+   call checkits_l('LNE',' ', [ lne(lhs,rhs),lhs /= rhs,lne(rhs,lhs),rhs /= lhs ] , [F,F,F,F] )
+   call checkits_l('LEQ',' ', [ leq(lhs,rhs),lhs == rhs,leq(rhs,lhs),rhs == lhs ] , [T,T,T,T] )
+   call checkits_l('LGT',' ', [ lgt(lhs,rhs),lhs >  rhs,lgt(rhs,lhs),rhs >  lhs ] , [F,F,F,F] )
+   call checkits_l('LGE',' ', [ lge(lhs,rhs),lhs >= rhs,lge(rhs,lhs),rhs >= lhs ] , [T,T,T,T] )
+
 contains
 
 subroutine checkit(label,aline,answer,expected)
@@ -99,6 +125,15 @@ character(len=*),intent(in) :: expected(:)
    write(*,g0)merge('PASSED','FAILED',all(answer.eq.expected)),' ',label,':[',aline,'][',answer,'][',expected,']'
    if(all(answer.ne.expected))total=total+1
 end subroutine checkits
+
+subroutine checkits_l(label,aline,answer,expected)
+character(len=*),intent(in) :: label
+character(len=*),intent(in) :: aline
+logical,intent(in) :: answer(:)
+logical,intent(in) :: expected(:)
+   write(*,g0)merge('PASSED','FAILED',all(answer.eqv.expected)),' ',label,':[',aline,'][',answer,'][',expected,']'
+   if(all(answer.neqv.expected))total=total+1
+end subroutine checkits_l
 
 subroutine check(label,test)
 character(len=*),intent(in) :: label
