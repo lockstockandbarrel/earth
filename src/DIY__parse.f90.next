@@ -1,4 +1,5 @@
 Module DIY__parse
+use M_unicode
 private
 public :: split, tokenize
 interface tokenize
@@ -12,10 +13,10 @@ contains
 pure subroutine split_tokens(string, set, tokens, separator)
 ! Splits a string into tokens using characters in set as token delimiters.
 ! If present, separator contains the array of token delimiters.
-character(*), intent(in)                      :: string
-character(*), intent(in)                      :: set
-character(:), allocatable, intent(out)        :: tokens(:)
-character, allocatable, intent(out), optional :: separator(:)
+type(unicode_type), intent(in)                :: string
+type(unicode_type), intent(in)                :: set
+type(unicode_type), allocatable, intent(out)  :: tokens(:)
+type(unicode_type), allocatable, intent(out), optional :: separator(:)
 
 integer, allocatable                          :: first(:), last(:)
 integer                                       :: n
@@ -31,16 +32,16 @@ integer                                       :: imax
     else
        imax=maxval(last-first)+1
     endif
-    allocate(character(len=imax) :: tokens(size(first)))
+    allocate( tokens(size(first)) )
 
     do concurrent (n = 1:size(tokens))
-      tokens(n) = string(first(n):last(n))
+      tokens(n) = string%codes(first(n):last(n))
     enddo
 
     if (present(separator)) then
       allocate(separator(size(tokens) - 1))
       do concurrent (n = 1:size(tokens) - 1)
-        separator(n) = string(first(n+1)-1:first(n+1)-1)
+        separator(n) = string%codes(first(n+1)-1:first(n+1)-1)
       enddo
     endif
 

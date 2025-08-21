@@ -1,6 +1,6 @@
 program test_M_unicode
 use iso_fortran_env, only : output_unit
-use M_unicode, only : adjustl, adjustr, trim
+use M_unicode, only : adjustl, adjustr, trim, index
 use M_unicode, only : character
 use M_unicode, only : assignment(=), unicode_type, operator(//)
 use M_unicode, only : operator(<=), lle
@@ -28,6 +28,7 @@ type(unicode_type)             :: smiley
 integer                        :: total
 integer                        :: err
 type(unicode_type)             :: lhs, rhs
+type(unicode_type)             :: string, substring
 
    smiley='😃'
    total = 0
@@ -105,6 +106,24 @@ type(unicode_type)             :: lhs, rhs
    call checkits_l('LEQ',' ', [ leq(lhs,rhs),lhs == rhs,leq(rhs,lhs),rhs == lhs ] , [T,T,T,T] )
    call checkits_l('LGT',' ', [ lgt(lhs,rhs),lhs >  rhs,lgt(rhs,lhs),rhs >  lhs ] , [F,F,F,F] )
    call checkits_l('LGE',' ', [ lge(lhs,rhs),lhs >= rhs,lge(rhs,lhs),rhs >= lhs ] , [T,T,T,T] )
+
+   string=" can you find me here? "
+   substring="find me"
+   astr=character(substring)
+   call check('index '//string%character()//':'//substring%character(),index(string,substring).eq.10)
+   call check('index '//string%character()//':'//astr,index(string,astr).eq.10)
+
+   string=" can you find me here? "
+   substring="not there"
+   astr=character(substring)
+   call check('index '//string%character()//':'//substring%character(),index(string,substring).eq.0)
+   call check('index '//string%character()//':'//astr,index(string,astr).eq.0)
+
+   string="short"
+   substring="shortnot"
+   astr=character(substring)
+   call check('index '//string%character()//':'//substring%character(),index(string,substring).eq.0)
+   call check('index '//string%character()//':'//astr,index(string,astr).eq.0)
 
 contains
 
