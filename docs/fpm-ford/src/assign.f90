@@ -1,6 +1,6 @@
 program assign_exe
 use M_unicode, only : len, len_trim, repeat, trim, adjustr, adjustl
-use M_unicode, only : character, range 
+use M_unicode, only : character
 use M_unicode, only : assignment(=), unicode_type
 character(len=*),parameter   :: g='(*(g0))'
 character(len=:),allocatable :: aline
@@ -20,7 +20,7 @@ character(len=:),allocatable :: glyphs
    write(*,g)'string is: ',character(uline) 
    write(*,g)'third word is: ',character(uline,9,14) ! substring
 
-   substring=range(uline,17,29)
+   substring=character(uline,17,29)
    write(*,g)'string is: ',character(substring) 
 
    uline=repeat(smiley,30)

@@ -37,12 +37,6 @@ interface character
 end interface character
 public :: character
 
-interface range
-   module procedure :: string_range
-   module procedure :: string_range_step
-end interface range
-public :: range
-
 interface adjustl;      module procedure :: adjustl_str;  end interface adjustl
 interface adjustr;      module procedure :: adjustr_str;  end interface adjustr
 interface len;          module procedure :: len_str;      end interface len
@@ -105,18 +99,18 @@ contains
    procedure  ::  len_trim       =>  oop_len_trim
    procedure  ::  index          =>  oop_index
    !DECLARATION OF OVERLOADED OPERATORS FOR TYPE(UNICODE_TYPE)
-!   procedure,private :: eq
+   procedure,private :: eq => oop_eq
 !   generic           :: operator(==) => eq
-!   procedure,private :: ge
-!   generic           :: operator(>=) => ge
-!   procedure,private :: lt
-!   generic           :: operator(<)  => lt
-!   procedure,private :: gt
-!   generic           :: operator(>)  => gt
-!   procedure,private :: le
-!   generic           :: operator(<=) => le
-!   procedure,private :: ne
-!   generic           :: operator(/=) => ne
+!   procedure,private :: ge => oop_ge
+!   generic           :: operator(>=) => oop_ge
+!   procedure,private :: lt => oop_lt
+!   generic           :: operator(<)  => oop_lt
+!   procedure,private :: gt => oop_gt
+!   generic           :: operator(>)  => oop_gt
+!   procedure,private :: le => oop_le
+!   generic           :: operator(<=) => oop_le
+!   procedure,private :: ne => oop_ne
+!   generic           :: operator(/=) => oop_ne
 
 !   procedure,private :: string_append_value
 !   generic           :: operator(//) => string_append_value
@@ -635,31 +629,6 @@ end function char_str_range_step
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! Return the character sequence represented by the string.
-pure function string_range(string, first, last) result(uline)
-type(unicode_type), intent(in) :: string
-integer, intent(in)            :: first
-integer, intent(in)            :: last
-type(unicode_type)             :: uline
-
-   uline%codes = string%codes(first:last)
-
-end function string_range
-
-! Return the character sequence represented by the string.
-pure function string_range_step(string, first, last, step) result(uline)
-type(unicode_type), intent(in) :: string
-integer, intent(in)            :: first
-integer, intent(in)            :: last
-integer, intent(in)            :: step
-type(unicode_type)             :: uline
-
-   uline%codes=string%codes(first:last:step)
-
-end function string_range_step
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 ! Repeats the character sequence held by the string by the number of specified copies.
 ! This method is elemental and returns a scalar character value.
 elemental function repeat_str(string, ncopies) result(repeated_str)
@@ -1076,10 +1045,18 @@ type(unicode_type)                 :: string_out
    string_out=adjustr_str(self)
 end function oop_adjustr
 !===================================================================================================================================
-pure function oop_character(self) result(bytes_out)
+function oop_character(self,first,last,step) result(bytes_out)
 class(unicode_type), intent(in) :: self
 character(len=:),allocatable    :: bytes_out
-   bytes_out=char_str(self)
+integer,intent(in),optional     :: first, last, step
+integer                         :: start, end, inc
+type(unicode_type)              :: temp
+integer                         :: i
+   if(present(step))then;  inc=step;    else; inc=1;         endif
+   if(present(first))then; start=first; else; start=1;       endif
+   if(present(last))then;  end=last;    else; end=len(self); endif
+   temp=self%codes(start:end:inc)
+   bytes_out=char_str(temp)
 end function oop_character
 !===================================================================================================================================
 pure function oop_trim(self) result(string_out)
@@ -1119,6 +1096,20 @@ integer                         :: index_out
          stop '<ERROR>*oop_index* unknown type'
    end select
 end function oop_index
+!===================================================================================================================================
+impure function oop_eq(self,string) result(is_eq)
+class(unicode_type), intent(in) :: self
+class(*), intent(in)            :: string
+logical                         :: is_eq
+   select type(string)
+      type is (character(len=*))
+         is_eq=leq_str_char(self,string)
+      type is (unicode_type)
+         is_eq=leq_str_str(self,string)
+      class default
+         stop '<ERROR>*oop_eq* unknown type'
+   end select
+end function oop_eq
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

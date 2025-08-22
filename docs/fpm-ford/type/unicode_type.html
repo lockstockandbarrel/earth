@@ -91,7 +91,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p>100.0% of total for derived types.</p>Including implementation: 61 statements, 100.0% of total for derived types.">23 statements</a>
+                 title="<p>100.0% of total for derived types.</p>Including implementation: 95 statements, 100.0% of total for derived types.">24 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -222,7 +222,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-codes~3"></span>
+              <span class="anchor" id="variable-codes~2"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -265,7 +265,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-string~9"></span>
+              <span class="anchor" id="variable-string~4"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -484,7 +484,7 @@
       <ul class="list-group">
           <li class="list-group-item">
                     <h3>
-    private pure function oop_character(self) result(bytes_out)  
+    private  function oop_character(self, first, last, step) result(bytes_out)  
 </h3>
 
   
@@ -511,6 +511,51 @@
             </td>
             <td>::</td>
             <td><strong>self</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>first</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>last</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>step</strong></td>
             <td>
                 
             </td>
@@ -796,18 +841,18 @@
 <span class="w">   </span><span class="k">procedure</span><span class="w">  </span><span class="kd">::</span><span class="w">  </span><span class="nb">len_trim</span><span class="w">       </span><span class="o">=&gt;</span><span class="w">  </span><span class="n">oop_len_trim</span><span class="w"></span>
 <span class="w">   </span><span class="k">procedure</span><span class="w">  </span><span class="kd">::</span><span class="w">  </span><span class="nb">index</span><span class="w">          </span><span class="o">=&gt;</span><span class="w">  </span><span class="n">oop_index</span><span class="w"></span>
 <span class="w">   </span><span class="c">!DECLARATION OF OVERLOADED OPERATORS FOR TYPE(UNICODE_TYPE)</span>
-<span class="c">!   procedure,private :: eq</span>
+<span class="w">   </span><span class="k">procedure</span><span class="p">,</span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">eq</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">oop_eq</span><span class="w"></span>
 <span class="c">!   generic           :: operator(==) =&gt; eq</span>
-<span class="c">!   procedure,private :: ge</span>
-<span class="c">!   generic           :: operator(&gt;=) =&gt; ge</span>
-<span class="c">!   procedure,private :: lt</span>
-<span class="c">!   generic           :: operator(&lt;)  =&gt; lt</span>
-<span class="c">!   procedure,private :: gt</span>
-<span class="c">!   generic           :: operator(&gt;)  =&gt; gt</span>
-<span class="c">!   procedure,private :: le</span>
-<span class="c">!   generic           :: operator(&lt;=) =&gt; le</span>
-<span class="c">!   procedure,private :: ne</span>
-<span class="c">!   generic           :: operator(/=) =&gt; ne</span>
+<span class="c">!   procedure,private :: ge =&gt; oop_ge</span>
+<span class="c">!   generic           :: operator(&gt;=) =&gt; oop_ge</span>
+<span class="c">!   procedure,private :: lt =&gt; oop_lt</span>
+<span class="c">!   generic           :: operator(&lt;)  =&gt; oop_lt</span>
+<span class="c">!   procedure,private :: gt =&gt; oop_gt</span>
+<span class="c">!   generic           :: operator(&gt;)  =&gt; oop_gt</span>
+<span class="c">!   procedure,private :: le =&gt; oop_le</span>
+<span class="c">!   generic           :: operator(&lt;=) =&gt; oop_le</span>
+<span class="c">!   procedure,private :: ne =&gt; oop_ne</span>
+<span class="c">!   generic           :: operator(/=) =&gt; oop_ne</span>
 
 <span class="c">!   procedure,private :: string_append_value</span>
 <span class="c">!   generic           :: operator(//) =&gt; string_append_value</span>
@@ -834,7 +879,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-21 22:26 +0000             </p>
+ on 2025-08-22 00:05 +0000             </p>
           </div>
         </div>
         <br>
