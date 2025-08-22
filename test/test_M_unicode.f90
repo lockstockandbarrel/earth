@@ -1,7 +1,7 @@
 program test_M_unicode
 use iso_fortran_env, only : output_unit
 use M_unicode, only : adjustl, adjustr, trim, index
-use M_unicode, only : character
+use M_unicode, only : character 
 use M_unicode, only : assignment(=), unicode_type, operator(//)
 use M_unicode, only : operator(<=), lle
 use M_unicode, only : operator(<),  llt
@@ -27,6 +27,7 @@ type(unicode_type)             :: ut_str
 type(unicode_type)             :: smiley
 integer                        :: total
 integer                        :: err
+integer                        :: i
 type(unicode_type)             :: lhs, rhs
 type(unicode_type)             :: string, substring
 
@@ -124,6 +125,12 @@ type(unicode_type)             :: string, substring
    astr=character(substring)
    call check('index '//string%character()//':'//substring%character(),index(string,substring).eq.0)
    call check('index '//string%character()//':'//astr,index(string,astr).eq.0)
+
+   string=upagain
+   write(*,g0)'original bytes  :', upagain
+   write(*,g0)'bytes reversed  :', (upagain(i:i),i=len(upagain),1,-1)
+   write(*,g0)'original string :', string%character()
+   write(*,g0)'string reversed :', string%character(string%len(),1,-1)
 
 contains
 
