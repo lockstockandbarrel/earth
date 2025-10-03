@@ -10,7 +10,7 @@
     <meta name="author" content="John S. Urban" >
     <link rel="icon" href="../favicon.png">
 
-    <title>isolatin_to_utf8 &ndash; M_time</title>
+    <title>write(formatted) &ndash; M_time</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -80,8 +80,8 @@
 
     <div class="container">
   <div class="row">
-    <h1>isolatin_to_utf8
-      <small>Subroutine</small>
+    <h1>write(formatted)
+      <small>Interface</small>
       
     </h1>
       <div class="container p-2 mb-4 bg-light border rounded-3">
@@ -91,7 +91,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 2.1% of total for procedures.">8 statements</a>
+                 title="<p> 0.6% of total for procedures.</p>Including implementation: 24 statements,  4.7% of total for procedures.">3 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -105,7 +105,7 @@
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/m_unicode.f90.html'>M_unicode.f90</a></li>
                 <li class="breadcrumb-item"><a href='../module/m_unicode.html'>M_unicode</a></li>
-            <li class="breadcrumb-item active" aria-current="page">isolatin_to_utf8</li>
+            <li class="breadcrumb-item active" aria-current="page">write(formatted)</li>
           </ol>
         </nav>
       </div>
@@ -120,10 +120,10 @@
   </script>
 
   </div>
-  
+
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-      <div id="sidebar">
+        <div id="sidebar">
       <h3>Contents</h3>
   
   
@@ -143,29 +143,40 @@
   
   
   
-  
-  
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/isolatin_to_utf8.html#src">isolatin_to_utf8</a>
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#modprocs-0"
+         aria-expanded="false" aria-controls="modprocs-0">
+         <h4 class="card-header bg-primary text-white">Module Procedures</h4>
+      </a>
+      <div id="modprocs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../interface/write(formatted).html#moduleprocedure-write_formatted">write_formatted</a>
+        </div>
       </div>
     </div>
+
+  
 
 
   </div>
 
     </div>
-    
+
     <div class="col-md-9" id='text'>
-    <h2>public pure subroutine isolatin_to_utf8(isolatin, utf8, nerr)  
-</h2>
-    
+      <h2>public interface write(formatted)</h2>
+      
 
 
 
-    <h3>Arguments</h3>
-        <table class="table table-striped varlist">
+        <h2>Module Procedures</h2>
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-write_formatted"></span> <h3>private  subroutine write_formatted(string, unit, iotype, v_list, iostat, iomsg)  
+</h3></div>
+    <div class="card-body">
+        <p>Write string to connected formatted unit.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
     <thead>
       <tr>
         <th scope="col">Type</th>
@@ -177,37 +188,67 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-isolatin~3"></span>
-              character(len=1),
+              <span class="anchor" id="variable-string~40"></span>
+              class(<a href='../type/unicode_type.html'>unicode_type</a>),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
               
             </td>
             <td>::</td>
-            <td><strong>isolatin</strong>(:)</td>
+            <td><strong>string</strong></td>
             <td>
                 
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-utf8~4"></span>
-              character(len=1),
+              <span class="anchor" id="variable-unit~2"></span>
+              integer,
             </td>
-<td>intent(out),</td>
+<td>intent(in)</td>
               <td></td>            <td>
-              allocatable
+              
             </td>
             <td>::</td>
-            <td><strong>utf8</strong>(:)</td>
+            <td><strong>unit</strong></td>
             <td>
                 
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nerr~7"></span>
+              <span class="anchor" id="variable-iotype"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iotype</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-v_list"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>v_list</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iostat~6"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -215,7 +256,22 @@
               
             </td>
             <td>::</td>
-            <td><strong>nerr</strong></td>
+            <td><strong>iostat</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iomsg~5"></span>
+              character(len=*),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iomsg</strong></td>
             <td>
                 
             </td>
@@ -223,38 +279,12 @@
     </tbody>
   </table>
 
-    <br>
 
-
-    
-    
-
-    
-    
-
-
-
-    
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="k">pure subroutine </span><span class="n">isolatin_to_utf8</span><span class="p">(</span><span class="n">isolatin</span><span class="p">,</span><span class="n">utf8</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
-<span class="kt">character</span><span class="w">            </span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">isolatin</span><span class="p">(:)</span><span class="w"></span>
-<span class="kt">character</span><span class="p">,</span><span class="k">allocatable</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">utf8</span><span class="p">(:)</span><span class="w"></span>
-<span class="kt">integer</span><span class="w">              </span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nerr</span><span class="w"></span>
-<span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unicode</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">isolatin_to_unicode</span><span class="p">(</span><span class="n">isolatin</span><span class="p">,</span><span class="n">unicode</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">codepoints_to_utf8</span><span class="p">(</span><span class="n">unicode</span><span class="p">,</span><span class="n">utf8</span><span class="p">,</span><span class="n">nerr</span><span class="p">)</span><span class="w"></span>
-
-<span class="k">end subroutine </span><span class="n">isolatin_to_utf8</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
-    
     </div>
   </div>
 
+</div>
+  </div>
       <hr>
     </div> <!-- /container -->
     <footer>
@@ -270,7 +300,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-22 00:05 +0000             </p>
+ on 2025-10-03 15:06 +0000             </p>
           </div>
         </div>
         <br>
