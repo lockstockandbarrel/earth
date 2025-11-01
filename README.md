@@ -34,7 +34,7 @@ including features and enhancements from Francois Jacq.
 
 The improvements include procedures for handling ASCII encoding extensions
 often used for internationalization that pre-date Unicode, such as the
-Latin encoudings.
+Latin encodings.
 
 ## Purpose
 

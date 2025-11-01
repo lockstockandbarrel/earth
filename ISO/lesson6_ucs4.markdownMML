@@ -1,4 +1,4 @@
-## Introduction to Fortran Unicode support
+#### Introduction to Fortran Unicode support
 ### Lesson VI: reading UTF-8 strings from command lines
 
 If your OS supports utf-8 as the default encoding it is likely you will
@@ -9,18 +9,18 @@ But the GET_COMMAND_ARGUMENT() intrinsic specifies that the VALUE argument
 is a "scalar character variable of default kind".
 
 Perhaps you are going to use the value as a stream of bytes representing
-utf-8 characters. In that case you may be able to use the string without
-converting it to the supported UCS-4 internal representation used by
-Fortran.
+utf-8 characters. In that case you may be able to use the string
+without converting it to the supported UCS-4 internal representation
+used by Fortran.
 
-But if that is not the case, how will you convert the UTF-8 bytes to UCS-4?
-Fortran does not provide a procedure for such conversions.
+But if that is not the case, how will you convert the UTF-8 bytes
+to UCS-4?  Fortran does not provide a procedure for such conversions.
 
 But Fortran does the conversion needed when reading UTF-8-encoded files
 into UCS-4 variables. So we use that functionality to create a simple
 conversion function:
 
-```fortran
+~~~~~~~~~~ {: lang=fortran}
 program read_commandline
 ! @(#) take command line argument utf-8 text and generate Fortran statement that represents the string
 use, intrinsic :: iso_fortran_env, only : output_unit
@@ -49,7 +49,7 @@ character(len=:),allocatable           :: command_line
    allocate(character(len=length) :: command_line) ! allocate string big enough to hold command line
    call get_command(command=command_line)          ! get command line as a string
    call get_command_argument(0,length=length)      ! remove argument 0
-   command_line=adjustl(command_line(length+1:))
+   command_line=adjustl(command_line(length+2:))
 end function getargs
 
 function utf8_to_ucs4(string) result(corrected)
@@ -66,16 +66,17 @@ integer                                :: lun
 end function utf8_to_ucs4
 
 end program read_commandline
-```
+~~~~~~~~~~
 An example run; using the famous Confucian expression
 "己所不欲，勿施於人" (jǐ suǒ bù yù, wù shī yú rén) or
 "What you do not want done to yourself, do not do to others":
 
-```bash
-read_commandline "己所不欲，勿施於人" 
-```
-```text
-! ENCODING:己所不欲，勿施於人 
+~~~~~~~~~~ {: lang=bash}
+read_commandline "己所不欲，勿施於人"
+~~~~~~~~~~
+
+~~~~~~~~~~ {: lang=text}
+! ENCODING:己所不欲，勿施於人
 character(len=*,kind=ucs4),parameter :: variable= &
 char(int(z'5DF1'),kind=ucs4)// &
 char(int(z'6240'),kind=ucs4)// &
@@ -86,18 +87,15 @@ char(int(z'52FF'),kind=ucs4)// &
 char(int(z'65BD'),kind=ucs4)// &
 char(int(z'65BC'),kind=ucs4)// &
 char(int(z'4EBA'),kind=ucs4)
-```
+~~~~~~~~~~
 ## Summary
 
 Command line arguments are typically returned as single-byte characters
-by the GET_COMMAND_ARGUMENT() and GET_COMMAND() procedures. But using Fortran's
-ability to encode UTF-8 as UCS-4 when reading and writing external files
-it is easy to create a function for converting between the two encodings
-to make up for the lack of any equivalent intrinsics.
+by the GET_COMMAND_ARGUMENT() and GET_COMMAND() procedures. But using
+Fortran's ability to encode UTF-8 as UCS-4 when reading and writing
+external files it is easy to create a function for converting between
+the two encodings to make up for the lack of any equivalent intrinsics.
 
-Note that modules of related functions can be found at 
-[github.com/lockstockandbarrel/earth](github.com/lockstockandbarrel/earth)
-
-+ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
-+ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson5_ucs4.md)
-+ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson7_ucs4.md)
++ [TOP](Unicode)
++ [PREVIOUS](lesson5_ucs4)
++ [NEXT](lesson7_ucs4)

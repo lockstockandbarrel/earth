@@ -24,7 +24,7 @@ in M_unicode.f90:
    + codepoints_to_utf8()
 
 
-+ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
-+ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/aaaaa.md)
-+ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/bom_ext.md)
++ [TOP](Unicode)
++ [PREVIOUS](aaaaa)
++ [NEXT](bom_ext)
 

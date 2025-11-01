@@ -104,8 +104,8 @@ languages permit non-ASCII bytes in string literals but not
 at the start of the file.
 
 ### prefix code with a BOM Unicode signature using bytes
-```fortran
-program bom_exe
+~~~~~~~~~~ {: lang=fortran}
+program bom_bytes
 !
 ! create a Fortran source file starting with a utf-8 BOM to see if your
 ! compiler will compile it or fail because a character is not in the
@@ -122,11 +122,11 @@ character(len=*),parameter :: &
     '   write(*,*)"File starts with BOM from ""bytes"" write!"' ,&
     'end program testit'
 
-end program bom_exe
-```
+end program bom_bytes
+~~~~~~~~~~
 ### prefix code with a BOM using standard ISO-10646
-```fortran
-program bom_exe
+~~~~~~~~~~ {: lang=fortran}
+program bom_ucs4
 !
 ! create a Fortran source file starting with a utf-8 BOM to see if your
 ! compiler will compile it or fail because a character is not in the
@@ -146,13 +146,13 @@ character(len=*,kind=ucs4),parameter :: U_bom=char(int(z'FEFF'),kind=ucs4)
     ucs4_'   write(*,*)"File starts with BOM from UCS-4 write!"'          ,&
     ucs4_'end program testit'
 
-end program bom_exe
-```
+end program bom_ucs4
+~~~~~~~~~~
 ### References
 
 See [Wikipedia](https://en.wikipedia.org/wiki/Byte_order_mark) for
 more information on the Unicode character code, U+FEFF 
 (aka. ZERO WIDTH NO-BREAK SPACE), 
 
-+ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
-+ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/backslash_ext.md)
++ [TOP](Unicode)
++ [PREVIOUS](backslash_ext)

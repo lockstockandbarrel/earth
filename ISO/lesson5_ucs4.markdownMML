@@ -1,4 +1,4 @@
-## Introduction to Fortran Unicode support
+#### Introduction to Fortran Unicode support
 ### Lesson V: processing Unicode file names on OPEN() statements
 
 If your OS supports utf-8 as the default encoding it is likely you will
@@ -8,19 +8,19 @@ The definition of the OPEN() statement specifies that the
 filename expression is a "scalar-default-char-expr". But it
 also states
 
-      A file may have a name; a file that has a name is called a named
-      file. The name of a named file is represented by a character
-      string value. The set of allowable names for a file is processor
-      dependent.
+    A file may have a name; a file that has a name is called a named
+    file. The name of a named file is represented by a character
+    string value. The set of allowable names for a file is processor
+    dependent.
 
 And the description of the FILE= specifier states
 
-      12.5.6.10   FILE= specifier in the OPEN statement
+    12.5.6.10 FILE= specifier in the OPEN statement
 
-      The value of the FILE= specifier is the name of the file to
-      be connected to the specified unit. Any trailing blanks are
-      ignored. The file-name-expr shall be a name that is allowed by
-      the processor. The interpretation of case is processor dependent.
+    The value of the FILE= specifier is the name of the file to
+    be connected to the specified unit. Any trailing blanks are
+    ignored. The file-name-expr shall be a name that is allowed by
+    the processor. The interpretation of case is processor dependent.
 
 So what filenames are allowed is processor-dependent -- but probably
 is restricted to a default character expression, which currently is
@@ -38,7 +38,7 @@ Fortran does the conversion needed when writing ucs-4 internal data
 to utf-8-encoded files. We can use that functionality to create a
 simple conversion routine.
 
-```fortran
+~~~~~~~~~~ {: lang=fortran}
 program read_filename
 ! @(#) convert ucs-4 filename to utc-8 for OPEN() statement
 use, intrinsic :: iso_fortran_env, only : output_unit
@@ -56,6 +56,9 @@ integer                                :: lun
    char(int(z'65'),kind=ucs4)  // char(int(z'6E'),kind=ucs4) // char(int(z'FD'),kind=ucs4)// &
    char(int(z'5F'),kind=ucs4)  // char(int(z'73'),kind=ucs4) // char(int(z'FA'),kind=ucs4)// &
    char(int(z'62'),kind=ucs4)  // char(int(z'6F'),kind=ucs4) // char(int(z'72'),kind=ucs4)
+
+   open (output_unit, encoding='utf-8')
+   write(output_unit,*)'FILENAME:',ufilename
 
    afilename=ucs4_to_utf8(ufilename)
 
@@ -79,25 +82,27 @@ integer                               :: lun
 end function ucs4_to_utf8
 
 end program read_filename
-```
+~~~~~~~~~~
 ## Summary
 
-If your processor supports Unicode filenames you probably need to
-convert any filename in UCS-4 encoding to UTF-8 encoding.
+If your processor supports Unicode filenames you probably need to convert
+any filename in UCS-4 encoding to UTF-8 encoding.
 
 Using Fortran's ability to encode UCS-4 data as UTF-8 when writing
 external files it is easy to create a function for converting between
 the two encodings.
 
 Note that modules of related functions can be found at
-[github.com/lockstockandbarrel/earth](github.com/lockstockandbarrel/earth)
+[github.com/urbanjost/M_unicode](github.com/urbanjost/M_utf8) and
+[github.com/urbanjost/M_unicode](github.com/urbanjost/M_unicode) that
+use methods more efficient than using scratch files.
 
-If your processor does not support Unicode filenames your operating system
-may support links. So an alternative might be to make an ASCII filename
-that is an alias for the unusable filename. This can typically be done
-with system calls to the intrinsic EXECUTE_COMMAND_LINE() if you do not have
-procedures for creating (and removing) links.
+If your processor does not support Unicode filenames your operating
+system may support links. So an alternative might be to make an ASCII
+filename that is an alias for the unusable filename. This can typically
+be done with system calls to the intrinsic EXECUTE_COMMAND_LINE() if
+you do not have procedures for creating (and removing) links.
 
-+ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
-+ [PREVIOUS](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson4_ucs4.md)
-+ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson6_ucs4.md)
++ [TOP](Unicode)
++ [PREVIOUS](lesson4_ucs4)
++ [NEXT](lesson6_ucs4)

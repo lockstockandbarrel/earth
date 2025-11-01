@@ -1,0 +1,103 @@
+## Fortran Unicode Tutorial
+
+Unicode is an international standard for encoding text that assigns a
+unique whole numeric value, called a code point, to every character,
+symbol, and emoji from virtually all written languages and scripts in
+the world. This allows computers to process, store, and display text
+correctly across different platforms by providing a universal mapping
+for characters.
+
+There are several standardized ways to encode the code points in files
+other than just a series of whole numbers.
+
+UTF-8 encoding has emerged as the de-facto standard format for
+representing Unicode text files on all major operating systems, at least
+partly because it is upward-compatible with ASCII-7 files.
+
+Fortran __optionally__ supports processing of Unicode UTF-8-encoded
+data. 
+
+When the option is supported Fortran programs will read the UTF-8 files
+and convert the data to UCS-4 encoding internally. UCS-4 is another
+encoding of Unicode code points where, unlike UTF-8, every character
+is represented by a constant number of bytes (4).  This makes it much
+like the other Fortran intrinsic types where each is a constant
+size, whereas UTF-8 can take from one to four bytes per character (often
+called a "glyph" to differentiate it from ASCII characters).
+
+UCS-4 CHARACTER variables are declared to have KIND="ISO_10646", This
+data type is supported by all the CHARACTER-type intrinsic functions
+and comparative operators, conveniently making it so the processing of
+UTF-4-encoded data can be processed with the same methods as used for
+the ASCII-7-encoded that has been historically supported by the intrinsic
+CHARACTER type.
+
+The option ENCODING="UTF8" on OPEN() statements indicates to automatically
+encode and decode data from UTF-8 files to UCS-4 internal values; making
+interacting wth UTF-8 files virtually effortless.
+
+But you cannot quite completely quit using ASCII yet. Not all compilers
+support UTF-8 Fortran source files. Even though the Fortran standard
+allows processor-dependent characters to appear in comments and character
+constants (e.g. quoted strings) it is not mandated what encoding or
+characters are allowed there. UTF-8 is largely a de-facto standard for
+file encoding so it is extremely likely you create UTF-8 source files,
+but it is not guaranteed by the Fortran Standard.
+
+Indeed, the Fortran standard allows most interactions with operating
+systems such as filenames and command line character encoding as
+implementation-dependent.
+
+But typically several statements and procedures require default character
+byte streams on some options instead of UCS-4 data, such as the filename
+on INQUIRE and OPEN statements.
+
+So in practice almost all processors require data passed to and from the
+system to be encoded as byte streams of UTF-8 characters, not as UCS-4
+data. This includes arguments passed in from command lines and environment
+variables, filenames on INQUIRE and OPEN statements and string constants.
+
+However, since that is all processor-dependent as far as the standard is
+concerned Fortran does not support intrinsics that convert to and from
+the internal UCS-4 representation and UTF-8 byte streams other than the
+afore-mentioned automatic conversion on READ and WRITE statements were
+the ENCODING="UTF-8" option has been used on an OPEN() statement.
+
+So here are a series of guides that describe using Unicode from Fortran codes.
+They not only include examples of standard-specified usage, they
+include discussions concerning what is standardized and what is not,
+what commonly-used extensions compilers provide to address some of the
+current gaps in Unicode support, and what is known to be non-portable
+but useful behavior from some compilers.
+
+The resulting functionality is incorporated into Modules available
+via github repositories as well, that expand on these guides.
+
+The selection of methods to employ breaks down along several major divides:
+
+ + Do you want to use the optional Fortran ISO_10646 standard? 
+ + Do you want to not depend on the ISO_10646 extension?
+ + Will you be using UTF-8-encoded source files or strictly adhere to
+   the Fortran character set?
+ + Will you use processor-dependent extensions?
+
+The first guide set assumes you want to use the ISO_10646 extension and would
+prefer to confirm as portably as reasonable to the Fortran standard; and
+probably avoid using UTF-8-encoded constant strings ...
+
+### Introduction to Fortran ISO_10646 (UCS-4-encoded Unicode) support
+   + [**Lesson I:**](lesson1_ucs4.markdownMML) reading and writing UTF-8 Unicode files
+   + [**Lesson II:**](lesson2_ucs4.markdownMML) creating Unicode strings in ASCII Fortran source files
+   + [**Lesson III:**](lesson3_ucs4.markdownMML) mixing ASCII and UCS4 kinds as regards 
+      + assignments
+      + concatenation
+      + passing arguments to external ASCII libraries
+      + mixing kinds on I/O argument lists
+   + [**Lesson IV:**](lesson4_ucs4.markdownMML)what is and is not supported with internal READ and WRITE statements
+   + [**Lesson V:**](lesson5_ucs.markdownMML)processing Unicode file names on OPEN() statements
+   + [**Lesson VI:**](lesson6_ucs4.markdownMML) reading UTF-8 strings from command lines and environment variables.
+   + [**Lesson VII:**](lesson7_ucs4.markdownMML)  passing Unicode strings to and from C
+   + [**Summary**](summary_ucs4.markdownMML) putting it all together
+
+-------------------------------------------------------------
++ [NEXT](lesson1_ucs4)

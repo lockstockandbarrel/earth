@@ -1,0 +1,223 @@
+#### Introduction to Fortran Unicode support
+### Summary: Lessons Learned
+
+The main lessons discussed here are
+
+1. Compilers that support CHARACTER kind ISO_10646  make reading and
+   writing UTF-8 encoded files as easy as doing the same with ASCII
+   files. 
+
+2. All the CHARACTER intrinsics work with UCS4 variables.
+
+3. Fortran does not supply functions to convert between UTF-8 encoded
+   byte streams and UCS-4 encoded data. Fortran encodes Unicode data
+   internally as UCS-4, but modern operating systems typically support
+   UTF-8 encoded data. So this generally causes problems with converting
+   values from command lines, environment variables to UCS-4, opening 
+   files and file inquiry by name. UTF-8 is nearly universally easy to
+   write into Fortran constant strings, but generally UCS-4 is not.
+
+If you care about the shortfallings in item 3 create a few conversion
+routines and you can solve those problems on any system supporting 
+UTF-8 encoded files.
+
+Just remember that if you use UTF-8 constants in your code that this is
+not disallowed by the Standard, but neither is it required to be supported.
+
+So now the following example program that shows how to read an environment
+variable into a UCS-4 variable, open files with UTF-8 encoded names, and
+use intrinsic CHARACTER methods with Unicode data should show all the 
+issues raised in item 3 are resolvable.
+
+~~~~~~~~~~ {: lang=fortran}
+module M_encode
+implicit none
+private
+integer, parameter :: ucs4  = selected_char_kind ('ISO_10646')
+integer, parameter :: ascii = selected_char_kind ("ascii")
+
+public :: ascii_to_ucs4
+public :: ucs4_to_ascii
+public :: ucs4_to_utf8
+public :: utf8_to_ucs4 
+public :: get_env
+public :: get_arg
+
+contains
+
+pure function ascii_to_ucs4(astr) result(ustr)
+! @(#) make the same conversion as an assignment statement from ASCII to UCS4
+character(len=*,kind=ascii),intent(in) :: astr
+character(len=len(astr),kind=ucs4)     :: ustr
+integer                                :: i
+   do i=1,len(astr)
+      ustr(i:i)=achar(iachar(astr(i:i)),kind=ucs4)
+   enddo
+end function ascii_to_ucs4
+
+pure function ucs4_to_ascii(ustr) result(astr)
+! @(#) make the same conversion as an assignment statement from UCS4 to ASCII
+character(len=*,kind=ucs4),intent(in)  :: ustr
+character(len=len(ustr),kind=ascii)    :: astr
+integer                                :: i
+   do i=1,len(ustr)
+      astr(i:i)=achar(iachar(ustr(i:i)),kind=ascii)
+   enddo
+end function ucs4_to_ascii
+
+impure function ucs4_to_utf8(ucs4_string) result(ascii_string)
+! @(#) use I/O to convert ucs4 to utf8 encoding
+character(len=*,kind=ucs4),intent(in) :: ucs4_string
+character(len=:),allocatable          :: ascii_string
+character(len=(len(ucs4_string)*4))   :: line
+integer                               :: lun
+   open(newunit=lun,encoding='UTF-8',status='scratch')
+   write(lun,'(A)')ucs4_string
+   rewind(lun)
+   open(unit=lun,encoding='default')
+   read(lun,'(A)')line
+   close(lun)
+   ascii_string=trim(line)
+end function ucs4_to_utf8
+
+impure function utf8_to_ucs4(string) result(corrected)
+! @(#) use I/O to convert utf8 to ucs4 encoding
+character(len=*),intent(in)            :: string
+character(len=:,kind=ucs4),allocatable :: corrected
+character(len=(len(string)),kind=ucs4) :: line
+integer                                :: lun
+   open(newunit=lun,encoding='UTF-8',status='scratch')
+   write(lun,'(A)')string
+   rewind(lun)
+   read(lun,'(A)')line
+   close(lun)
+   corrected=trim(line)
+end function utf8_to_ucs4
+
+function get_env_bytes(name,default) result(value)
+! a function that makes calling get_environment_variable(3) simple
+use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT
+implicit none
+character(len=*),intent(in)          :: name
+character(len=*),intent(in),optional :: default
+character(len=:),allocatable         :: value
+integer                              :: howbig
+integer                              :: stat
+integer                              :: length
+   length=0
+   value=""
+   if(name.ne."")then
+      call get_environment_variable( name, &
+      & length=howbig,status=stat,trim_name=.true.)
+      select case (stat)
+      case (1)
+       if(.not.present(default))then
+          write(stderr,*) &
+          & name, " is not defined in the environment"
+          value=""
+       endif
+      case (2)
+       write(stderr,*) &
+       & "This processor does not support environment variables. Boooh!"
+       value=""
+      case default
+       ! make string of sufficient size to hold value
+       if(allocated(value))deallocate(value)
+       allocate(character(len=max(howbig,1)) :: value)
+       ! get value
+       call get_environment_variable( &
+       & name,value,status=stat,trim_name=.true.)
+       if(stat.ne.0)value=""
+      end select
+   endif
+   if(value.eq."".and.present(default))value=default
+end function get_env_bytes
+
+function get_env(name,default) result(value)
+! a function that makes calling get_environment_variable(3) simple
+character(len=*,kind=ucs4),intent(in)          :: name
+character(len=*,kind=ucs4),intent(in),optional :: default
+character(len=:,kind=ucs4),allocatable         :: value
+character(len=:),allocatable                   :: temp
+   if(present(default))then
+      temp=get_env_bytes(ucs4_to_utf8(name),ucs4_to_utf8(default))
+   else
+      temp=get_env_bytes(ucs4_to_utf8(name))
+   endif
+   value=utf8_to_ucs4(temp)
+end function get_env
+
+function get_arg_bytes(pos) result(arg)
+integer                      :: argument_length, istat, pos
+character(len=:),allocatable :: arg
+   !
+   ! allocate arg array big enough to hold command line argument 
+   !
+   call get_command_argument(number=pos,length=argument_length)
+   if(allocated(arg))deallocate(arg)
+   allocate(character(len=argument_length) :: arg)
+   call get_command_argument( pos, arg, status=istat )
+   if(istat.ne.0)arg=''
+end function get_arg_bytes
+
+function get_arg(pos) result(arg)
+integer                                :: pos
+character(len=:,kind=ucs4),allocatable :: arg
+   arg=utf8_to_ucs4(get_arg_bytes(pos))
+end function get_arg
+
+end module M_encode
+
+program try_module
+! @(#) convert environment variable to ucs-4 and show hexadecimal and decimal code point of characters
+use, intrinsic :: iso_fortran_env, only : stdout=>output_unit
+use M_encode, only : get_env, utf8_to_ucs4, ucs4_to_utf8, get_arg
+implicit none
+integer, parameter                        :: ucs4 = selected_char_kind ('ISO_10646')
+character(len=1,kind=ucs4)                :: smiley=char(int(z'1F603'),kind=ucs4) ! 😃 Smiling face with open mouth
+character(len=:,kind=ucs4),allocatable    :: string, env, arg
+character(len=1,kind=ucs4)                :: glyph
+character(len=80*4,kind=ucs4)             :: ufilename ! hold at least 80 UTF-8 glyphs
+integer                                   :: i
+integer                                   :: lun
+   open(unit=stdout,encoding='UTF-8')
+   !
+   ! environment variable
+   !
+   env=get_env(ucs4_'UTF8_VARIABLE',smiley)
+   write(*,*)'UTF8_VARIABLE=',env
+   do i=1,len(env)
+      glyph=env(i:i)
+      write(*,'(z0,t8,i0,t16,a)')ichar(glyph),ichar(glyph),glyph
+   enddo
+   !
+   ! command line arguments
+   !
+   do i=1, command_argument_count() ! get number of arguments
+      arg=get_arg(i)
+      write(*,*)'ARGUMENT:',i,ucs4_'['//arg//ucs4_']'
+   enddo
+   !
+   ! utf-8 encoded constant
+   !
+   string=utf8_to_ucs4('七転び八起き。転んでもまた立ち上がる。くじけずに前を向いて歩いていこう。')
+   write(*,*)'STRING:',string
+   write(*,*)'REVERSED:',[(string(i:i),i=len(string),1,-1)]
+   !
+   ! convert UCS4 to UTF8 for use as a filename
+   !
+   ! môj_obľúbený_súbor, "my_favorite_file" in decimal codepoints
+   write(ufilename,'(*(a))')char([109,244,106,95,111,98,318,250,98,101,110,253,95,115,250,98,111,114],kind=ucs4)
+   write(*,*)'FILENAME:',trim(ufilename)
+   open(newunit=lun,file=ucs4_to_utf8(ufilename))
+
+end program try_module
+~~~~~~~~~~
+## Expected Default Output:
+~~~~~~~~~~ {: lang=fortran}
+ UTF8_VARIABLE=😃
+1F603  128515  😃
+ STRING:七転び八起き。転んでもまた立ち上がる。くじけずに前を向いて歩いていこう。
+ REVERSED:。うこいてい歩てい向を前にずけじく。るが上ち立たまもでん転。き起八び転七
+ FILENAME:môj_obľúbený_súbor
+~~~~~~~~~~

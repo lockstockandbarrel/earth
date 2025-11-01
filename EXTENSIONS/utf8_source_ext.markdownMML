@@ -37,7 +37,7 @@ UCS-4 yet.
 
 Without using any Fortran Unicode support features, if the output
 is redirected to a file does it appear correctly?
-```fortran
+~~~~~~~~~~ {: lang=fortran}
 program multibyte
 character(len=*),parameter :: all='(*(g0))'
    print all,'Confucius never claimed to be a prophet, '
@@ -50,14 +50,14 @@ character(len=*),parameter :: all='(*(g0))'
    print all,' "To learn without thinking is to be lost, '
    print all,' to think without learning is to be in danger".'
 end program multibyte
-```
+~~~~~~~~~~
 Does it display properly when written to the screen? You might have
 a terminal that does not support UTF-8 characters, or might have to
 set your locale properly. If it is not the terminal and your compiler
 does support ISO-10646 specifying the encoding of the output file
 as UTF-8 will likely correct any output issues even though the strings
 are a series of bytes and not UCS-4 encoded:
-```fortran
+~~~~~~~~~~ {: lang=fortran}
 program multibyte_encoded
 use, intrinsic :: iso_fortran_env, only : stdout=>output_unit
 implicit none
@@ -73,7 +73,7 @@ implicit none
    ' "To learn without thinking is to be lost, '     ,&
    ' to think without learning is to be in danger".' 
 end program multibyte_encoded
-```
+~~~~~~~~~~
 
 Remember that unless the compiler directly supports UTF-8 representation
 ( so far I have identified no compilers that do so) these strings are seen
@@ -130,5 +130,5 @@ source files, especially with modern Fortran standards and supportive
 compilers, it requires careful consideration of the compiler's
 capabilities and the source file's encoding.
 
-+ [TOP](https://github.com/lockstockandbarrel/earth/blob/main/docs/lesson0.md)
-+ [NEXT](https://github.com/lockstockandbarrel/earth/blob/main/docs/backslash_ext.md)
++ [TOP](Unicode)
++ [NEXT](backslash_ext)
