@@ -20,7 +20,7 @@ Concerning assignment -- the Fortran standard states
    NOTES
 
    For nondefault character kinds, the blank padding character is
-   processor dependent.
+   processor dependent 
 
    When assigning a character expression to a variable of a different kind,
    each character of the expression that is not representable in the kind
@@ -98,20 +98,32 @@ character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) !
 end program assignment
 ~~~~~~~~~~
 
+The output of this example takes some study but the main lesson is
+simple. Basically assignment of a constant quoted string to a UCS-4
+encoded variable only really works if the constant string is composed
+only of ASCII characters.
+
+Fortran instructions other than READ and WRITE
+are unaware of any possible non-ASCII encoding of constant strings.
+
 ### Concatenation
 
 A limitation of concatenation is that all the strings have to be of the
-same KIND, so you cannot simple append UCS-4 and ASCII-7 strings.
+same KIND, so you cannot simply append UCS-4 and ASCII-7 strings.
 
 And we have already seen assignment between the kinds only assigns
 representable characters. 
 
-So we can make functions that do what an assignment does to
-overcome the first limitation where everything must be the same kind.
+But the definition of assignment includes an equivalent conversion 
+defined in terms of ACHAR(3) and IACHAR(3):
 
-We will do that in the following example that demonstrates concatenation
-behavior; but that function will still not transfer UTF-8 encoded data
-properly.
+       ACHAR(IACHAR(c),KIND(variable)).
+
+So we can make functions that do what an assignment does to overcome
+the first limitation where everything concatenated must be the same kind.
+
+We will do that in the following concatenation example; but that function
+will still not transfer UTF-8 encoded data properly.
 
 ~~~~~~~~~~ {: lang=fortran}
 program concatenate
@@ -133,7 +145,8 @@ integer                                :: i
 integer                                :: iostat
 integer                                :: nerr
 character(len=1)                       :: paws
-character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) ! 😃 Smiling face with open mouth
+                                       !  😃 Smiling face with open mouth
+character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) 
 
    open (stdout, encoding='DEFAULT')
    open (stdout, encoding='UTF-8')
@@ -238,8 +251,13 @@ Concatenation is only allowed between strings of the same KIND.
 
 It is easy to make functions that do the same conversion as assignment
 performs, which can make it easier to pass INTENT(IN) values on procedure
-calls and statements as ASCII, which is a common need.
+calls and statements as ASCII, which is a common need. Even if all the characters
+are in the ASCII-7 set, a UCS-4 encoded variable cannot be used as a filename on
+an OPEN(3) for example. You can assign the string to an ASCII scratch variable
+or call such a function as the above UCS4_TO_ASCII(3) function to resolve that
+and similiar issues where you are encoding your data as UCS-4 but some other
+procedure only expects ASCII.
 
-+ [TOP](Unicode)
-+ [PREVIOUS](lesson2_ucs4)
-+ [NEXT](lesson4_ucs4)
++ [[Unicode|TOP]]
++ [[lesson2_ucs4|PREVIOUS]]
++ [[lesson4_ucs4|NEXT]]

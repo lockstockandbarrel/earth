@@ -1,9 +1,10 @@
 #### Introduction to Fortran Unicode support
 ### Lesson VI: reading UTF-8 strings from command lines
 
-If your OS supports utf-8 as the default encoding it is likely you will
-at some point want to pass a parameter from the command line that contains
-multi-byte Unicode characters to your program.
+If your OS supports utf-8 as the default encoding it is likely you
+will at some point want to pass a parameter from the command line or an
+environment variable value that contains multi-byte Unicode characters
+to your program.
 
 But the GET_COMMAND_ARGUMENT() intrinsic specifies that the VALUE argument
 is a "scalar character variable of default kind".
@@ -96,6 +97,10 @@ Fortran's ability to encode UTF-8 as UCS-4 when reading and writing
 external files it is easy to create a function for converting between
 the two encodings to make up for the lack of any equivalent intrinsics.
 
-+ [TOP](Unicode)
-+ [PREVIOUS](lesson5_ucs4)
-+ [NEXT](lesson7_ucs4)
+The same applies to values contained in environment variables; albeit 
+most systems restrict the names of environment variables to ASCII-7
+characters among other possible restrictions.
+
++ [[Unicode|TOP]]
++ [[lesson5_ucs4|PREVIOUS]]
++ [[lesson7_ucs4|NEXT]]

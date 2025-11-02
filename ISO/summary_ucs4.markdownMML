@@ -13,21 +13,28 @@ The main lessons discussed here are
    byte streams and UCS-4 encoded data. Fortran encodes Unicode data
    internally as UCS-4, but modern operating systems typically support
    UTF-8 encoded data. So this generally causes problems with converting
-   values from command lines, environment variables to UCS-4, opening 
-   files and file inquiry by name. UTF-8 is nearly universally easy to
-   write into Fortran constant strings, but generally UCS-4 is not.
+   values from command lines and environment variables to UCS-4.
+   Problems typically arise for using UCS-4 encoded variables when
+   opening files and doing file inquiry by name.
+
+   Creating source files using UTF-8 encoding makes it nearly universally
+   easy to write multi-byte files in Fortran constant strings, but
+   remember Fortran instructions other than comments and constant
+   strings must be composed only of characters in the Fortran character
+   set (which amounts to ASCII-7 characters sans control characters).
 
 If you care about the shortfallings in item 3 create a few conversion
 routines and you can solve those problems on any system supporting 
 UTF-8 encoded files.
 
-Just remember that if you use UTF-8 constants in your code that this is
+Remember that if you use UTF-8 constants in your code files that this is
 not disallowed by the Standard, but neither is it required to be supported.
 
-So now the following example program that shows how to read an environment
+Taking that all into account
+the following example program shows how to read an environment
 variable into a UCS-4 variable, open files with UTF-8 encoded names, and
-use intrinsic CHARACTER methods with Unicode data should show all the 
-issues raised in item 3 are resolvable.
+use intrinsic CHARACTER methods with Unicode data, circumventing the 
+issues raised in item 3. 
 
 ~~~~~~~~~~ {: lang=fortran}
 module M_encode
@@ -221,3 +228,5 @@ end program try_module
  REVERSED:。うこいてい歩てい向を前にずけじく。るが上ち立たまもでん転。き起八び転七
  FILENAME:môj_obľúbený_súbor
 ~~~~~~~~~~
++ [[Unicode|TOP]]
++ [[lesson7_ucs4|PREVIOUS]]

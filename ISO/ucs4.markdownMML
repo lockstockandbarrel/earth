@@ -1,0 +1,70 @@
+## The optional Fortran 2003 ISO_10646 standard
+
+The Fortran 2003 standard first defines support for processing of
+Unicode UTF-8-encoded files. There are three simple main points:
+
+1. The option ENCODING="UTF8" on OPEN() statements indicates to
+   automatically encode and decode formatted data from UTF-8 files to
+   binary UCS-4 internal values.
+
+2. This new UCS-4 type is expressed as a CHARACTER variable declared
+   to have KIND="ISO_10646",
+
+3. The functionality provided includes overloading the ASCII
+   character-related intrinsics, comparitive operators, and
+   assigment with support for processing of UCS-4
+   encoded data.
+
+These three simple additions combined conveniently make it so the
+processing of UCS-4 encoded data can be coded with the same methods as
+used for the ASCII-7 encoded data historically supported by the default
+intrinsic CHARACTER type.
+
+That is, these features make interacting wth UTF-8 files virtually
+effortless.
+
+
+### The default CHARACTER kind is still required
+
+One cannot quite completely quit using ASCII yet. Even though the Fortran
+standard allows processor-dependent characters to appear in comments
+and character constants (e.g. quoted strings) it is not mandated what
+encoding of characters are allowed there. UTF-8 is largely a de-facto
+standard for file encoding so it is extremely likely you can compile
+UTF-8 Fortran source files as long as the multi-byte characters are
+restricted to comments and constant strings, but it is not guaranteed
+by the Fortran Standard.
+
+Indeed, the Fortran standard defines most interactions with operating
+systems such as filenames and command line character encoding as
+implementation-dependent and requiring the use of a default CHARACTER kind.
+
+So in practice almost all processors require data passed to and from the
+system to be encoded as byte streams of UTF-8 characters, not as UCS-4
+data. This includes arguments passed in from command lines and environment
+variables, filenames on INQUIRE and OPEN statements and string constants.
+
+However, since that is all processor-dependent as far as the standard is
+concerned Fortran does not support intrinsics that convert to and from
+the internal UCS-4 representation and UTF-8 byte streams other than the
+afore-mentioned automatic conversion on READ and WRITE statements where
+the ENCODING="UTF-8" option has been used on an OPEN() statement.
+
+Further details follow:
+
+### Introduction to Fortran ISO_10646 (UCS-4-encoded Unicode) support
+   + [[lesson1_ucs4|**Lesson I:**]] reading and writing UTF-8 Unicode files
+   + [[lesson2_ucs4|**Lesson II:**]] creating Unicode strings in ASCII Fortran source files
+   + [[lesson3_ucs4|**Lesson III:**]] mixing ASCII and UCS4 kinds as regards 
+      + assignments
+      + concatenation
+      + passing arguments to external ASCII libraries
+      + mixing kinds on I/O argument lists
+   + [[lesson4_ucs4|**Lesson IV:**]] what is and is not supported with internal READ and WRITE statements
+   + [[lesson5_ucs4|**Lesson V:**]] processing Unicode file names on OPEN() statements
+   + [[lesson6_ucs4|**Lesson VI:**]] reading UTF-8 strings from command lines and environment variables.
+   + [[lesson7_ucs4|**Lesson VII:**]] passing Unicode strings to and from C
+   + [[summary_ucs4|**Summary**]] putting it all together
+
+-------------------------------------------------------------
++ [[lesson1_ucs4|NEXT]]

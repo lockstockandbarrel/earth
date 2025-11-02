@@ -26,7 +26,7 @@ encodings if necessary.
 
 The iso_c_binding module in Fortran is crucial for interoperability. It
 provides types like c_char and c_ptr and functions like c_loc for
-obtaining C-compatible pointers. Character Array and Length:
+obtaining C-compatible pointers.
 
 The most common approach is to pass the Fortran character variable as a
 c_ptr (pointing to the beginning of the character data) and also pass
@@ -38,9 +38,8 @@ handling non-null-terminated Fortran strings.
 .
 If the C function expects a null-terminated string, the Fortran code can
 explicitly add a null terminator (char(0)) at the end of the character
-array before passing it to C. However, ensure sufficient memory is
+string or array before passing it to C. However, ensure sufficient memory is
 allocated in Fortran to accommodate the null terminator.
-
 
 ### Example Structure (Conceptual):
 
@@ -111,5 +110,6 @@ void process_unicode_string(char *c_string_ptr, int string_length) {
     Always pass the string length explicitly, as Fortran strings are
     not inherently null-terminated like C strings.
 
-+ [TOP](Unicode)
-+ [PREVIOUS](lesson6_ucs4)
++ [[Unicode|TOP]]
++ [[summary_ucs4|NEXT]]
++ [[lesson6_ucs4|PREVIOUS]]

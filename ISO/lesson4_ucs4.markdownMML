@@ -7,7 +7,7 @@
 
    From the 2023 Fortran standard, regarding internal I/O:
 
-      Fortran 90 permitted deﬁned assignment between character strings
+      Fortran 90 permitted defined assignment between character strings
       of the same rank and different kinds.
 
       This document does not permit that if both of the different kinds are
@@ -23,34 +23,9 @@
       An output list shall not contain an effective item that is a
       boz-literal-constant.
 
-   One might expect you could do encoding to and from UTF-8 and UCS-4
-   with an internal file as you can with an external file. Internal
-   files are the standard method for converting numeric values to and
-   from string variables, making is seem even more natural to expect
-   internal I/O to provide some type of conversions between encodings.
 
-   __There is no such automatic conversion between UTF-8 and UCS-4 when
-   using internal files!__. But even if a processor provides a UTF8 KIND
-   as an extension, the standard says using CHARACTER kinds not listed
-   is only allowed if all the CHARACTER variables on the statement are
-   the same kind.
-
-   You would probably also expect the "A" format field descriptor would
-   produce a binary copy of bytes when the type is CHARACTER as it does
-   with other types; whether the internal file is UCS4 or ASCII. The
-   "A" field descriptor is the original equivalent of the TRANSFER()
-   function with added field descriptor control. That was the most common
-   method for allowing binary data to be placed in formatted files prior
-   to stream I/O support, for example.
-
-   The second paragraph quoted from the standard above makes it seem
-   that perhaps you can write ASCII bytes into a ISO 10646 variable,
-   but it is unclear whether that would be a byte-per-byte transfer or
-   whether only the 128 ASCII characters would be allowed or whether
-   it might treat the data as UTF-8 and encode it into UCS4. In all
-   compilers I have tried the ASCII writes into a UCS4 variable fail
-   accept for ADE values from 0 o 128.
-
+The following program explores various combinations of internal READ(3)
+and WRITE(3) statements involving UCS-4 encoded characters.
 ~~~~~~~~~~ {: lang=fortran}
 program internal_io
 use iso_fortran_env, only : stdout=>output_unit
@@ -195,10 +170,21 @@ after:Hello World and Ni Hao -- ??????
   which breaks with the use of the "A" format field descriptor to transfer
   data of all types byte-by-byte to formatted files.
 
+  The second paragraph quoted from the standard above state you can
+  write ASCII bytes into a ISO 10646 variable, but it is perhaps unclear
+  whether that would be a byte-per-byte transfer or whether only the 128
+  ASCII characters would be allowed or whether it might treat the data as
+  UTF-8 and encode it into UCS4. In all compilers I have tried the ASCII
+  writes into a UCS4 variable fail accept for ADE values from 0 o 128.
+
   So basically with Unicode support added you cannot do much new that
   is useful with internal I/O accept read and write UCS-4 values in and
-  out of UCS-4 internal files.
+  out of UCS-4 internal files. This allows for common operations like
+  converting strings to numeric variables but provides no functionality
+  that is aware of UTF-8 encoded streams of bytes.
 
-+ [TOP](Unicode)
-+ [NEXT](lesson3_ucs4)
-+ [PREVIOUS](lesson5_ucs4)
++ [[Unicode|TOP]]
++ [[lesson3_ucs4|NEXT]]
++ [[lesson5_ucs4|PREVIOUS]]
+   
+

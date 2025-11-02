@@ -1,15 +1,21 @@
 #### Introduction to Fortran Unicode support
 ### Lesson II: creating Unicode strings in ASCII Fortran source files
 
-So Lesson I shows reading and writing UTF-8 files is easy, but
+Lesson I showed reading and writing UTF-8 files is easy, but
 can multi-byte characters be defined directly in Fortran source
 code? Yes, but to be strictly portable the multi-byte characters
 need defined with numeric Unicode code point values instead of as
 what-you-see-is-what-you-get UTF-8 characters.
 
-That is, since ASCII is a subset of Unicode the line is a bit blurry
-as to what encoding source files may use. Can a Fortran source file
-be UTF-8 encoded? In particular, can constant strings and comments
+The Fortran code instructions must be written only using the Fortran
+character set, which is basically ASCII-7 characters sans the control
+characters other than newline (ie. backspace, tab, bell, ...).
+
+Since ASCII is a subset of Unicode the line is a bit blurry
+as to what encoding source files may use for constant strings and
+comments, however. 
+
+In particular, can constant strings and comments
 be composed in UTF-8 or must the entire file be ASCII? What about
 extended ASCII, which uses all 256 values representable in one byte,
 versus strict adherence to the defined 128 ASCII characters or even the
@@ -18,38 +24,46 @@ Fortran character set, which is a subset of the ASCII characters?
 Section 6.1(Processor character set) and 7.4.4(Character constants)
 of the Fortran 2023 Standard provide guidance on this. A lot is left
 up to the processor. A conservative interpretation implies that for
-ASCII input files a quoted constant string should be composed of one-byte
-ASCII-7bit characters.
+ASCII input files a quoted constant string is only guaranteed portable
+when composed of one-byte ASCII-7bit characters.
 
 What is left in question is what encoding ensues when this criteria is
 not met.
 
-For example, currently if I edit a UTF-8 file and create the following source
-I have to avoid several pitfalls:
+For example, assume a UTF-8 encoded source file has been created. If 
+multi-byte characters are to be represented in the code there are 
+several pitfalls to avoid. The following example shows which syntax
+results in properly encoded data, and several that do not. The intent
+is to print a Euro symbol:
+
 ~~~~~~~~~~ {: lang=fortran}
 program euro
 use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
 implicit none
 integer, parameter         :: ucs4 = selected_char_kind ('ISO_10646')
 character(len=*),parameter :: g5='(*(a9,3x,g0,t18,g0,t25,g0,t32,g0))'
-!
-! NO: LHS holds one byte, but three are required for the RHS which is
-!     a stream of bytes representing a Euro character in UTF-8
-!     not a UCS-4 character so will cause truncation to the first byte
+! TRY A: NO
+!     LHS holds one byte, but three are required for the RHS which is
+!     a stream of bytes representing a Euro character in UTF-8;
+!     not a UCS-4 character. The result is a truncated UTF8-encoded string.
 character(len=1)           :: euro0 = '€'
 !
-! NO: If the intent was to use ISO_10645 encoding. This will hold a multi-byte
-! UTF-8 character as 3 ASCII bytes, not a UCS-4 "character".
+! TRY B: NO
+! If the intent was to use ISO_10646 encoding this fails. This will hold
+! a multi-byte UTF-8 character as 3 ASCII bytes, not a UCS-4 "character".
 character(len=*),parameter :: euro1 = '€'
 !
-! NO: The RHS is 3 bytes in UTF-8 encoding, not a single 4-byte character,
+! TRY C: NO
+! The RHS is 3 bytes in UTF-8 encoding, not a single 4-byte character,
 character(len=1,kind=ucs4) :: euro2 = '€'
 
-! NO: a prefix assumes the quoted string is ASCII, not UTF-8
-!     although it could be argued it would be nice if it worked.
+! TRY D: NO
+! a prefix assumes the quoted string is ASCII, not UTF-8
+! although it could be argued it would be nice if it worked.
 character(len=1,kind=ucs4) :: euro3 = ucs4_'€'
 
-! YES: this defines Unicode character U+20AC as UCS-4
+! TRY E: YES
+! this defines Unicode character U+20AC properly as a UCS-4 character
 character(len=1,kind=ucs4) :: euro4 = char(int(z'20AC'), kind=ucs4)
 
    write(stdout,g5) 'VARIABLE', 'LEN', 'BYTES', 'KIND', 'OUTPUT'
@@ -76,10 +90,12 @@ generated value.
 
 In this exercise we are just demonstrating there are a lot of ways to
 specify a string constant that will _not_ end up creating a proper UCS-4
-string, but one (verbose) syntax that should always succeed.
+string, but one (admittedly verbose and obfusticated) syntax that should
+always succeed.
 
-So the CHAR() intrinsic function can be reliably used to directly
-construct UCS-4 multi-byte characters from their Unicode code points.
+The lesson learned is the CHAR() intrinsic function can be reliably used
+to directly construct UCS-4 multi-byte characters from their Unicode
+code points.
 
 # Mixing CHAR() and quoted constants
 
@@ -88,16 +104,21 @@ as the quoted characters are one byte characters (ie. ASCII).
 
 For instance,
 ~~~~~~~~~~ {: lang=fortran}
-ucs4_'Unicode character: ' // char(9787, kind=ucs4)
+   :
+integer, parameter         :: ucs4 = selected_char_kind ('ISO_10646')
+character(len=:,kind=ucs4),allocatable :: string
+string = ucs4_'Unicode character: ' // char(9787, kind=ucs4)
+   :
 ~~~~~~~~~~
-mixes a quoted constant string and the CHAR() function. As long as the
+mixes a quoted UCS-4 constant string and the CHAR() function. As long as the
 quoted string is composed of ASCII7 one-byte characters there is no
 ambiguity -- so the above line will work.
 
 ## a program to convert a utf-8 file to Fortran CHAR() declarations
+
 Since typing all those code point values can get tedious, lets construct
 a program that reads a UTF-8 file and converts it to a program that
-defines all the input lines as UCS-4 variables:
+defines all the input lines as UCS-4 variables using CHAR():
 
 ~~~~~~~~~~ {: lang=fortran}
 program unifile_to_ftn
@@ -205,17 +226,85 @@ variable declarations into source files where it is needed. The output
 is generated as a complete program that should reproduce the input file
 (sans any trailing spaces) when executed.
 
+CHAR() is elemental and decimal values work as well as hexidecimal, so
+this alternative syntax works as well:
+~~~~~~~~~~ {: lang=fortran}
+program unifile_to_ftn
+! @(#) convert UTF-8 text on command line to char(3f) calls
+use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
+implicit none
+integer, parameter            :: ucs4 = selected_char_kind ('ISO_10646')
+character(len=*),parameter    :: g= '(*(g0))'
+character(len=80)             :: count
+integer                       :: i, j, iostat
+character(len=4096,kind=ucs4) :: uline
+   open (stdin, encoding='UTF-8')
+   open (stdout, encoding='UTF-8')
+   write(stdout,g) 'program testit'
+   write(stdout,g) 'use,intrinsic :: iso_fortran_env, only : output_unit'
+   write(stdout,g) "integer,parameter :: ucs4=selected_char_kind ('ISO_10646')"
+   write(stdout,g) "   open (output_unit, encoding='utf-8')"
+   do j=1,huge(0)-1
+      read(stdin,'(a)',iostat=iostat)uline
+      if(iostat.ne.0)exit
+      write(count,g) "variable_",j,"(*)= char([ &"
+      write(stdout,g) 'block'
+      write(stdout,g) '! Unicode code points for ',trim(uline)
+      write(stdout,g) 'character(len=*,kind=ucs4),parameter :: '//trim(count)
+      write(stdout,'("",*(i0,:,","))',advance="no")(ichar(uline(i:i)),i=1,len_trim(uline))
+      write(stdout,g) '],kind=ucs4)'
+      write(stdout,g) "   write(output_unit,'(*(a))' )variable_",j
+      write(stdout,g) 'endblock'
+   enddo
+   write(stdout,g) "end program testit"
+end program unifile_to_ftn
+~~~~~~~~~~
+where arrays of single characters are constructed instead of multi-character variables,
+and for simplicity it is assumed source code line length is assumed unlimited.
+
+# Output
+~~~~~~~~~~ {: lang=fortran}
+program testit
+use,intrinsic :: iso_fortran_env, only : output_unit
+integer,parameter :: ucs4=selected_char_kind ('ISO_10646')
+   open (output_unit, encoding='utf-8')
+block
+! Unicode code points for 七転び八起き。
+character(len=*,kind=ucs4),parameter :: variable_1(*)= char([ &
+19971,36578,12403,20843,36215,12365,12290],kind=ucs4)
+   write(output_unit,'(*(a))' )variable_1
+endblock
+block
+! Unicode code points for 転んでもまた立ち上がる。
+character(len=*,kind=ucs4),parameter :: variable_2(*)= char([ &
+36578,12435,12391,12418,12414,12383,31435,12385,19978,12364,12427,12290],kind=ucs4)
+   write(output_unit,'(*(a))' )variable_2
+endblock
+block
+! Unicode code points for くじけずに前を向いて歩いていこう。
+character(len=*,kind=ucs4),parameter :: variable_3(*)= char([ &
+12367,12376,12369,12378,12395,21069,12434,21521,12356,12390,27497,12356,12390,12356,12371,12358,12290],kind=ucs4)
+   write(output_unit,'(*(a))' )variable_3
+endblock
+end program testit
+~~~~~~~~~~
+
 ## Summary
 
 As tempting as it may be to place Unicode multi-byte characters in quoted
-constant strings in code source, the portable standard method is to use
-the CHAR() function and integer Unicode code point values.
+constant strings in code source, the guaranteed-portable standard method
+is to use the CHAR() function and integer Unicode code point values to
+construct UCS-4 variables directly from the source code.
 
 Placing messages in an external file and opening the file as UTF-8
 encoded is an easy alternative that lets you maintain the messages as
 Unicode directly, but this will require always making the message file
 accessible when the program is being used.
 
-+ [TOP](Unicode)
-+ [PREVIOUS](lesson1_ucs4)
-+ [NEXT](lesson3_ucs4)
+We will look at alternatives that allow for what-you-see-is-what-you-get
+string declarations as well, at the cost of assuming UTF-8 source files
+are acceptable.
+
++ [[Unicode|TOP]]
++ [[lesson1_ucs4|PREVIOUS]]
++ [[lesson3_ucs4|NEXT]]

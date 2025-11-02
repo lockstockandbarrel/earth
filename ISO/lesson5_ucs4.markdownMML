@@ -86,7 +86,8 @@ end program read_filename
 ## Summary
 
 If your processor supports Unicode filenames you probably need to convert
-any filename in UCS-4 encoding to UTF-8 encoding.
+any filename in UCS-4 encoding to UTF-8 encoding to use the name on an
+OPEN() statement.
 
 Using Fortran's ability to encode UCS-4 data as UTF-8 when writing
 external files it is easy to create a function for converting between
@@ -100,9 +101,9 @@ use methods more efficient than using scratch files.
 If your processor does not support Unicode filenames your operating
 system may support links. So an alternative might be to make an ASCII
 filename that is an alias for the unusable filename. This can typically
-be done with system calls to the intrinsic EXECUTE_COMMAND_LINE() if
+be done with system commands using the intrinsic EXECUTE_COMMAND_LINE(3) if
 you do not have procedures for creating (and removing) links.
 
-+ [TOP](Unicode)
-+ [PREVIOUS](lesson4_ucs4)
-+ [NEXT](lesson6_ucs4)
++ [[Unicode|TOP]]
++ [[lesson4_ucs4|PREVIOUS]]
++ [[lesson6_ucs4|NEXT]]

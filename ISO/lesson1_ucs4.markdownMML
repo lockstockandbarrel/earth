@@ -4,6 +4,18 @@
 Not all Fortran compilers provide high-level ISO-10646 (ie. "Unicode")
 support. To determine if a compiler provides support, one can attempt
 to compile and execute the following program:
+~~~~~~~~~~ {: lang=fortran}
+   program test_for_iso_10646
+   implicit none
+   integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')
+   write(*,*) trim(merge('ISO-10646 SUPPORTED    ', &
+                         'ISO-10646 NOT SUPPORTED', &
+	     	          ucs4>0))
+   end program test_for_iso_10646
+~~~~~~~~~~
+If the supplemental ISO-10646 standard is supported, you want to
+select a terminal emulator and font and system locale so this 
+next program prints an emoji to the screen:
 
 ~~~~~~~~~~ {: lang=fortran}
    program test_for_iso_10646
@@ -16,21 +28,24 @@ to compile and execute the following program:
       & 'Smiling face with open mouth',char(int(z'1F603'),kind=ucs4)
    end program test_for_iso_10646
 ~~~~~~~~~~
+If that is not done, the extensions will work with files but not with
+standard input and output to the screen. It is likely to work by default,
+but if not you will generally find how to use UTF-8 data to the screen
+on your system is well documented but very system-dependent.
 
-If this program builds and runs and prints an emoji the compiler
-provides support. If not, Unicode usage will be indirect, and require
+If the ISO-10646 supplement is not supported Unicode usage will require
 lower-level knowledge of byte-level Fortran processing and I/O and the
-hosting operating system. This introduction only applies to compilers
-providing ISO-10646 support.
+hosting operating system, which is covered in a different guide. This
+introduction only applies to compilers providing ISO-10646 support.
 
 Fortran Unicode support is straight-forward when just reading and writing
 UTF-8-encoded files. There is very little different from when processing
 ASCII files.
 
 In many cases all that is required is to 
-  1. declare all your character variables to be used with multi-byte UTF-8
-characters (ie. basically any character other than the ASCII 7-bit 
-characters) to be kind "iso_10646"
+  1. declare your character variables to be used with multi-byte UTF-8
+     characters (ie. basically any character other than the ASCII 7-bit
+     characters) to be kind "iso_10646"
   2. open/reopen your files with UTF-8 encoding.
 
 Fortran will then convert the data from UTF-8 files to whichever
@@ -54,7 +69,7 @@ automatically for the user also, when asked to provide formatted I/O.
 
 Why not just use UTF-8 encoding directly? UCS-4 encoding represents
 each glyph or character using four bytes. That is, each character is
-basically represented as a 32-bit integer. This makes it much easier
+basically represented as a 32-bit value. This makes it much easier
 to provide arrays and optimized intrinsics than when using UTF-8 encoding,
 which requires supporting multi-byte characters from one to four bytes.
 
@@ -105,13 +120,14 @@ character(len=255)            :: iomsg
 
    !------
    ! DIFFERENCE: you can change the encoding used for a file dynamically,
-   ! even on pre-assigned files so make sure stdin and stdout are set 
-   ! to expect UCS4-encoded data.
+   ! even on pre-assigned files so make sure stdin and stdout are set to
+   ! expect to format UCS4-encoded internal data as UTF-8 encoded files:
    open (stdin, encoding='UTF-8')
    open (stdout, encoding='UTF-8')
    !------
 
-   do ! copy file to stdout, prefixing each line with a glyph/character count
+   ! copy file to stdout, prefixing each line with a glyph/character count
+   do 
       read(stdin,'(a)',iostat=iostat,iomsg=iomsg)uline
       if(iostat.eq.0)then
          !------
@@ -145,11 +161,6 @@ character(len=255)            :: iomsg
 
 end program count_glyphs
 ~~~~~~~~~~
-That is how simple basic Unicode usage is in Fortran. The data will be
-converted from UTF-8 files to UCS-4 internal representation and back
-again transparently. __The CHARACTER substring indexing and intrinsic
-functions such as LEN(), TRIM(), VERIFY(), INDEX(), and SCAN() are
-generic, and will work with Unicode as simply as with ASCII__.
 
 So if we create a file called "upagain.utf"
 ~~~~~~~~~~ {: lang=text}
@@ -192,6 +203,13 @@ should produce
        48:    Even if you fall down, you will get up again.
        52:    Don't be discouraged, just keep walking forward."
 ~~~~~~~~~~
+### Summary
 
-+ [TOP](Unicode)
-+ [NEXT](lesson2_ucs4)
+That is how simple basic Unicode usage is in Fortran. The data will be
+converted from UTF-8 files to UCS-4 internal representation and back
+again transparently. __The CHARACTER substring indexing and intrinsic
+functions such as LEN(), TRIM(), VERIFY(), INDEX(), and SCAN() are
+generic, and will work with Unicode as simply as with ASCII__.
+
++ [[Unicode|TOP]]
++ [[lesson2_ucs4|NEXT]]
