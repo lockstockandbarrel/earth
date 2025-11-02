@@ -1,4 +1,0 @@
-### The M_utf8 module
-   + converting between UCS-4 and UTF-8 with procedures
-   + additional conversion routines to bridge the gaps in Fortran Unicode processing
-   + related utility programs

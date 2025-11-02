@@ -70,19 +70,22 @@ The selection of methods to employ breaks down along these major divides:
    and would prefer to conform as portably as reasonable to the Fortran
    standard; and probably avoid using UTF-8-encoded constant strings.
 
- + [[no_iso|processing UTF-8 data without using the ISO_10646 extension]].
+ + [[no_iso_10646|processing UTF-8 data without using the ISO_10646 extension]].
 
  + [[utf8_source_ext|using UTF-8-encoded source files]] versus using
    only Fortran source files strictly adhering to the Fortran character set
 
- + using [[extensions|Common Unicode-related processor-dependent extensions]]
+ + using [[extensions_ext|Common Unicode-related processor-dependent extensions]]
 
- + [M_utf8](https://github.com/urbanjost/M_utf8) - A Module supporting
+ + [M_ucs4](https://github.com/urbanjost/M_ucs4) - A Module supporting
    using the ISO_10646 extension
 
-   A module supplementing the ISO_10646 extension, including low-level
-   procedures for converting UTF-8 encoded byte streams to and from UCS-4
-   character variables.
+   A module supplementing the ISO_10646 extension, including 
+    + low-level procedures for converting UTF-8 encoded byte streams to
+      and from UCS-4 character variables.
+    + additional conversion routines to bridge the gaps in Fortran
+      Unicode processing
+    + related utility programs
 
  + [M_unicode](https://github.com/urbanjost/M_unicode) - Processing
    UTF-8 data without depending on the ISO_10646 extension
