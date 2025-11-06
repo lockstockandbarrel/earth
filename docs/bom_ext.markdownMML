@@ -1,7 +1,7 @@
-## off the beaten path:
-### Lesson III: embedding BOM characters at the beginning of files
+## off the beaten path: common Unicode extensions
+### Extension II: embedding BOM characters at the beginning of files
 
-## Byte Order Mark (BOM) Background :
+## Byte Order Mark (BOM)
 
 At its simplest, Unicode basically assigns a unique integer code to
 each glyph or character. Basically ASCII files are just that -- composed
@@ -16,21 +16,21 @@ data can be processed; but including other factors such as how well it
 integrates and how little it conflicts with existing common text encoding
 such as ASCII.
 
-So to make it simple to identify which encoding a text file is using,  a 
+To make it simple to identify which encoding a text file is using,  a 
 byte sequence was designed called the Byte Order Mark (BOM) that would
 not act as a character itself, but could be used to determine what 
 encoding the file was using when placed at the start of the file.
 
 That is why some Unicode files, particularly those originating from Windows
 systems, begin with a Byte Order Mark (BOM). This Unicode "noncharacter"
-is U+FEFF. When encoded, it provides a strong indicator of the encoding
-and byte order (endianness).
+is code point value U+FEFF. It provides a strong indicator
+of the encoding and byte order (endianness).
 
-   + UTF-8: The encoded BOM is bytes EF BB BF.
-   + UTF-16 Big Endian: The encoded BOM is bytes FE FF.
-   + UTF-16 Little Endian: The encoded BOM is bytes FF FE.
-   + UTF-32 Big Endian: The encoded BOM is bytes 00 00 FE FF.
-   + UTF-32 Little Endian: The encoded BOM is bytes FF FE 00 00.
+   + UTF-8: The BOM is encoded as bytes EF BB BF.
+   + UTF-16 Big Endian: The BOM is encoded as bytes FE FF.
+   + UTF-16 Little Endian: The BOM is encoded as bytes FF FE.
+   + UTF-32 Big Endian: The BOM is encoded as bytes 00 00 FE FF.
+   + UTF-32 Little Endian: The BOM is encoded as bytes FF FE 00 00.
 
 If a BOM is absent, one can attempt to decode the file using each encoding
 and check for validity. For instance, a sequence of bytes that is valid
@@ -48,90 +48,93 @@ Unicode characters but remain as compact as ASCII files when the files
 predominantly are composed of ASCII characters, which is still often
 the case.
 
-Note __all the Unicode encodings are sensitive to byte order 
-except UTF-8__. That alone might make UTF-8 the preferred text file format.
+#### Note:
+   _All the Unicode encodings are sensitive to byte order except
+   UTF-8_. That alone might make UTF-8 the preferred text file format.
 
-So UTF-8 has become so dominant as the Unicode file encoding scheme the
-use of a BOM character is no longer even recommended unless required
-to work properly with particular applications. Even
-when a file is started with encoding='UTF-8', a Byte Order Mark (BOM)
-is not generated automatically by any (current) Fortran compiler.
+UTF-8 has become so dominant as the Unicode file encoding scheme the use
+of a BOM character is no longer even recommended unless required to work
+properly with particular applications. Even when a file is started with
+encoding='UTF-8', a Byte Order Mark (BOM) is not generated automatically
+by any (current) Fortran compiler by default.
+
+However, note that the NAG fortran compiler has a
+__-bom=Asis|Remove|Insert__ option.
 
 BOM characters are found most often in MicroSoft Windows environments.
 The BOM character as a "magic string" was used in virtually all Unicode
-files on MSWindows when initially introduces, partly because Microsoft
+files on MSWindows when initially introduced, partly because Microsoft
 supported multiple Unicode text file formats early on, before UTF-8 was
 seen as the de-facto text file encoding.
 
-Note to qualify as a BOM the string must appear at the beginning of
+Note that to qualify as a BOM the string must appear at the beginning of
 the file, not the middle of a data stream. Unicode says it should be
 interpreted as a normal codepoint (namely a word joiner), not as a BOM
 if it does not appear first.
 
 ### BOM as it applies to Fortran source files
 
-The Unicode standard doesn't require a BOM for UTF-8, but it may be
-encountered at the start of files. 
-
-Its presence interferes with the use of UTF-8
-by software that does not expect non-ASCII bytes at the start of a
-file but that could otherwise handle the text stream.
-
-The Unicode Standard permits the BOM in UTF-8, but does not
+The Unicode Standard permits the BOM in UTF-8 files, but does not
 require or recommend its use.
 
-This can include Fortran source where multi-byte characters are non-standard
-as part of the coding instructions, but are often handled when appearing in
-comments and literal quoted character strings.
+There are references that state that if it is encountered
+"its presence interferes with the use of UTF-8 by software that does not
+expect non-ASCII bytes at the start of a file but that could otherwise
+handle the text stream". 
 
-Some applications may require it. The most relevant issue that the NAG
-compiler has an extension where it formally supports UTF-8 source files,
-which are supposed to require with a BOM character to distinguish them
-from ASCII files.
+One such place might be a Fortran source file!  Multi-byte characters are
+non-standard as part of the coding instructions, but are often handled
+when appearing in comments and literal quoted character strings.
 
-Determining whether a text is encoded in UTF-8, UTF-16, or UTF-32,
-especially without explicit metadata, often relies on analyzing the byte
-sequence for patterns specific to each encoding.
+Some applications may require it. The most relevant issue is that the
+NAG Fortran compiler has an extension where it formally supports UTF-8
+source files, which are supposed to require starting with a BOM character
+to distinguish them from ASCII files.
 
-The standard also does
-not recommend removing a BOM when it is there, so that round-tripping
-between encodings does not lose information, and so that code that
-relies on it continues to work. 
+The GNU/Linux or Unix command file(1) will usually identify a file
+starting with a BOM as UTF-8 encoded; but often determining whether a
+text is encoded in UTF-8, UTF-16, or UTF-32, especially without explicit
+metadata, often relies on analyzing the byte sequence for patterns
+specific to each encoding.
+
+The Unicode standard also does not recommend removing a BOM when it is
+there, so that round-tripping between encodings does not lose information,
+and so that code that relies on it continues to work.
 
 Not using a BOM allows text to be backwards-compatible with software
-designed for extended ASCII. For instance many programming
+designed for extended ASCII. For instance many non-Fortran programming
 languages permit non-ASCII bytes in string literals but not
 at the start of the file.
 
-### prefix code with a BOM Unicode signature using bytes
+---
+### prefix code with a BOM Unicode signature using a stream of bytes
+ 
+This program creates a Fortran source file starting with a UTF-8 BOM. Try
+to compile the output program to see if your compiler will compile it.
+
+It could fail because a character is not in the Fortran character set
+outside of a comment or literal string
 ~~~~~~~~~~ {: lang=fortran}
 program bom_bytes
-!
-! create a Fortran source file starting with a utf-8 BOM to see if your
-! compiler will compile it or fail because a character is not in the
-! Fortran character set outside of a comment or literal string
-!
 use iso_fortran_env, only : stdout => output_unit
 implicit none
 character(len=*),parameter :: &
    & A_bom = char(int(z'EF'))// char(int(z'BB'))// char(int(z'BF'))
-
-   write(stdout,'(a)',advance='no')A_bom
    write(stdout,'(a)') &
     'program testit ! Unicode BOM as utf-8 bytes'               ,&
     '   write(*,*)"File starts with BOM from ""bytes"" write!"' ,&
     'end program testit'
 
 end program bom_bytes
+---
 ~~~~~~~~~~
 ### prefix code with a BOM using standard ISO-10646
+
+This program also generates another program source with the first
+character the BOM character, but requires the compiler to support
+the optional ISO-10646 supplemental standard.
 ~~~~~~~~~~ {: lang=fortran}
 program bom_ucs4
-!
-! create a Fortran source file starting with a utf-8 BOM to see if your
-! compiler will compile it or fail because a character is not in the
-! Fortran character set outside of a comment or literal string
-!
 use iso_fortran_env, only : stdout => output_unit
 implicit none
 intrinsic selected_char_kind
@@ -150,8 +153,8 @@ end program bom_ucs4
 ~~~~~~~~~~
 ### References
 
-See [Wikipedia](https://en.wikipedia.org/wiki/Byte_order_mark) for
-more information on the Unicode character code, U+FEFF 
+See [Wikipedia](https://en.wikipedia.org/wiki/Byte_order_mark) entry for
+more information on the BOM Unicode character code, U+FEFF 
 (aka. ZERO WIDTH NO-BREAK SPACE), 
 
 + [[Unicode|TOP]]

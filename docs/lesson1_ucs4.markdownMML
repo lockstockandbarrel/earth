@@ -30,7 +30,7 @@ next program prints an emoji to the screen:
 ~~~~~~~~~~
 If that is not done, the extensions will work with files but not with
 standard input and output to the screen. It is likely to work by default,
-but if not you will generally find how to use UTF-8 data to the screen
+but if not you will generally find out that how to use UTF-8 data to the screen
 on your system is well documented but very system-dependent.
 
 If the ISO-10646 supplement is not supported Unicode usage will require
@@ -43,7 +43,8 @@ UTF-8-encoded files. There is very little different from when processing
 ASCII files.
 
 In many cases all that is required is to 
-  1. declare your character variables to be used with multi-byte UTF-8
+
+  1. declare any character variables to be used with multi-byte UTF-8
      characters (ie. basically any character other than the ASCII 7-bit
      characters) to be kind "iso_10646"
   2. open/reopen your files with UTF-8 encoding.

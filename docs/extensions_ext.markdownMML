@@ -1,6 +1,9 @@
 ### off the beaten path:
-  + [[backslash_ext|**Lesson I:**]] the backslash escape code extension
-  + [[bom_ext|**Lesson II:**]] embedding BOM characters at the beginning of files
+
+## Common Unicode-related extensions
+
+ * **[[backslash_ext|Extension I:]]** the backslash escape code extension
+ * **[[bom_ext|Extension II:]]** embedding BOM characters at the beginning of files
 
 + [[Unicode|TOP]]
-+ [[utf8_source_ext|NEXT]]
++ [[backslash_ext|NEXT]]

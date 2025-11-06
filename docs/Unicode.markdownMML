@@ -1,7 +1,5 @@
 #### Introduction to Fortran Unicode support
-## Reading, writing and processing UTF-8 data using Fortran
-
-## Unicode codepoints and their encodings
+## Reading, writing and processing UTF-8 data using Fortran, Unicode codepoints, and their encodings
 
 Unicode is an international standard for encoding text that assigns a
 unique whole numeric value, called a **code point**, to every character,
@@ -28,7 +26,7 @@ standard.
 **UCS-4 encoding** is simpler and homogeneous. Each code point is stored
 as a 32-bit value, thus using the same amount of bytes for each character
 (unlike UTF-8). This format is often used to internally encode Unicode
-code points in various languages.
+code points in various computing languages.
 
 UCS-4 encoding shares the trait of constant storage size per element with
 all Fortran intrinsic types, making it a natural fit for the internal
@@ -81,11 +79,12 @@ The selection of methods to employ breaks down along these major divides:
    using the ISO_10646 extension
 
    A module supplementing the ISO_10646 extension, including 
-    + low-level procedures for converting UTF-8 encoded byte streams to
-      and from UCS-4 character variables.
-    + additional conversion routines to bridge the gaps in Fortran
-      Unicode processing
-    + related utility programs
+
+     * low-level procedures for converting UTF-8 encoded byte streams to
+       and from UCS-4 character variables.
+     * additional conversion routines to bridge the gaps in Fortran
+     * Unicode processing
+     * related utility programs
 
  + [M_unicode](https://github.com/urbanjost/M_unicode) - Processing
    UTF-8 data without depending on the ISO_10646 extension

@@ -53,18 +53,18 @@ the ENCODING="UTF-8" option has been used on an OPEN() statement.
 Further details follow:
 
 ### Introduction to Fortran ISO_10646 (UCS-4-encoded Unicode) support
-   + [[lesson1_ucs4|**Lesson I:**]] reading and writing UTF-8 Unicode files
-   + [[lesson2_ucs4|**Lesson II:**]] creating Unicode strings in ASCII Fortran source files
-   + [[lesson3_ucs4|**Lesson III:**]] mixing ASCII and UCS4 kinds as regards 
+   + **[[lesson1_ucs4|Lesson I:]]** reading and writing UTF-8 Unicode files
+   + **[[lesson2_ucs4|Lesson II:]]** creating Unicode strings in ASCII Fortran source files
+   + **[[lesson3_ucs4|Lesson III:]]** mixing ASCII and UCS4 kinds as regards 
       + assignments
       + concatenation
       + passing arguments to external ASCII libraries
       + mixing kinds on I/O argument lists
-   + [[lesson4_ucs4|**Lesson IV:**]] what is and is not supported with internal READ and WRITE statements
-   + [[lesson5_ucs4|**Lesson V:**]] processing Unicode file names on OPEN() statements
-   + [[lesson6_ucs4|**Lesson VI:**]] reading UTF-8 strings from command lines and environment variables.
-   + [[lesson7_ucs4|**Lesson VII:**]] passing Unicode strings to and from C
-   + [[summary_ucs4|**Summary**]] putting it all together
+   + **[[lesson4_ucs4|Lesson IV:]]** what is and is not supported with internal READ and WRITE statements
+   + **[[lesson5_ucs4|Lesson V:]]** processing Unicode file names on OPEN() statements
+   + **[[lesson6_ucs4|Lesson VI:]]** reading UTF-8 strings from command lines and environment variables.
+   + **[[lesson7_ucs4|Lesson VII:]]** passing Unicode strings to and from C
+   + **[[summary_ucs4|Summary]]** putting it all together
 
 -------------------------------------------------------------
 + [[lesson1_ucs4|NEXT]]

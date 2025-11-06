@@ -1,8 +1,6 @@
 #### Introduction to Fortran Unicode support
 ### **Lesson VII:** passing Unicode strings to and from C
 
-# WIP (Work in Progress) -- this is a placeholder
-
 Passing Unicode strings from Fortran to C involves careful handling of
 character encoding and memory management due to the differences in how
 Fortran and C handle strings.
@@ -91,24 +89,24 @@ void process_unicode_string(char *c_string_ptr, int string_length) {
     // printf("Received Unicode string from Fortran: %s\n", c_string_ptr);
 }
 ~~~~~~~~~~
-
+---
 ### Key Points:
 
-    **Memory Ownership**:
+**Memory Ownership**:
 
-    Decide whether Fortran or C is responsible for allocating and
-    deallocating the memory for the string. If Fortran allocates, C should
-    not free it. If C allocates (e.g., using malloc), C must free it.
+Decide whether Fortran or C is responsible for allocating and
+deallocating the memory for the string. If Fortran allocates, C should
+not free it. If C allocates (e.g., using malloc), C must free it.
 
-    **Character Kind**:
+**Character Kind**:
 
-    Using selected_char_kind('ISO_10646') in Fortran is crucial for
-    simple proper Unicode handling.
+Using selected_char_kind('ISO_10646') in Fortran is crucial for
+simple proper Unicode handling.
 
-    **Length Parameter**:
+**Length Parameter**:
 
-    Always pass the string length explicitly, as Fortran strings are
-    not inherently null-terminated like C strings.
+Always pass the string length explicitly, as Fortran strings are
+not inherently null-terminated like C strings.
 
 + [[Unicode|TOP]]
 + [[summary_ucs4|NEXT]]
