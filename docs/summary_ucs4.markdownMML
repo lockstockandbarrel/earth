@@ -1,3 +1,4 @@
+<a name="summary_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Summary: Lessons Learned
 
@@ -5,7 +6,7 @@ The main lessons discussed here are
 
 1. Compilers that support CHARACTER kind ISO_10646  make reading and
    writing UTF-8 encoded files as easy as doing the same with ASCII
-   files. 
+   files.
 
 2. All the CHARACTER intrinsics work with UCS4 variables.
 
@@ -24,7 +25,7 @@ The main lessons discussed here are
    set (which amounts to ASCII-7 characters sans control characters).
 
 If you care about the shortfallings in item 3 create a few conversion
-routines and you can solve those problems on any system supporting 
+routines and you can solve those problems on any system supporting
 UTF-8 encoded files.
 
 Remember that if you use UTF-8 constants in your code files that this is
@@ -33,8 +34,8 @@ not disallowed by the Standard, but neither is it required to be supported.
 Taking that all into account
 the following example program shows how to read an environment
 variable into a UCS-4 variable, open files with UTF-8 encoded names, and
-use intrinsic CHARACTER methods with Unicode data, circumventing the 
-issues raised in item 3. 
+use intrinsic CHARACTER methods with Unicode data, circumventing the
+issues raised in item 3.
 
 ~~~~~~~~~~ {: lang=fortran}
 module M_encode
@@ -46,7 +47,7 @@ integer, parameter :: ascii = selected_char_kind ("ascii")
 public :: ascii_to_ucs4
 public :: ucs4_to_ascii
 public :: ucs4_to_utf8
-public :: utf8_to_ucs4 
+public :: utf8_to_ucs4
 public :: get_env
 public :: get_arg
 
@@ -158,7 +159,7 @@ function get_arg_bytes(pos) result(arg)
 integer                      :: argument_length, istat, pos
 character(len=:),allocatable :: arg
    !
-   ! allocate arg array big enough to hold command line argument 
+   ! allocate arg array big enough to hold command line argument
    !
    call get_command_argument(number=pos,length=argument_length)
    if(allocated(arg))deallocate(arg)

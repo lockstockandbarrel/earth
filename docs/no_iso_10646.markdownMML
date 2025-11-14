@@ -1,3 +1,4 @@
+<a name="no_iso_10646"></a>
 ## Processing Unicode when ISO-10646 is not supported
 ### Lesson I: converting UTF-8 codes to and from INTEGER values
 
@@ -34,28 +35,28 @@ To encapsulate this data a user-defined type called UNICODE_TYPE is defined.
 This allows for creating ragged arrays of character data where each element
 may be a different length.
 
-Assignment is defined such that UNICODE_TYPE variables can be defined by 
-being assigned to UTF-8 encoded streams of bytes or even an integer array 
-containing Unicode codepoint values. 
+Assignment is defined such that UNICODE_TYPE variables can be defined by
+being assigned to UTF-8 encoded streams of bytes or even an integer array
+containing Unicode codepoint values.
 
 A function called CHARACTER is needed to convert the type back to a stream
 of bytes, for passing to other procedures or for printing as ASCII data.
 
 Now with this type defined we can overload all the character-related intrinsics
-to provide a familar interface, add an OOP interface to the type and add 
-additional functions for sorting, advanced string manipulation, and case 
+to provide a familar interface, add an OOP interface to the type and add
+additional functions for sorting, advanced string manipulation, and case
 conversion.
 
 The result is an interface arguably simpler to use than the ISO-10646
 supplement that is considerably more powerful.
 
 # Summary
- 
+
  + [M_unicode](https://github.com/urbanjost/M_unicode)
 
    The M_unicode github repository contains not only the module code but
-   build methods using fpm(1), make(1), and cmake(1); a unit test; 
-   example programs for each method provided; and documentation in 
+   build methods using fpm(1), make(1), and cmake(1); a unit test;
+   example programs for each method provided; and documentation in
    HTML, man-page, and flat-text formats.
 
 + [TOP](Unicode)

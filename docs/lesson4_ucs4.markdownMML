@@ -1,3 +1,4 @@
+<a name="lesson4_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson IV: what is and is not supported with internal READ and WRITE statements
 
@@ -186,5 +187,5 @@ after:Hello World and Ni Hao -- ??????
 + [[Unicode|TOP]]
 + [[lesson5_ucs4|NEXT]]
 + [[lesson3_ucs4|PREVIOUS]]
-   
+
 

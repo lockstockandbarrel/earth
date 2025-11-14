@@ -1,3 +1,4 @@
+<a name="lesson3_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson III: mixing ASCII and UCS4 kinds as regards concatenation and assignments
 
@@ -20,7 +21,7 @@ Concerning assignment -- the Fortran standard states
    NOTES
 
    For nondefault character kinds, the blank padding character is
-   processor dependent 
+   processor dependent
 
    When assigning a character expression to a variable of a different kind,
    each character of the expression that is not representable in the kind
@@ -112,9 +113,9 @@ A limitation of concatenation is that all the strings have to be of the
 same KIND, so you cannot simply append UCS-4 and ASCII-7 strings.
 
 And we have already seen assignment between the kinds only assigns
-representable characters. 
+representable characters.
 
-But the definition of assignment includes an equivalent conversion 
+But the definition of assignment includes an equivalent conversion
 defined in terms of ACHAR(3) and IACHAR(3):
 
        ACHAR(IACHAR(c),KIND(variable)).
@@ -146,7 +147,7 @@ integer                                :: iostat
 integer                                :: nerr
 character(len=1)                       :: paws
                                        !  😃 Smiling face with open mouth
-character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) 
+character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4)
 
    open (stdout, encoding='DEFAULT')
    open (stdout, encoding='UTF-8')
@@ -222,7 +223,7 @@ end program concatenate
 ================================================================================
 strings of different kinds cannot be concatenated.
 Of course constants can have their KIND specified.
-first UCS4 string😃another UCS4 string 
+first UCS4 string😃another UCS4 string
 ================================================================================
 you can use simple assigns to do conversions
 😃UCS4 strings😃appended together😃ascii stringsappended together

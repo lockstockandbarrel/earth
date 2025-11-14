@@ -1,3 +1,4 @@
+<a name="lesson6_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson VI: reading UTF-8 strings from command lines
 
@@ -97,7 +98,7 @@ Fortran's ability to encode UTF-8 as UCS-4 when reading and writing
 external files it is easy to create a function for converting between
 the two encodings to make up for the lack of any equivalent intrinsics.
 
-The same applies to values contained in environment variables; albeit 
+The same applies to values contained in environment variables; albeit
 most systems restrict the names of environment variables to ASCII-7
 characters among other possible restrictions.
 

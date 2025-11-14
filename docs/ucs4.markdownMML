@@ -1,3 +1,4 @@
+<a name="ucs4"></a>
 ## The optional Fortran 2003 ISO_10646 standard
 
 The Fortran 2003 standard first defines support for processing of
@@ -55,7 +56,7 @@ Further details follow:
 ### Introduction to Fortran ISO_10646 (UCS-4-encoded Unicode) support
    + **[[lesson1_ucs4|Lesson I:]]** reading and writing UTF-8 Unicode files
    + **[[lesson2_ucs4|Lesson II:]]** creating Unicode strings in ASCII Fortran source files
-   + **[[lesson3_ucs4|Lesson III:]]** mixing ASCII and UCS4 kinds as regards 
+   + **[[lesson3_ucs4|Lesson III:]]** mixing ASCII and UCS4 kinds as regards
       + assignments
       + concatenation
       + passing arguments to external ASCII libraries

@@ -1,3 +1,4 @@
+<a name="lesson2_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson II: creating Unicode strings in ASCII Fortran source files
 
@@ -13,7 +14,7 @@ characters other than newline (ie. backspace, tab, bell, ...).
 
 Since ASCII is a subset of Unicode the line is a bit blurry
 as to what encoding source files may use for constant strings and
-comments, however. 
+comments, however.
 
 In particular, can constant strings and comments
 be composed in UTF-8 or must the entire file be ASCII? What about
@@ -30,8 +31,8 @@ when composed of one-byte ASCII-7bit characters.
 What is left in question is what encoding ensues when this criteria is
 not met.
 
-For example, assume a UTF-8 encoded source file has been created. If 
-multi-byte characters are to be represented in the code there are 
+For example, assume a UTF-8 encoded source file has been created. If
+multi-byte characters are to be represented in the code there are
 several pitfalls to avoid. The following example shows which syntax
 results in properly encoded data, and several that do not. The intent
 is to print a Euro symbol:

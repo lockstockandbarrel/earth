@@ -1,3 +1,4 @@
+<a name="bom_ext"></a>
 ## off the beaten path: common Unicode extensions
 ### Extension II: embedding BOM characters at the beginning of files
 
@@ -16,9 +17,9 @@ data can be processed; but including other factors such as how well it
 integrates and how little it conflicts with existing common text encoding
 such as ASCII.
 
-To make it simple to identify which encoding a text file is using,  a 
+To make it simple to identify which encoding a text file is using,  a
 byte sequence was designed called the Byte Order Mark (BOM) that would
-not act as a character itself, but could be used to determine what 
+not act as a character itself, but could be used to determine what
 encoding the file was using when placed at the start of the file.
 
 That is why some Unicode files, particularly those originating from Windows
@@ -80,7 +81,7 @@ require or recommend its use.
 There are references that state that if it is encountered
 "its presence interferes with the use of UTF-8 by software that does not
 expect non-ASCII bytes at the start of a file but that could otherwise
-handle the text stream". 
+handle the text stream".
 
 One such place might be a Fortran source file!  Multi-byte characters are
 non-standard as part of the coding instructions, but are often handled
@@ -108,7 +109,7 @@ at the start of the file.
 
 ---
 ### prefix code with a BOM Unicode signature using a stream of bytes
- 
+
 This program creates a Fortran source file starting with a UTF-8 BOM. Try
 to compile the output program to see if your compiler will compile it.
 
@@ -154,8 +155,8 @@ end program bom_ucs4
 ### References
 
 See [Wikipedia](https://en.wikipedia.org/wiki/Byte_order_mark) entry for
-more information on the BOM Unicode character code, U+FEFF 
-(aka. ZERO WIDTH NO-BREAK SPACE), 
+more information on the BOM Unicode character code, U+FEFF
+(aka. ZERO WIDTH NO-BREAK SPACE),
 
 + [[Unicode|TOP]]
 + [[backslash_ext|PREVIOUS]]

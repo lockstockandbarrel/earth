@@ -1,5 +1,6 @@
+<a name="backslash_ext"></a>
 ### off the beaten path: common Unicode extensions
-## Extension II: backslash extension
+## Extension I: backslash extension
 
 A common Fortran extension is to support Unicode escape sequences which
 specify characters by their hexadecimal code points.  This allows for
@@ -8,7 +9,7 @@ function. Usually the form is
 
     \xnn:        8-bit hexadecimal code nn
     \unnnn:     16-bit hexadecimal code nnnn
-    \Unnnnnnnn: 32-bit hexadecimal code nnnnnnnn 
+    \Unnnnnnnn: 32-bit hexadecimal code nnnnnnnn
 
 To enable this generally requires a compiler switch such as -fbackslash or
 -Mbackslash. Without an option, backslashes
@@ -23,7 +24,7 @@ of code point U+263B. The compiled binary must be executed in a terminal
 with Unicode support, like XTerm or sakura.
 
 ~~~~~~~~~~ {: lang=fortran}
-program backslash_escape 
+program backslash_escape
 use,intrinsic :: iso_fortran_env, only: output_unit
 implicit none
 integer,parameter :: ucs4 = selected_char_kind('ISO_10646')
@@ -35,7 +36,7 @@ character(kind=ucs4,len=:),allocatable :: str
    open (output_unit, encoding='utf-8')
    print '(a)', str
    print '(a)', ucs4_'Unicode character: \U0000263B'
-end program backslash_escape 
+end program backslash_escape
 ~~~~~~~~~~
 
 When using gfortran(1) build and run the executable with:
@@ -65,7 +66,7 @@ that can initially go unnoticed.
 
 Several compilers allow for quoted strings to contain code point
 escape sequences. This is not standard and the syntax may therefore vary
-from processor to processor. 
+from processor to processor.
 
 Note that if the code point values are above 255 decimal that the string being created must be of type ISO_10646, not ASCII.
 

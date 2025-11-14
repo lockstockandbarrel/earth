@@ -1,3 +1,4 @@
+<a name="lesson5_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson V: processing Unicode file names on OPEN() statements
 
@@ -94,7 +95,7 @@ external files it is easy to create a function for converting between
 the two encodings.
 
 Note that modules of related functions can be found at
-[github.com/urbanjost/M_unicode](github.com/urbanjost/M_ucs4) and
+[github.com/urbanjost/M_ucs4](github.com/urbanjost/M_ucs4) and
 [github.com/urbanjost/M_unicode](github.com/urbanjost/M_unicode) that
 use methods more efficient than using scratch files.
 
