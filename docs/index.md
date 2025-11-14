@@ -1980,7 +1980,7 @@ supplement that is considerably more powerful.
 
 <a name="backslash_ext"></a>
 ### off the beaten path: common Unicode extensions
-## Extension II: backslash extension
+## Extension I: backslash extension
 
 A common Fortran extension is to support Unicode escape sequences which
 specify characters by their hexadecimal code points.  This allows for
