@@ -1,4 +1,4 @@
-<a hame="Unicode"></a>
+<a name="Unicode"></a>
 #### Introduction to Fortran Unicode support
 ## Reading, writing and processing UTF-8 data using Fortran, Unicode codepoints, and their encodings
 
@@ -79,7 +79,7 @@ The selection of methods to employ breaks down along these major divides:
  + [M_ucs4](https://github.com/urbanjost/M_ucs4) - A Module supporting
    using the ISO_10646 extension
 
-   A module supplementing the ISO_10646 extension, including 
+   A module supplementing the ISO_10646 extension, including
 
      * low-level procedures for converting UTF-8 encoded byte streams to
        and from UCS-4 character variables.
@@ -98,7 +98,7 @@ The selection of methods to employ breaks down along these major divides:
    ISO_10646 extension. It provides both a functional and OOP interface.
 
 -------------------------------------------------------------
-<a hame="ucs4"></a>
+<a name="ucs4"></a>
 ## The optional Fortran 2003 ISO_10646 standard
 
 The Fortran 2003 standard first defines support for processing of
@@ -156,7 +156,7 @@ Further details follow:
 ### Introduction to Fortran ISO_10646 (UCS-4-encoded Unicode) support
    + **[Lesson I:](#lesson1_ucs4)** reading and writing UTF-8 Unicode files
    + **[Lesson II:](#lesson2_ucs4)** creating Unicode strings in ASCII Fortran source files
-   + **[Lesson III:](#lesson3_ucs4)** mixing ASCII and UCS4 kinds as regards 
+   + **[Lesson III:](#lesson3_ucs4)** mixing ASCII and UCS4 kinds as regards
       + assignments
       + concatenation
       + passing arguments to external ASCII libraries
@@ -168,7 +168,7 @@ Further details follow:
    + **[Summary](#summary_ucs4)** putting it all together
 
 -------------------------------------------------------------
-<a hame="lesson1_ucs4"></a>
+<a name="lesson1_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson I: reading and writing UTF-8 Unicode files
 
@@ -181,11 +181,11 @@ to compile and execute the following program:
    integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')
    write(*,*) trim(merge('ISO-10646 SUPPORTED    ', &
                          'ISO-10646 NOT SUPPORTED', &
-	     	          ucs4>0))
+                          ucs4>0))
    end program test_for_iso_10646
 ```
 If the supplemental ISO-10646 standard is supported, you want to
-select a terminal emulator and font and system locale so this 
+select a terminal emulator and font and system locale so this
 next program prints an emoji to the screen:
 
 ```fortran
@@ -213,7 +213,7 @@ Fortran Unicode support is straight-forward when just reading and writing
 UTF-8-encoded files. There is very little different from when processing
 ASCII files.
 
-In many cases all that is required is to 
+In many cases all that is required is to
 
   1. declare any character variables to be used with multi-byte UTF-8
      characters (ie. basically any character other than the ASCII 7-bit
@@ -299,7 +299,7 @@ character(len=255)            :: iomsg
    !------
 
    ! copy file to stdout, prefixing each line with a glyph/character count
-   do 
+   do
       read(stdin,'(a)',iostat=iostat,iomsg=iomsg)uline
       if(iostat.eq.0)then
          !------
@@ -319,7 +319,7 @@ character(len=255)            :: iomsg
          ! This will be discussed in detail later, but for now
          ! remember you can change the encoding of a file dynamically
          ! anyway
-         open (stdout, encoding='DEFAULT') 
+         open (stdout, encoding='DEFAULT')
          !------
          write(stdout,g)'<ERROR>',trim(iomsg)
          stop
@@ -327,7 +327,7 @@ character(len=255)            :: iomsg
       ! and the answer is that unless you are going to output a series
       ! of bytes in the message that do not represent an ASCII-7 or
       ! UCS-4 character (which would be a very unusual thing to be
-      ! doing) you can leave the encoding set to UTF-8 and output 
+      ! doing) you can leave the encoding set to UTF-8 and output
       ! traditional CHARACTER(kind=DEFAULT) variables just fine.
    enddo
 
@@ -362,15 +362,15 @@ should produce
         7: 七転び八起き。
        12: 転んでもまた立ち上がる。
        17: くじけずに前を向いて歩いていこう。
-        0: 
+        0:
        13: Romanization:
-        0: 
+        0:
        20:    Nanakorobi yaoki.
        30:    Koronde mo mata tachiagaru.
        39:    Kujikezu ni mae o muite aruite ikou.
-        0: 
+        0:
        19: English translation:
-        0: 
+        0:
        37:    "Fall seven times, stand up eight.
        48:    Even if you fall down, you will get up again.
        52:    Don't be discouraged, just keep walking forward."
@@ -395,11 +395,11 @@ to compile and execute the following program:
    integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')
    write(*,*) trim(merge('ISO-10646 SUPPORTED    ', &
                          'ISO-10646 NOT SUPPORTED', &
-	     	          ucs4>0))
+                          ucs4>0))
    end program test_for_iso_10646
 ```
 If the supplemental ISO-10646 standard is supported, you want to
-select a terminal emulator and font and system locale so this 
+select a terminal emulator and font and system locale so this
 next program prints an emoji to the screen:
 
 ```fortran
@@ -427,7 +427,7 @@ Fortran Unicode support is straight-forward when just reading and writing
 UTF-8-encoded files. There is very little different from when processing
 ASCII files.
 
-In many cases all that is required is to 
+In many cases all that is required is to
 
   1. declare any character variables to be used with multi-byte UTF-8
      characters (ie. basically any character other than the ASCII 7-bit
@@ -513,7 +513,7 @@ character(len=255)            :: iomsg
    !------
 
    ! copy file to stdout, prefixing each line with a glyph/character count
-   do 
+   do
       read(stdin,'(a)',iostat=iostat,iomsg=iomsg)uline
       if(iostat.eq.0)then
          !------
@@ -533,7 +533,7 @@ character(len=255)            :: iomsg
          ! This will be discussed in detail later, but for now
          ! remember you can change the encoding of a file dynamically
          ! anyway
-         open (stdout, encoding='DEFAULT') 
+         open (stdout, encoding='DEFAULT')
          !------
          write(stdout,g)'<ERROR>',trim(iomsg)
          stop
@@ -541,7 +541,7 @@ character(len=255)            :: iomsg
       ! and the answer is that unless you are going to output a series
       ! of bytes in the message that do not represent an ASCII-7 or
       ! UCS-4 character (which would be a very unusual thing to be
-      ! doing) you can leave the encoding set to UTF-8 and output 
+      ! doing) you can leave the encoding set to UTF-8 and output
       ! traditional CHARACTER(kind=DEFAULT) variables just fine.
    enddo
 
@@ -576,15 +576,15 @@ should produce
         7: 七転び八起き。
        12: 転んでもまた立ち上がる。
        17: くじけずに前を向いて歩いていこう。
-        0: 
+        0:
        13: Romanization:
-        0: 
+        0:
        20:    Nanakorobi yaoki.
        30:    Koronde mo mata tachiagaru.
        39:    Kujikezu ni mae o muite aruite ikou.
-        0: 
+        0:
        19: English translation:
-        0: 
+        0:
        37:    "Fall seven times, stand up eight.
        48:    Even if you fall down, you will get up again.
        52:    Don't be discouraged, just keep walking forward."
@@ -597,7 +597,7 @@ again transparently. __The CHARACTER substring indexing and intrinsic
 functions such as LEN(), TRIM(), VERIFY(), INDEX(), and SCAN() are
 generic, and will work with Unicode as simply as with ASCII__.
 
-<a hame="lesson2_ucs4"></a>
+<a name="lesson2_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson II: creating Unicode strings in ASCII Fortran source files
 
@@ -613,7 +613,7 @@ characters other than newline (ie. backspace, tab, bell, ...).
 
 Since ASCII is a subset of Unicode the line is a bit blurry
 as to what encoding source files may use for constant strings and
-comments, however. 
+comments, however.
 
 In particular, can constant strings and comments
 be composed in UTF-8 or must the entire file be ASCII? What about
@@ -630,8 +630,8 @@ when composed of one-byte ASCII-7bit characters.
 What is left in question is what encoding ensues when this criteria is
 not met.
 
-For example, assume a UTF-8 encoded source file has been created. If 
-multi-byte characters are to be represented in the code there are 
+For example, assume a UTF-8 encoded source file has been created. If
+multi-byte characters are to be represented in the code there are
 several pitfalls to avoid. The following example shows which syntax
 results in properly encoded data, and several that do not. The intent
 is to print a Euro symbol:
@@ -905,7 +905,7 @@ We will look at alternatives that allow for what-you-see-is-what-you-get
 string declarations as well, at the cost of assuming UTF-8 source files
 are acceptable.
 
-<a hame="lesson3_ucs4"></a>
+<a name="lesson3_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson III: mixing ASCII and UCS4 kinds as regards concatenation and assignments
 
@@ -928,7 +928,7 @@ Concerning assignment -- the Fortran standard states
    NOTES
 
    For nondefault character kinds, the blank padding character is
-   processor dependent 
+   processor dependent
 
    When assigning a character expression to a variable of a different kind,
    each character of the expression that is not representable in the kind
@@ -1020,9 +1020,9 @@ A limitation of concatenation is that all the strings have to be of the
 same KIND, so you cannot simply append UCS-4 and ASCII-7 strings.
 
 And we have already seen assignment between the kinds only assigns
-representable characters. 
+representable characters.
 
-But the definition of assignment includes an equivalent conversion 
+But the definition of assignment includes an equivalent conversion
 defined in terms of ACHAR(3) and IACHAR(3):
 
        ACHAR(IACHAR(c),KIND(variable)).
@@ -1054,7 +1054,7 @@ integer                                :: iostat
 integer                                :: nerr
 character(len=1)                       :: paws
                                        !  😃 Smiling face with open mouth
-character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4) 
+character(len=1,kind=ucs4)             :: smiley=char(int(z'1F603'),kind=ucs4)
 
    open (stdout, encoding='DEFAULT')
    open (stdout, encoding='UTF-8')
@@ -1130,7 +1130,7 @@ end program concatenate
 ================================================================================
 strings of different kinds cannot be concatenated.
 Of course constants can have their KIND specified.
-first UCS4 string😃another UCS4 string 
+first UCS4 string😃another UCS4 string
 ================================================================================
 you can use simple assigns to do conversions
 😃UCS4 strings😃appended together😃ascii stringsappended together
@@ -1166,7 +1166,7 @@ or call such a function as the above UCS4_TO_ASCII(3) function to resolve that
 and similiar issues where you are encoding your data as UCS-4 but some other
 procedure only expects ASCII.
 
-<a hame="lesson4_ucs4"></a>
+<a name="lesson4_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson IV: what is and is not supported with internal READ and WRITE statements
 
@@ -1352,9 +1352,9 @@ after:Hello World and Ni Hao -- ??????
   converting strings to numeric variables but provides no functionality
   that is aware of UTF-8 encoded streams of bytes.
 
-   
 
-<a hame="lesson5_ucs4"></a>
+
+<a name="lesson5_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson V: processing Unicode file names on OPEN() statements
 
@@ -1461,7 +1461,7 @@ filename that is an alias for the unusable filename. This can typically
 be done with system commands using the intrinsic EXECUTE_COMMAND_LINE(3) if
 you do not have procedures for creating (and removing) links.
 
-<a hame="lesson6_ucs4"></a>
+<a name="lesson6_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Lesson VI: reading UTF-8 strings from command lines
 
@@ -1561,11 +1561,11 @@ Fortran's ability to encode UTF-8 as UCS-4 when reading and writing
 external files it is easy to create a function for converting between
 the two encodings to make up for the lack of any equivalent intrinsics.
 
-The same applies to values contained in environment variables; albeit 
+The same applies to values contained in environment variables; albeit
 most systems restrict the names of environment variables to ASCII-7
 characters among other possible restrictions.
 
-<a hame="lesson7_ucs4"></a>
+<a name="lesson7_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### **Lesson VII:** passing Unicode strings to and from C
 
@@ -1676,7 +1676,7 @@ simple proper Unicode handling.
 Always pass the string length explicitly, as Fortran strings are
 not inherently null-terminated like C strings.
 
-<a hame="summary_ucs4"></a>
+<a name="summary_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Summary: Lessons Learned
 
@@ -1684,7 +1684,7 @@ The main lessons discussed here are
 
 1. Compilers that support CHARACTER kind ISO_10646  make reading and
    writing UTF-8 encoded files as easy as doing the same with ASCII
-   files. 
+   files.
 
 2. All the CHARACTER intrinsics work with UCS4 variables.
 
@@ -1703,7 +1703,7 @@ The main lessons discussed here are
    set (which amounts to ASCII-7 characters sans control characters).
 
 If you care about the shortfallings in item 3 create a few conversion
-routines and you can solve those problems on any system supporting 
+routines and you can solve those problems on any system supporting
 UTF-8 encoded files.
 
 Remember that if you use UTF-8 constants in your code files that this is
@@ -1712,8 +1712,8 @@ not disallowed by the Standard, but neither is it required to be supported.
 Taking that all into account
 the following example program shows how to read an environment
 variable into a UCS-4 variable, open files with UTF-8 encoded names, and
-use intrinsic CHARACTER methods with Unicode data, circumventing the 
-issues raised in item 3. 
+use intrinsic CHARACTER methods with Unicode data, circumventing the
+issues raised in item 3.
 
 ```fortran
 module M_encode
@@ -1725,7 +1725,7 @@ integer, parameter :: ascii = selected_char_kind ("ascii")
 public :: ascii_to_ucs4
 public :: ucs4_to_ascii
 public :: ucs4_to_utf8
-public :: utf8_to_ucs4 
+public :: utf8_to_ucs4
 public :: get_env
 public :: get_arg
 
@@ -1837,7 +1837,7 @@ function get_arg_bytes(pos) result(arg)
 integer                      :: argument_length, istat, pos
 character(len=:),allocatable :: arg
    !
-   ! allocate arg array big enough to hold command line argument 
+   ! allocate arg array big enough to hold command line argument
    !
    call get_command_argument(number=pos,length=argument_length)
    if(allocated(arg))deallocate(arg)
@@ -1907,7 +1907,7 @@ end program try_module
  REVERSED:。うこいてい歩てい向を前にずけじく。るが上ち立たまもでん転。き起八び転七
  FILENAME:môj_obľúbený_súbor
 ```
-<a hame="no_iso_10646"></a>
+<a name="no_iso_10646"></a>
 ## Processing Unicode when ISO-10646 is not supported
 ### Lesson I: converting UTF-8 codes to and from INTEGER values
 
@@ -1944,33 +1944,33 @@ To encapsulate this data a user-defined type called UNICODE_TYPE is defined.
 This allows for creating ragged arrays of character data where each element
 may be a different length.
 
-Assignment is defined such that UNICODE_TYPE variables can be defined by 
-being assigned to UTF-8 encoded streams of bytes or even an integer array 
-containing Unicode codepoint values. 
+Assignment is defined such that UNICODE_TYPE variables can be defined by
+being assigned to UTF-8 encoded streams of bytes or even an integer array
+containing Unicode codepoint values.
 
 A function called CHARACTER is needed to convert the type back to a stream
 of bytes, for passing to other procedures or for printing as ASCII data.
 
 Now with this type defined we can overload all the character-related intrinsics
-to provide a familar interface, add an OOP interface to the type and add 
-additional functions for sorting, advanced string manipulation, and case 
+to provide a familar interface, add an OOP interface to the type and add
+additional functions for sorting, advanced string manipulation, and case
 conversion.
 
 The result is an interface arguably simpler to use than the ISO-10646
 supplement that is considerably more powerful.
 
 # Summary
- 
+
  + [M_unicode](https://github.com/urbanjost/M_unicode)
 
    The M_unicode github repository contains not only the module code but
-   build methods using fpm(1), make(1), and cmake(1); a unit test; 
-   example programs for each method provided; and documentation in 
+   build methods using fpm(1), make(1), and cmake(1); a unit test;
+   example programs for each method provided; and documentation in
    HTML, man-page, and flat-text formats.
 
 + [TOP](Unicode)
 
-<a hame="extensions_ext"></a>
+<a name="extensions_ext"></a>
 ### off the beaten path:
 
 ## Common Unicode-related extensions
@@ -1978,7 +1978,7 @@ supplement that is considerably more powerful.
  * **[Extension I:](#backslash_ext)** the backslash escape code extension
  * **[Extension II:](#bom_ext)** embedding BOM characters at the beginning of files
 
-<a hame="backslash_ext"></a>
+<a name="backslash_ext"></a>
 ### off the beaten path: common Unicode extensions
 ## Extension II: backslash extension
 
@@ -1989,7 +1989,7 @@ function. Usually the form is
 
     \xnn:        8-bit hexadecimal code nn
     \unnnn:     16-bit hexadecimal code nnnn
-    \Unnnnnnnn: 32-bit hexadecimal code nnnnnnnn 
+    \Unnnnnnnn: 32-bit hexadecimal code nnnnnnnn
 
 To enable this generally requires a compiler switch such as -fbackslash or
 -Mbackslash. Without an option, backslashes
@@ -2004,7 +2004,7 @@ of code point U+263B. The compiled binary must be executed in a terminal
 with Unicode support, like XTerm or sakura.
 
 ```fortran
-program backslash_escape 
+program backslash_escape
 use,intrinsic :: iso_fortran_env, only: output_unit
 implicit none
 integer,parameter :: ucs4 = selected_char_kind('ISO_10646')
@@ -2016,7 +2016,7 @@ character(kind=ucs4,len=:),allocatable :: str
    open (output_unit, encoding='utf-8')
    print '(a)', str
    print '(a)', ucs4_'Unicode character: \U0000263B'
-end program backslash_escape 
+end program backslash_escape
 ```
 
 When using gfortran(1) build and run the executable with:
@@ -2046,7 +2046,7 @@ that can initially go unnoticed.
 
 Several compilers allow for quoted strings to contain code point
 escape sequences. This is not standard and the syntax may therefore vary
-from processor to processor. 
+from processor to processor.
 
 Note that if the code point values are above 255 decimal that the string being created must be of type ISO_10646, not ASCII.
 
@@ -2075,7 +2075,7 @@ but does not support Unicode escape sequences.
 
 Intel Fortran does not support ISO_10646.
 
-<a hame="bom_ext"></a>
+<a name="bom_ext"></a>
 ## off the beaten path: common Unicode extensions
 ### Extension II: embedding BOM characters at the beginning of files
 
@@ -2094,9 +2094,9 @@ data can be processed; but including other factors such as how well it
 integrates and how little it conflicts with existing common text encoding
 such as ASCII.
 
-To make it simple to identify which encoding a text file is using,  a 
+To make it simple to identify which encoding a text file is using,  a
 byte sequence was designed called the Byte Order Mark (BOM) that would
-not act as a character itself, but could be used to determine what 
+not act as a character itself, but could be used to determine what
 encoding the file was using when placed at the start of the file.
 
 That is why some Unicode files, particularly those originating from Windows
@@ -2158,7 +2158,7 @@ require or recommend its use.
 There are references that state that if it is encountered
 "its presence interferes with the use of UTF-8 by software that does not
 expect non-ASCII bytes at the start of a file but that could otherwise
-handle the text stream". 
+handle the text stream".
 
 One such place might be a Fortran source file!  Multi-byte characters are
 non-standard as part of the coding instructions, but are often handled
@@ -2186,7 +2186,7 @@ at the start of the file.
 
 ---
 ### prefix code with a BOM Unicode signature using a stream of bytes
- 
+
 This program creates a Fortran source file starting with a UTF-8 BOM. Try
 to compile the output program to see if your compiler will compile it.
 
@@ -2232,6 +2232,6 @@ end program bom_ucs4
 ### References
 
 See [Wikipedia](https://en.wikipedia.org/wiki/Byte_order_mark) entry for
-more information on the BOM Unicode character code, U+FEFF 
-(aka. ZERO WIDTH NO-BREAK SPACE), 
+more information on the BOM Unicode character code, U+FEFF
+(aka. ZERO WIDTH NO-BREAK SPACE),
 
