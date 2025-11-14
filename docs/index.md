@@ -63,18 +63,18 @@ via github repositories.
 
 The selection of methods to employ breaks down along these major divides:
 
- + [#using the optional Fortran ISO_10646 standard](ucs4).
+ + [using the optional Fortran ISO_10646 standard](#ucs4).
 
    The first guide set assumes you want to use the ISO_10646 extension
    and would prefer to conform as portably as reasonable to the Fortran
    standard; and probably avoid using UTF-8-encoded constant strings.
 
- + [#processing UTF-8 data without using the ISO_10646 extension](no_iso_10646).
+ + [processing UTF-8 data without using the ISO_10646 extension](#no_iso_10646).
 
- + [#using UTF-8-encoded source files](utf8_source_ext) versus using
+ + [using UTF-8-encoded source files](#utf8_source_ext) versus using
    only Fortran source files strictly adhering to the Fortran character set
 
- + using [#Common Unicode-related processor-dependent extensions](extensions_ext)
+ + using [Common Unicode-related processor-dependent extensions](#extensions_ext)
 
  + [M_ucs4](https://github.com/urbanjost/M_ucs4) - A Module supporting
    using the ISO_10646 extension
@@ -154,18 +154,18 @@ the ENCODING="UTF-8" option has been used on an OPEN() statement.
 Further details follow:
 
 ### Introduction to Fortran ISO_10646 (UCS-4-encoded Unicode) support
-   + **[#Lesson I:](lesson1_ucs4)** reading and writing UTF-8 Unicode files
-   + **[#Lesson II:](lesson2_ucs4)** creating Unicode strings in ASCII Fortran source files
-   + **[#Lesson III:](lesson3_ucs4)** mixing ASCII and UCS4 kinds as regards 
+   + **[Lesson I:](#lesson1_ucs4)** reading and writing UTF-8 Unicode files
+   + **[Lesson II:](#lesson2_ucs4)** creating Unicode strings in ASCII Fortran source files
+   + **[Lesson III:](#lesson3_ucs4)** mixing ASCII and UCS4 kinds as regards 
       + assignments
       + concatenation
       + passing arguments to external ASCII libraries
       + mixing kinds on I/O argument lists
-   + **[#Lesson IV:](lesson4_ucs4)** what is and is not supported with internal READ and WRITE statements
-   + **[#Lesson V:](lesson5_ucs4)** processing Unicode file names on OPEN() statements
-   + **[#Lesson VI:](lesson6_ucs4)** reading UTF-8 strings from command lines and environment variables.
-   + **[#Lesson VII:](lesson7_ucs4)** passing Unicode strings to and from C
-   + **[#Summary](summary_ucs4)** putting it all together
+   + **[Lesson IV:](#lesson4_ucs4)** what is and is not supported with internal READ and WRITE statements
+   + **[Lesson V:](#lesson5_ucs4)** processing Unicode file names on OPEN() statements
+   + **[Lesson VI:](#lesson6_ucs4)** reading UTF-8 strings from command lines and environment variables.
+   + **[Lesson VII:](#lesson7_ucs4)** passing Unicode strings to and from C
+   + **[Summary](#summary_ucs4)** putting it all together
 
 -------------------------------------------------------------
 <a hame="lesson1_ucs4"></a>
@@ -1975,8 +1975,8 @@ supplement that is considerably more powerful.
 
 ## Common Unicode-related extensions
 
- * **[#Extension I:](backslash_ext)** the backslash escape code extension
- * **[#Extension II:](bom_ext)** embedding BOM characters at the beginning of files
+ * **[Extension I:](#backslash_ext)** the backslash escape code extension
+ * **[Extension II:](#bom_ext)** embedding BOM characters at the beginning of files
 
 <a hame="backslash_ext"></a>
 ### off the beaten path: common Unicode extensions
