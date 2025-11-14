@@ -193,7 +193,7 @@ Not all Fortran compilers provide high-level ISO-10646 (ie. “Unicode”)
 support. To determine if a compiler provides support, one can attempt to
 compile and execute the following program:
 
-``` {:
+```fortran
    program test_for_iso_10646
    implicit none
    integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')
@@ -207,7 +207,7 @@ If the supplemental ISO-10646 standard is supported, you want to select
 a terminal emulator and font and system locale so this next program
 prints an emoji to the screen:
 
-``` {:
+```fortran
    program test_for_iso_10646
    use iso_fortran_env, only : output_unit
    implicit none
@@ -289,7 +289,7 @@ glyphs and outputs the file prefixing each line with a glyph/character
 count demonstrates that very little differs from a similar program which
 processes ASCII files:
 
-``` {:
+```fortran
 program count_glyphs
 ! @(#) read utf-8 file and write it back out prefixed with line glyph counts
 use, intrinsic :: iso_fortran_env,only : stdout=>output_unit, stdin=>input_unit
@@ -359,7 +359,7 @@ end program count_glyphs
 
 So if we create a file called “upagain.utf”
 
-``` {:
+```fortran
 七転び八起き。
 転んでもまた立ち上がる。
 くじけずに前を向いて歩いていこう。
@@ -380,13 +380,13 @@ English translation:
 and make sure that our terminal displays UTF-8 files properly by
 displaying that file to the screen, then running the program
 
-``` {:
+```fortran
 ./count_glyphs < upagain.utf
 ```
 
 should produce
 
-``` {:
+```fortran
         7: 七転び八起き。
        12: 転んでもまた立ち上がる。
        17: くじけずに前を向いて歩いていこう。
@@ -454,7 +454,7 @@ several pitfalls to avoid. The following example shows which syntax
 results in properly encoded data, and several that do not. The intent is
 to print a Euro symbol:
 
-``` {:
+```fortran
 program euro
 use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
 implicit none
@@ -496,7 +496,7 @@ end program euro
 
 ## Output
 
-``` {:
+```fortran
  VARIABLE   LEN  BYTES  KIND   OUTPUT
     euro0   1    1      1      ?
     euro1   3    3      1      €
@@ -525,7 +525,7 @@ the quoted characters are one byte characters (ie. ASCII).
 
 For instance,
 
-``` {:
+```fortran
    :
 integer, parameter         :: ucs4 = selected_char_kind ('ISO_10646')
 character(len=:,kind=ucs4),allocatable :: string
@@ -543,7 +543,7 @@ Since typing all those code point values can get tedious, lets construct
 a program that reads a UTF-8 file and converts it to a program that
 defines all the input lines as UCS-4 variables using CHAR():
 
-``` {:
+```fortran
 program unifile_to_ftn
 ! @(#) convert UTF-8 text on command line to char(3f) calls
 use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
@@ -580,7 +580,7 @@ end program unifile_to_ftn
 
 Given an example input file
 
-``` {:
+```fortran
 七転び八起き。
 転んでもまた立ち上がる。
 くじけずに前を向いて歩いていこう。
@@ -590,7 +590,7 @@ Given an example input file
 
 The following program source file will be generated:
 
-``` {:
+```fortran
 program testit
 use, intrinsic :: iso_fortran_env, only : output_unit
 integer, parameter :: ucs4 = selected_char_kind ('ISO_10646')
@@ -657,7 +657,7 @@ is generated as a complete program that should reproduce the input file
 CHAR() is elemental and decimal values work as well as hexidecimal, so
 this alternative syntax works as well:
 
-``` {:
+```fortran
 program unifile_to_ftn
 ! @(#) convert UTF-8 text on command line to char(3f) calls
 use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
@@ -695,7 +695,7 @@ line length is assumed unlimited.
 
 # Output
 
-``` {:
+```fortran
 program testit
 use,intrinsic :: iso_fortran_env, only : output_unit
 integer,parameter :: ucs4=selected_char_kind ('ISO_10646')
@@ -778,7 +778,7 @@ conversion. Assigning a UCS-4 value to a ASCII variable will cause all
 the non-ASCII characters to be replaced with a “not represented”
 character.
 
-``` {:
+```fortran
 program assignment
 use iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
 implicit none
@@ -872,7 +872,7 @@ first limitation where everything concatenated must be the same kind.
 We will do that in the following concatenation example; but that
 function will still not transfer UTF-8 encoded data properly.
 
-``` {:
+```fortran
 program concatenate
 use iso_fortran_env, only : stdout=>output_unit, stdin=>input_unit
 implicit none
@@ -967,7 +967,7 @@ end program concatenate
 
 ## Expected Output
 
-``` {:
+```fortran
 ================================================================================
 strings of different kinds cannot be concatenated.
 Of course constants can have their KIND specified.
@@ -1042,7 +1042,7 @@ From the 2023 Fortran standard, regarding internal I/O:
 The following program explores various combinations of internal READ(3)
 and WRITE(3) statements involving UCS-4 encoded characters.
 
-``` {:
+```fortran
 program internal_io
 use iso_fortran_env, only : stdout=>output_unit
 implicit none
@@ -1121,7 +1121,7 @@ end program internal_io
 
 ### Output
 
-``` {:
+```fortran
 unicode UCS-4 string
  Hello World and Ni Hao -- ä½ å¥½
 length  :28
@@ -1247,7 +1247,7 @@ Fortran does the conversion needed when writing ucs-4 internal data to
 utf-8-encoded files. We can use that functionality to create a simple
 conversion routine.
 
-``` {:
+```fortran
 program read_filename
 ! @(#) convert ucs-4 filename to utc-8 for OPEN() statement
 use, intrinsic :: iso_fortran_env, only : output_unit
@@ -1342,7 +1342,7 @@ But Fortran does the conversion needed when reading UTF-8-encoded files
 into UCS-4 variables. So we use that functionality to create a simple
 conversion function:
 
-``` {:
+```fortran
 program read_commandline
 ! @(#) take command line argument utf-8 text and generate Fortran statement that represents the string
 use, intrinsic :: iso_fortran_env, only : output_unit
@@ -1394,11 +1394,11 @@ An example run; using the famous Confucian expression
 “己所不欲，勿施於人” (jǐ suǒ bù yù, wù shī yú rén) or “What you do not
 want done to yourself, do not do to others”:
 
-``` {:
+```fortran
 read_commandline "己所不欲，勿施於人"
 ```
 
-``` {:
+```fortran
 ! ENCODING:己所不欲，勿施於人
 character(len=*,kind=ucs4),parameter :: variable= &
 char(int(z'5DF1'),kind=ucs4)// &
@@ -1475,7 +1475,7 @@ terminator.
 
 Fortran Side:
 
-``` {:
+```fortran
 module my_fortran_module
     use iso_c_binding
     implicit none
@@ -1506,7 +1506,7 @@ end module my_fortran_module
 
 C Side:
 
-``` {:
+```fortran
 #include <stdio.h>
 #include <string.h> // For strlen if you add null termination
 
@@ -1587,7 +1587,7 @@ read an environment variable into a UCS-4 variable, open files with
 UTF-8 encoded names, and use intrinsic CHARACTER methods with Unicode
 data, circumventing the issues raised in item 3.
 
-``` {:
+```fortran
 module M_encode
 implicit none
 private
@@ -1774,7 +1774,7 @@ end program try_module
 
 ## Expected Default Output:
 
-``` {:
+```fortran
  UTF8_VARIABLE=😃
 1F603  128515  😃
  STRING:七転び八起き。転んでもまた立ち上がる。くじけずに前を向いて歩いていこう。
@@ -1889,7 +1889,7 @@ The following example prints the Unicode symbol ☻ (black smiling face)
 of code point U+263B. The compiled binary must be executed in a terminal
 with Unicode support, like XTerm or sakura.
 
-``` {:
+```fortran
 program backslash_escape 
 use,intrinsic :: iso_fortran_env, only: output_unit
 implicit none
@@ -1907,7 +1907,7 @@ end program backslash_escape
 
 When using gfortran(1) build and run the executable with:
 
-``` {:
+```fortran
 $ gfortran -fbackslash -o unicode unicode.f90
 $ ./unicode
 Unicode character: ☻
@@ -1915,13 +1915,13 @@ Unicode character: ☻
 
 This is equivalent to BOZ literals, for instance:
 
-``` {:
+```fortran
 str = ucs4_'Unicode character: ' // char(int(z'263B'), kind=ucs4)
 ```
 
 Or, simply by using the decimal character code point:
 
-``` {:
+```fortran
 str = ucs4_'Unicode character: ' // char(9787,ucs4)
 ```
 
@@ -1946,7 +1946,7 @@ being created must be of type ISO_10646, not ASCII.
 
 gfortran(1) has the -fbackslash compiler option:
 
-``` {:
+```fortran
     -
 
         "\x"nn, "\u"nnnn and "\U"nnnnnnnn (where each n is a hexadecimal
@@ -2093,7 +2093,7 @@ it.
 It could fail because a character is not in the Fortran character set
 outside of a comment or literal string
 
-``` {:
+```fortran
 program bom_bytes
 use iso_fortran_env, only : stdout => output_unit
 implicit none
@@ -2114,7 +2114,7 @@ This program also generates another program source with the first
 character the BOM character, but requires the compiler to support the
 optional ISO-10646 supplemental standard.
 
-``` {:
+```fortran
 program bom_ucs4
 use iso_fortran_env, only : stdout => output_unit
 implicit none
