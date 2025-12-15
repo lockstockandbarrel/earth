@@ -102,7 +102,7 @@
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/supported.f90~2.html'>supported.f90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/supported.f90.html'>supported.f90</a></li>
             <li class="breadcrumb-item active" aria-current="page">supported</li>
           </ol>
         </nav>
@@ -131,11 +131,11 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/supported.html#variable-ascii~13">ascii</a>
-            <a class="list-group-item" href="../program/supported.html#variable-default~7">default</a>
-            <a class="list-group-item" href="../program/supported.html#variable-i~49">i</a>
-            <a class="list-group-item" href="../program/supported.html#variable-iostat~14">iostat</a>
-            <a class="list-group-item" href="../program/supported.html#variable-ucs4~26">ucs4</a>
+            <a class="list-group-item" href="../program/supported.html#variable-ascii~4">ascii</a>
+            <a class="list-group-item" href="../program/supported.html#variable-default~3">default</a>
+            <a class="list-group-item" href="../program/supported.html#variable-i~9">i</a>
+            <a class="list-group-item" href="../program/supported.html#variable-iostat~3">iostat</a>
+            <a class="list-group-item" href="../program/supported.html#variable-ucs4~6">ucs4</a>
         </div>
       </div>
     </div>
@@ -201,7 +201,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ascii~13"></span>
+              <span class="anchor" id="variable-ascii~4"></span>
               integer,
             </td>
             <td>
@@ -217,7 +217,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~7"></span>
+              <span class="anchor" id="variable-default~3"></span>
               integer,
             </td>
             <td>
@@ -233,7 +233,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~49"></span>
+              <span class="anchor" id="variable-i~9"></span>
               integer
             </td>
             <td>
@@ -249,7 +249,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iostat~14"></span>
+              <span class="anchor" id="variable-iostat~3"></span>
               integer
             </td>
             <td>
@@ -265,7 +265,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ucs4~26"></span>
+              <span class="anchor" id="variable-ucs4~6"></span>
               integer,
             </td>
             <td>
@@ -295,40 +295,40 @@ parameter
 
     <section>
     <h2 id="src">Source Code</h2>
-    <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">supported</span><span class="w"></span>
+    <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">supported</span>
 <span class="c">! @(#) report if ISO_10646 is supported</span>
-<span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">character_kinds</span><span class="w"></span>
+<span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span><span class="p">,</span><span class="w"> </span><span class="n">character_kinds</span>
 <span class="k">implicit none</span>
 
 <span class="k">intrinsic </span><span class="nb">selected_char_kind</span>
 
-<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span><span class="w"></span>
+<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+<span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span>
 
-<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w">  </span><span class="o">=</span><span class="w">   </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ISO_10646&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;Supported character kinds&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">character_kinds</span><span class="w"></span>
+<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ascii</span><span class="w"> </span><span class="o">=</span><span class="w">   </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+<span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ucs4</span><span class="w">  </span><span class="o">=</span><span class="w">   </span><span class="nb">selected_char_kind</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ISO_10646&#39;</span><span class="p">)</span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;Supported character kinds&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">character_kinds</span>
 
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ASCII     &#39;</span><span class="p">,</span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">ascii</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="s1">&#39;KIND=&#39;</span><span class="p">,</span><span class="n">ascii</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ISO_10646 &#39;</span><span class="p">,</span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">ucs4</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="w">   </span><span class="s1">&#39;KIND=&#39;</span><span class="p">,</span><span class="n">ucs4</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;DEFAULT   &#39;</span><span class="p">,</span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">default</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;KIND=&#39;</span><span class="p">,</span><span class="n">default</span><span class="w"></span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ASCII     &#39;</span><span class="p">,</span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">ascii</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="s1">&#39;KIND=&#39;</span><span class="p">,</span><span class="n">ascii</span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ISO_10646 &#39;</span><span class="p">,</span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">ucs4</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="w">   </span><span class="s1">&#39;KIND=&#39;</span><span class="p">,</span><span class="n">ucs4</span>
+<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;DEFAULT   &#39;</span><span class="p">,</span><span class="nb">merge</span><span class="p">(</span><span class="s1">&#39;Supported    &#39;</span><span class="p">,</span><span class="s1">&#39;Not Supported&#39;</span><span class="p">,</span><span class="n">default</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="s1">&#39;KIND=&#39;</span><span class="p">,</span><span class="n">default</span>
 
 <span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">default</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ascii</span><span class="p">)</span><span class="k">then</span>
-<span class="k">       write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ASCII is the same as the default on this processor&#39;</span><span class="w"></span>
+<span class="k">       write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ASCII is the same as the default on this processor&#39;</span>
 <span class="w">   </span><span class="k">endif</span>
 
-<span class="k">   open</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span><span class="w"></span>
+<span class="k">   open</span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span>
 <span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">iostat</span><span class="p">.</span><span class="n">ne</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
-<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;utf-8 encoding not supported&#39;</span><span class="w"></span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;utf-8 encoding not supported&#39;</span>
 <span class="w">   </span><span class="k">else</span>
-<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;7-bit ASCII&#39;</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(16(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">127</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;remaining 8-bit ASCII&#39;</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(16(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span><span class="w"></span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;7-bit ASCII&#39;</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(16(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">127</span><span class="p">)</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;remaining 8-bit ASCII&#39;</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(16(i3,1x,a,1x))&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="nb">char</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">ucs4</span><span class="p">),</span><span class="n">i</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span>
 <span class="w">   </span><span class="k">endif</span>
 
-<span class="k">end program </span><span class="n">supported</span><span class="w"></span>
+<span class="k">end program </span><span class="n">supported</span>
 </pre></div>
 
     </section>
@@ -351,7 +351,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-10-03 15:06 +0000             </p>
+ on 2025-12-15 20:31 +0000             </p>
           </div>
         </div>
         <br>
