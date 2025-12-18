@@ -4,13 +4,13 @@ src_dir: src
          example
          test
 output_dir: docs/fpm-ford
-project: M_time
-summary: Fortran date and time manipulation and presentation
-project_github: https://github.com/urbanjost/M_time
-project_download: https://github.com/urbanjost/M_time/archive/refs/heads/master.zip
+project: earth
+summary: Documentation via the Fortran Wiki for the github repositories wih example code
+project_github: https://github.com/lockstockandbarrel/earth
+project_download: https://github.com/lockstockandbarrel/earth/archive/refs/heads/master.zip
 author: John S. Urban
-author_email: urbanjost@comcast.net
-github: https://github.com/urbanjost/M_time
+author_email: lockstockandbarrel@comcast.net
+github: https://github.com/lockstockandbarrel/earth
 media_dir: docs/images
 exclude_dir: archive
              FODDER

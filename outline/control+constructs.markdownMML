@@ -1,0 +1,8 @@
+## Control constructs ##
+The Fortran statements that control which statements are executed are called _control constructs_.
+
+* [[flow_control]]
+
+This is different than regions such as
+* [[associate]]
+* [[block]]

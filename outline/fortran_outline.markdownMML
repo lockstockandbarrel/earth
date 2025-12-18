@@ -1,0 +1,354 @@
+# Fortran Guide
+
+an outline organizing Fortran Wiki subjects with an eye towards teaching Fortran
+
+Please pick a missing topic and add links to pertinent files or create them.
+AI may ultimately replace the need for a User manual by being a superior reference
+or by writing code itself, but that time is not yet. AI can be leveraged to create
+many of the missing topics, which is an interesting exercise in itself. And of
+course, writing missing sections and reorganizing this index is encouraged as well.
+
+## Part I – Introduction and Foundations
+
+### Chapter 1: Why Fortran Matters
+
+  + History and evolution of Fortran
+    - [[Fortran+History]]
+  + Fortran’s role in scientific and high-performance computing
+  + Fortran vs. other scientific languages (C, [[Matlab]], S/[[R]], Matlab/Octave, Python, Julia, Rust, D, ...)
+  + Overview of modern Fortran standards (circa 1990–2023)
+    - [[Standards]]
+    - [[J3]]
+    - [[WG5]]
+
+### Chapter 2: Getting Started
+
+  + Installing a Fortran compiler (GFortran, Intel, LLVM Flang)
+    - [[Compilers]]
+    - [[Compiler+Support+for+Modern+Fortran]]
+  + Writing and compiling your first Fortran program
+    - [[hello]]
+    - [[Testing+the+compiler+and+run-time+properties]]
+    - [[Compiler+Support+for+Modern+Fortran]]
+  + Program structure and syntax basics
+    - [[Free+form+layout]]
+    - [[Fixed+form+layout]]
+    - [[Arithmetic]]
+    - [[Boolean+expressions+and+values]]
+    - [[Continuation+linesll
+    - [[control+constructs]]
+    - [Internal procedures](internalproc)
+    - [[implicit+none]]
+    - [[Keywords]]
+    - [Constants](iso_fortran_env)
+    - [Initializing values](init)
+  + Common compiler options and error messages
+
+### Chapter 3: Variables, Types, and Expressions
+
+  + Intrinsic data types (integer, real, complex, logical, character)
+    - [[Intrinsic+types]]
+  + [[iso_varying_string]]
+  + Kind parameters and precision
+    - [[Real+precision]]
+    - [[Floating+point+arithmetic]]
+  + Constants and parameters
+  + Operators and expressions
+  + IEEE standard conformance
+    - [[[IEEE+arithmetic]]
+    - [[[ieee+arithmetic]]
+
+## Part II – Core Programming Concepts
+
+### Chapter 4: Control Flow
+
+  + Conditional statements (if, select case)
+  + Loops (do, do concurrent)
+  + Exit and cycle statements
+  + Best practices for readable control flow
+  + [Select Case](case)
+  + [[Error+handling]]
+  + [[short-circuiting]]
+
+### Chapter 5: Arrays and Array Operations
+
+  + Declaring and allocating arrays
+    - [[Dynamic+memory+allocation]]
+    - [[Multiple+allocation%2C+smart+pointer]]
+  + Array slicing and intrinsic operations
+  + Whole-array expressions
+  + Performance implications of array usage
+  + [[array+constructors]]
+
+### Chapter 6: Input and Output
+
+  + Formatted and unformatted I/O
+  + Reading and writing files
+     - [Stream I/O](Stream+Input+Output)
+     - [Writing to stderr](stderr)
+     - [[Scratch+Files]]
+     = [[Edit+descriptors]]
+  + Namelists
+     - [](namelist_prompter)
+     - [](get_namelist)
+  + Error handling in I/O
+  + [[Unicode]]
+  + Special I/O
+    - Raw Key Capture
+    - [Calling C readline(3)](iso_readline%283f%29)
+
+### Chapter 6B: Further interaction with the System Environment
+  + Environment variables
+     - [[Environment+Variables]]
+  + Command Line arguments
+    - [arguments](OS+integration)
+  + Command Line parsing
+     - [[Command-line+arguments]]
+
+## Part III – Modular and Structured Programming
+
+### Chapter 7: Procedures
+
+  + [procedures](Functions vs. subroutines)
+  + Argument passing and intent
+  + Recursion and elemental procedures
+    - [[recursion]]
+    - [[elemental]]
+  + Interfaces and explicit typing
+  + [[Fortran intrinsic procedures reference]](Intrinsic+procedures.markdownMML)
+
+### Chapter 8: Modules and Code Organization
+
+  + Creating and using modules
+    - [[Module]]
+    - [[Compiler+.MOD+files]]
+    - [[Compiling+and+linking+modules]]
+    - [[use_test]]
+    - [[Submodules]]
+
+    - [abstract interface](interface_mod)
+
+  + Encapsulation and visibility
+  + Building multi-file projects
+    - [[Build+tools]]
+    - Build dynamic-link libraries (DLLs)
+    - Build static libraries
+  + Reusability and libraries
+
+### Chapter 9: Derived Types and Object-Oriented Features
+
+  + Defining derived types
+  + Type-bound procedures
+  + Inheritance and polymorphism
+  + When and when not to use OOP in Fortran
+    - [[OOP+discussion]]
+    - [[About+Fortran+evolution+and+OOP]]
+  + [[Design+Patterns]]
+  + [[Design+patterns]]
+  + More on Object-Oriented Programming
+    - [[Object-oriented+programming]]
+    - [[Object-oriented+programming2]]
+
+### Chapter 9B: Creating Data Structures
+
+  + [[Data+structures]]
+  + [[hash+table+example]]
+  + [[Linked+list]]
+  + [[gen_list]]
+
+## Part IV – Modern Fortran and Performance
+
+### Chapter 10: Memory Management
+
+  + Allocatable arrays and pointers
+
+    - [[Pointers]]
+    - [[Procedure+pointers]]
+    - [[pointer_example]]
+  + Automatic vs. dynamic memory
+    - [[Dynamic+memory+allocation]]
+    - [[Dynamic+Memory+Reallocation]]
+  + Common memory errors and debugging tips
+  + Using [transfer(3)](transfer_ex) in lieu of a void pointer
+
+### Chapter 11: Parallelism and Performance
+
+  + [[Parallelization]]
+  + do concurrent and SIMD
+  + Coarrays for parallel programming
+    - [[Coarrays]]
+    - [[Parallel+Programming+with+Co-Arrays]]
+  + Message Passing with OpenMP and MPI
+    - [[OpenMP]]
+    - [[Using+OpenMP+-+Portable+Shared+Memory+Parallel+Programming]]
+    - [[Portable+Parallel+Programming+with+the+Message+Passing+Interface]]
+    - [[OpenCL]](Focal)
+  + POSIX Threads
+  + Fork
+### Chapter 11B: Performance
+  + Performance tuning and profiling
+     -Timing
+        * [[Timing]]
+        * [[timer]]
+
+### Chapter 12: Interfacing with Other Languages
+
+  + [[Interoperability]]
+  + C interoperability
+    - [[C+interoperability]]
+    - [iso_c_binding](ISO_C_BINDING)
+    - [example calling C from Fortran](f_uname)
+    - [[Generating+C+Interfaces]]
+    - [[c_interface_module]]
+    - [[regex_module]]
+    - [[Generating+C+Interfaces]]
+  + C++ interoperability
+    - [[Cpp+interoperability]]
+  + Csharp interoperability
+    - [[CSharp+Interoperability]]
+  + Calling Fortran from Python
+    - [[Python]]
+  + Mixed-language projects
+  + Julia interoperability
+    - [[Julia]]
+
+## Part V – Practical Applications
+
+### Chapter 13: Numerical Methods in Fortran
+
+  + Solving linear systems
+  + Numerical integration and differentiation
+  + Random numbers and Monte Carlo methods
+    - [[kiss64]]
+
+### Chapter 14: Scientific and Engineering Case Studies
+
+  + Physics simulation example
+  + Climate or fluid modeling example
+  + Data analysis workflows
+
+### Chapter 15: Working with Legacy Fortran Code
+
+  + Understanding Fortran 77 code
+  + Modernizing old programs
+    - [[Modernizing+Old+Fortran]]
+  + Common pitfalls and refactoring strategies
+
+## Part VI – Best Practices and the Future
+
+### Chapter 16: Debugging, Testing, and Documentation
+
+  + Debugging tools and compiler flags
+    - [[Debugging+tools]]
+  + Unit testing frameworks for Fortran
+    - [Mutation testing frameworks](Mutation+testing+frameworks)
+    - [Unit testing frameworks](Unit+testing+frameworks)
+    - [Fortran Unit Test](Fortran+Unit+Test+Framework)
+    - [[UnitTest]]
+  + Coverage reports on test suites
+  + Writing maintainable documentation
+
+### Chapter 17: Additional tools
+
+  + fpm -- Fortran package manager
+  + git, github, gitlab, hg, ...
+  + CD/CI testing
+  + [[Tools]]
+
+### Chapter 18: Coding Standards and Style
+
+  + Naming conventions
+    - [[Source+conventions]]
+  + Code formatting
+    - [[Style]]
+  + Writing readable and maintainable Fortran
+
+### Chapter 19: Sub-Topics
+  + STEM code repositories and resources
+     - [[Netlib]]
+     - [[CERNLIB]]
+     - github, gitlab,...
+     - fortran.lang
+  + preprocessors
+    - [[Include+files]]
+    - [[C+preprocessor]]
+    - [[Predefined+preprocessor+macros]]
+    - [[Preprocessors]]
+  + Operator overloading
+    --[[opover]]
+    - [[extend_dble]]
+  + Converting between strings and other types
+  + Sorting
+    - [[qsort_inline]]
+  + Date and Time
+    - [[Time+In+Words]]
+    - [[fdate]]
+  + Sleep
+  + POSIX interfaces
+    - [[Posix90]] library
+  + graphics
+     - [[writegif]]
+     - [[read_gif]]
+     - [Gnuplot interfaces](ogpf)
+  + Threads
+  + Editors and IDEs
+    - [[Source+code+editors]]
+  + [[Code Generation]]
+    - AI as used for code generation, discovery,
+      documentation and testing
+    - [[Code+generation]]
+  + Inter-Process Communication
+  + Numerical Linear Algebra
+    - BLAS
+    - [[LAPACK]]
+  + GUI and TUI User Interfaces and terminal display control
+    - [[GUI+Development]]
+    - ANSI Escape Sequences
+      * [[ansi_colors]]
+    - ncurses
+  + STEM File exchange formats
+    - HDF5
+    - CSV, TOML, YAML, JSON, ...
+    - [XML](Fox)
+  + Web Applications
+    + [[CGI]]
+  + Embeddable Languages
+    + [[Lua]]
+    + [[Tcl]]/Tk
+  + Choosing software licenses
+    + Choosing a license
+    + How licenses are indicated in the code
+    + Commonly used licenses
+      - [[Public+domain]]
+      - [[BSD+license]]
+      - [[MIT+license]]
+      - [[GNU+Free+Documentation+License]]
+      - [[GPL+license]]
+
+### Chapter 20: The Future of Fortran
+
+  + Upcoming standards and features
+  + [[Proposals]]
+  + Community and open-source ecosystem
+  + Learning resources and next steps
+
+Appendices
+
+  + B: Common compiler options
+  + C: Fortran vs. C/Python syntax comparison
+  + D: Sample projects and exercises
+       - [[Code]]
+  + E: FAQ
+       - [[FAQ]]
+  + F: External resources
+       - [[Applications]]
+       - [[Articles]]
+       - [[Blogs]]
+       - [[Books]]
+       - [[Email+lists]]
+       - [[Tutorials]]
+       - [[Libraries]]
+       - [[Software+repositories]]
+---
+<!--
+-->

@@ -1,0 +1,48 @@
+Fortran include files use the INCLUDE statement to insert the contents of
+a separate source file directly into a program during compilation. This
+mechanism allows programmers to share common blocks of code, such as
+constant definitions or common block declarations, across multiple parts
+of a program or multiple source files, ensuring consistency.
+
+Key Characteristics
+
+    Function: The compiler effectively replaces the INCLUDE line with
+              the complete text of the specified file before processing
+              the code.
+
+    Content: Included files must contain only valid Fortran
+             statements. They cannot begin or end with an incomplete
+             statement or a continuation line.
+
+    Syntax: The general syntax is INCLUDE 'filename' or INCLUDE 'filename.ext'.
+            The filename can be a character literal constant.
+            Some compilers support optional parameters for conditional
+            inclusion or source listing controls (e.g., /[NO]LIST).
+
+    File Search Path: The compiler typically searches for include files
+                      in a specific order:
+
+        + The directory containing the source file with the INCLUDE statement.
+        + The current working directory.
+        + Directories specified by command-line options (e.g., -I on Linux/macOS, /include on Windows).
+        + Directories specified by environment variables (e.g., FPATH or INCLUDE).
+        + Standard system directories.
+
+    Nesting: Include files can contain other INCLUDE statements, but
+             they cannot include themselves (recursive inclusion is
+             not allowed).
+
+Fortran Modules vs. Include Files
+
+While include files were essential in older Fortran versions (like
+Fortran 77), modern Fortran (Fortran 90 and later) introduced modules,
+which are generally preferred.
+
+INCLUDE versus cpp #include statement
+
+   A file read with INCLUDE is likely to not expand cpp(1) directives
+
+   The search path used to locate the files may be different
+
+Templating
+

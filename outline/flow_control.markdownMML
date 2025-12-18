@@ -1,0 +1,548 @@
+
+Programming in Modern Fortran
+Control Structures
+
+This section gives a brief introduction to the constructs of the Fortran
+programming language:
+
+  + if construct
+    - arithmetic if
+    - logical if
+    - block if
+    - expressional if
+  + select switch
+    - select type
+  + do loop
+    - implied do
+    - do concurrent
+    - do while
+  + forall loop
+  + where statement
+  + block construct
+  + Recursion
+
+if Construct
+
+Fortran features three different types of conditionals: arithmetic if
+(deprecated), logical if, and block if.  Arithmetic if
+
+The first FORTRAN version from 1957 introduced the arithmetic if
+conditional that evaluates a numeric expression and then jumps to one of
+three labeled statements, depending on whether the expression is either
+negative, zero, or positive:
+
+if (x * y) 100, 200, 300
+
+If negative, the statement does a goto to the first label (100), if
+zero to the second (200), and if positive to the third (300). This is
+equivalent to:
+
+if (e < 0) goto 100
+if (e == 0) goto 200
+goto 300
+
+Arithmetic if is obsolescent since Fortran 90, and has been removed
+from the Fortran 2018 standard. Like the goto statement, it should not
+be used anymore.
+
+Logical if
+
+The logical if conditional was added to FORTRAN IV and allows the
+execution of a statement depending on a logical or arithmetic expression,
+using operators. Only a single statement may be declared:
+
+if (x * y < 0) y = 1
+
+A line-break following the expression is legitimate, but must be indicated
+by an ampersand:
+
+if (x * y < 0) &
+    y = 1
+
+Block if
+
+The block if allows the conditional execution of a group of statements, for example:
+
+if (a == 0) then
+    exit
+else if (a < 0) then
+    b = 0
+else
+    b = b + a
+end if
+
+The conditional was introduced in FORTRAN 77.
+Expressional if
+
+The Fortran 2023 standard added conditional expressions to the language. The expression
+
+b = (a > 0.0 ? a : 0.0)
+
+is a short form of
+
+if (a > 0.0) then
+    b = a
+else
+    b = 0.0
+end if
+
+The general form of a conditional expression is (condition ? expression
+[: condition ? expression] … : expression), where each expression has
+the same declared type, kind type parameters, and rank.
+
+select Switch
+
+The select case switch is an alternative to block if:
+
+select case (grade)
+    case ('A')
+        print *, 'Excellent!'
+
+    case ('B', 'C')
+        print *, 'Well done'
+
+    case ('D')
+        print *, 'You passed'
+
+    case ('F')
+        print *, 'Better try again'
+
+    case default
+        print *, 'Invalid grade'
+end select
+
+You may want to use ranges inside select case with case (begin:end):
+
+select case (marks)
+    case (91:100)
+        print *, 'Excellent!'
+
+    case (81:90)
+        print *, 'Very good!'
+
+    case (71:80)
+        print *, 'Well done!'
+
+    case (61:70)
+        print *, 'Not bad!'
+
+    case (41:60)
+        print *, 'You passed!'
+
+    case (:40)
+        print *, 'Better try again!'
+
+    case default
+        print *, 'Invalid marks'
+end select
+
+Only parameters can be evaluated in a select case construct.
+
+select type
+
+The select type construct was introduced in Fortran 2003, and lets us
+execute blocks depending on a type or class of a variable. The following
+type guard statements are used to match a selector expression:
+
+type is
+    Matches the selector if the dynamic type and kind type parameter
+    values are the same as those specified by the statement
+
+class is
+    Matches the selector if the dynamic type is an extension of the
+    type specified by the statement, and the kind type parameter values
+    specified by the statement are the same as the corresponding type
+    parameter values of the dynamic type of the selector.
+
+class default
+    Executed if selector is not matched by any other type guard statement.
+
+The name of the identifier that becomes associated with the selector
+can be choosen freely, but must be unique within the construct.
+
+type :: vec_type
+    real :: x, y
+end type vec_type
+
+type, extends(vec_type) :: vec3_type
+    real :: z
+end type vec3_type
+
+type, extends(vec3_type) :: color_type
+    integer :: color
+end type color_type
+
+type(vec_type),   target  :: v
+type(vec3_type),  target  :: v3
+type(color_type), target  :: c
+class(vec_type),  pointer :: ptr
+
+v  = vec_type(1.0, 2.0)
+v3 = vec3_type(1.0, 2.0, 3.0)
+c  = color_type(0.0, 1.0, 2.0, 9)
+
+! Point to either v, v3, or c:
+ptr => c
+
+select type (a => ptr)
+    class is (vec_type)
+        print *, a%x, a%y
+
+    type is (vec3_type)
+        print *, a%x, a%y, a%z
+
+    type is (color_type)
+        print *, a%x, a%y, a%z, a%color
+end select
+
+do Loop
+
+The do construct loops over statements until an exit occurs:
+
+do
+    a = a + 1
+    print *, a
+    if (a > 10) exit
+end do
+
+The do loop is further similiar to the for loop in other programming
+languages. Set begin, end, and step size in the head of the loop:
+
+integer :: i
+
+do i = 1, 10, 2
+    print *, i
+end do
+
+The loop index variable has to be declared a priori. The step size is
+optional. It is further possible to label a loop, in order to reference
+it in a cycle or exit statement:
+
+loop: do
+    a = a + 1
+    print *, a
+    if (a > 10) exit loop
+end do loop
+
+The cycle statement skips to the next iteration:
+
+integer :: i
+
+do i = 1, 10
+    if (modulo(i, 2) == 0) cycle
+    print *, i
+end do
+
+Implied do
+
+Implied do loops return a number of items, using the syntax (item1,
+item2, …, itemn, var = initial, final, step), for example:
+
+integer :: i
+
+print *, ('Hi there. ', i = 1, 3)
+
+The print statement will output the string three times. Arrays are often
+initialised using an implied do loop:
+
+integer, parameter :: N = 10
+
+integer :: i
+integer :: values(N) = [ (i * 2, i = 1, N) ]
+
+The array values is filled with 2, 4, …, 20. An implied do loop may
+be nested into another implied do loop. Starting with Fortran 2018,
+we can declare the index variable in the implied loop:
+
+integer, parameter :: N = 10
+
+integer :: values(N) = [ (i * 2, integer :: i = 1, N) ]
+
+do concurrent
+
+The Fortran 2008 standard added the do concurrent construct that allows
+easy loop parallelisation and is equivalent to forall:
+
+integer :: i
+real    :: a(100)
+
+do concurrent (i = 1:size(a))
+    a(i) = sqrt(i**i)
+end do
+
+Inside a do concurrent loop, only calls to pure functions are
+allowed. Multiple indices may be declared at once:
+
+integer :: x, y
+real    :: a(8, 16)
+
+do concurrent (x = 1:size(a, 1), y = 1:size(a, 2))
+    a(x, y) = real(x)
+end do
+
+Since Fortran 2018, the loop indices may be declared inside the contruct:
+
+real :: a(8, 16)
+
+do concurrent (integer :: x = 1:size(a, 1), y = 1:size(a, 2))
+    a(x, y) = real(x)
+end do
+
+do while
+
+The do while loop cycles through statements as long as a given condition is true:
+
+do while (i < 5)
+    i = i + 1
+    print *, i
+end do
+
+forall Loop
+
+The forall loop has been introduced with Fortran 95, and declared
+obsolescent in Fortran 2018 in favour of do concurrent. It selects
+elements in an array by index or index range, with an optional step
+size. In the following example, the loop statement changes the values
+of the first three elements of the array to 0:
+
+integer :: a(5) = [ 1, 2, 3, 4, 5 ]
+integer :: i
+
+forall (i = 1:3) a(i) = 0
+
+! with explicit step size of 1:
+forall (i = 1:3:1) a(i) = 0
+
+Furthermore, a mask can be added to the condition of the statement in
+order to select only specific value, for instance:
+
+forall (i = 1:3, a(i) == 0) &
+    a(i) = 1
+
+The mask can be any pure function. To allow more than one statement,
+use the forall block statement:
+
+forall (i = 3:5)
+    a(i) = 1
+    print *, a(i)
+end forall
+
+Inside the loop, you can assign pure functions to the elements:
+
+forall (i = 1:3) &
+    a(i) = my_func(a(i))
+
+Since Fortran 2018, the forall indices can be declared in the loop
+contruct:
+
+real :: a(8, 16)
+
+forall (integer :: i = 1:3)
+    a(i) = i
+end forall
+
+where Statement
+
+The where statement is used for masked array assignments. Elements of
+an array will be modified directly upon given conditions:
+
+integer :: a(5) = [ 1, 2, 3, 4, 5 ]
+
+where (a >= 3) &
+    a = 0
+
+You can add else where statements to the block form of where:
+
+where (a > 0 .and. a < 2)
+    a = 0
+else where (a >= 4)
+    a = 1
+end where
+
+block Construct
+
+The block construct is available since Fortran 2008, and defines an
+executable block that can contain declarations. A block may be exited
+prematurely with exit, allowing a control flow similar to using goto:
+
+real :: a
+
+a = 1024.0
+
+block1: block
+    real :: b
+
+    if (a < 0.0) exit block1
+
+    b = sqrt(a)
+    print *, b
+end block block1
+
+The variable b declared inside block1 is not accessible from outside of
+the construct. The identifier block1 is optional.
+
+describe fortran control structure
+
+AI Overview
+
+Fortran, like most programming languages, uses three primary control
+structures to manage the flow of execution:
+
+sequential execution (the default), selection (for decision-making),
+and repetition (for looping). Modern Fortran versions (Fortran 90 and
+later) introduced more structured and readable constructs, moving away
+from older, unstructured methods like the GOTO statement.
+
+Selection (Conditional) Structures
+
+Selection structures allow a program to choose between different paths
+of execution based on a logical condition (which evaluates to .TRUE. or
+.FALSE.).
+
+    IF THEN END IF: The basic conditional structure executes a block of
+    code only if a specified logical expression is true. This can also
+    be written on a single line for simple statements.
+
+    IF THEN ELSE END IF: This provides two alternative blocks of code. If
+    the condition is true, the first block is executed; otherwise,
+    the second block is executed.
+
+    IF THEN ELSE IF ELSE END IF: This handles multiple conditions
+    sequentially. Each ELSE IF condition is only tested if the preceding
+    conditions were false.
+
+    SELECT CASE: This structure allows for a clear and efficient choice
+    among many options based on the value of a single integer, character,
+    or logical expression (not real or complex numbers). It is more
+    elegant than a long series of IF statements for multi-way branching.
+
+Repetition (Looping) Structures
+
+Repetition structures, or loops, allow a block of statements to be
+executed multiple times.
+
+    DO loop (counted loop): This is used to repeat a block of code a
+    fixed number of times, controlled by an index variable that changes
+    from a starting value to an ending value by a specified increment.
+
+    fortran
+
+DO index = start, end [, step]
+   ! Block of code
+END DO
+
+DO WHILE loop: This loop continues to execute as long as a specified
+logical expression remains .TRUE.. The condition is tested before each
+iteration, so the loop body might not execute at all.
+fortran
+
+DO WHILE (logical_expression)
+   ! Block of code
+END DO
+
+DO loop with EXIT: A standard DO loop without a specific iteration
+count can be used to create an "until" loop (a loop that runs at least
+once). The EXIT statement is typically used within an IF condition to
+terminate the loop prematurely when a certain condition is met.
+
+CYCLE statement: Used within a loop, the CYCLE statement skips the
+remaining statements in the current iteration and immediately proceeds
+to the next iteration of the loop.
+
+Loop naming/tagging: Loops can be given names (tags) to improve code
+readability and to specify which level of a nested loop the EXIT or
+CYCLE statements should affect.
+
+Sequential Execution
+
+The default control flow in a Fortran program is sequential; statements
+are executed in the order in which they appear, from top to bottom,
+unless a control structure (selection or repetition) alters this flow.
+
+While older versions of Fortran used statement labels and the GOTO
+command for unstructured jumps in execution flow, modern Fortran
+standards strongly discourage their use in favor of the structured
+control constructs mentioned above, which lead to more readable and
+maintainable code.
+
+
+C
+https://cyber.dabamos.de › programming › control-struct...
+
+Fortran features three different types of conditionals: arithmetic if
+(deprecated), logical if, and block if.
+
+What are the three basic types of control structures?
+
+Fortran 90 Lessons for Computational Chemistry Chapter 5
+Universidad de Huelva
+http://www.uhu.es › fortran_lessons.html › ch-clase_7
+
+These structures allows the programmer to control the program flow,
+allowing the conditional execution of statements according to the user
+input values or the ...
+
+Organising code structure — Fortran Programming Language
+Fortran-lang
+https://fortran-lang.org › learn › quickstart › organising_...
+
+Fortran has two forms of procedure: Both subroutines and functions have
+access to variables in the parent scope by argument association.
+
+Our Coding Club
+https://ourcodingclub.github.io › tutorials › fortran-intro
+
+FORTRAN IV Reference Page
+Gordon College
+https://www.math-cs.gordon.edu › courses › fortran
+
+All FORTRAN programs have the following format: PROGRAM statement,
+variable declarations (optional), executable statements, END statement,
+SUBROUTINE or ...
+
+Introduction to Fortran 90
+
+Texas A&M University
+https://hprc.tamu.edu › Spring › HPRC_Fortran
+
+Apr 8, 2022 — Basics of Fortran 90 Language. 3. Control
+Structures. 4. Program Sub-units. 5. Array Handling. 6. Input and Output
+in Fortran. 7. Online ...
+
+Basic Elements of FORTRAN
+Purdue University
+https://web.ics.purdue.edu › lectures › lecture3
+
+2.4 Structure of a FORTRAN Program. A FORTRAN program can be divided
+into three sections: Declarations - This section consists of a group of
+nonexecutable ...
+
+Chapter 1 Elements of FORTRAN
+
+https://docs.oracle.com › ...
+
+Each key word, symbolic name, literal constant, and operator consists
+of one or more characters from the FORTRAN character set. A character
+constant can include ...
+
+https://en.wikipedia.org › wiki › Fortran
+
+Fortran is a third-generation, compiled, imperative programming language
+designed for numeric computation and scientific computing.
+
+Intel Fortran Compiler
+Fortran 95 language features
+
+GNU Fortran
+
+Speedcoding
+
+People also search for
+Describe fortran control structure pdf
+Fortran logical operators
+Fortran if and
+Fortran module function
+Fortran subroutines
+Fortran structure vs type
+Fortran function return
+Fortran subroutine vs function
