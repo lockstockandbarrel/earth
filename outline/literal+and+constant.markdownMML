@@ -1,0 +1,589 @@
+# Constants
+
+In Fortran, __constants__ are fixed values, also called __literals__,
+whose values do not change during program execution. __Parameters__ are
+named constants, declared using the **PARAMETER** attribute or statement,
+applying a symbolic name to a constant value.
+
+So the approximate value of PI below is a literal constant:
+
+~~~~~~~~~~ {: lang=text}
+    3.141592653589793238462643383279502884197169399375105820974944592307
+~~~~~~~~~~
+
+and in Fortran (not being a language intrinsically providing arbitrary
+precision) such literal constants are susceptible to truncation or
+overflow/underflow if appropriate __kinds__ are not declared.
+
+A __named__ constant such as used in the following declarations
+is performed using a **PARAMETER** attribute or statement:
+
+~~~~~~~~~~ {: lang=fortran}
+    integer,parameter :: dp=kind(0.0d0) ! create name for double precision KIND
+    ! declare named constant PI as double precision
+    real(kind=dp),parameter :: PI = 3.14159265358979_dp
+~~~~~~~~~~
+Note that once declared constants may be used in subsequent declarations,
+not just executable lines. This is often taken advantage of to make it
+easy to change "magic numbers": As a simple example
+~~~~~~~~~~ {: lang=fortran}
+    implicit none
+    integer,parameter :: HEIGHT=3, WIDTH=4
+    ! HEIGHT and WIDTH can now be used in subsequent declarations
+    integer :: i, j, k
+    real :: grid(HEIGHT,WIDTH)
+        do i=1,HEIGHT
+           do j=1,WIDTH
+	      grid(i,j)=i*10+j
+   	   enddo
+	enddo
+	do i=1,HEIGHT
+	   write(*,'(*(f8.5,1x))')grid(i,:)
+	enddo
+    end
+~~~~~~~~~~
+To change the height and width of the grid of cells requires changing
+just one line instead of replacing literal constants throughout the code.
+
+True constants and subsequent constant expressions are known at
+compilation time, which allows the compiler to make optimizations
+it could not with a variable such as pre-calculating values during
+compilation. In general a compiler takes advantage of being able to know
+which intrinsics are determinant, so expressions such as "sin(3.141592)"
+can be recognized at compile time as a constant as well.
+
+Beyond just representing specific fixed values named constants that can
+be leveraged by the compiler to make the executable more efficient, named
+constants help make code more readable and maintainable. 
+
+Some developers use conventions such as uppercase names or specific
+suffixes or prefixes to identify constants, particularly values whose
+scope extends past a single procedure. There are no set rules enforced
+by the Fortran Standard as regards the names of constants however. There
+are benefits to declaring those constants shared among various scopes
+to be members of a user-defined type. This helps avoid name collisions
+while making constants easily identifiable and easier to import by name.
+
+## Literal Constants
+
+Literal constants are values directly written into the source code. The
+form of the literal determines its type even if **IMPLICIT NONE** has
+been declared. Fortran supports several types of literal constants:
+
+  + __Integer Constants__: Whole numbers with an optional sign (e.g., 0,
+    4563, -123).
+
+  + __Real Constants__: Fractional numbers that must contain a decimal point
+    or an exponent (e.g., 0.2, 123., 1.0E-02).
+
+  + __Complex Constants__: An ordered pair of real or integer constants
+    enclosed in parentheses, representing the real and imaginary parts
+    (e.g., (1.0, 2.0)).
+
+  + __Logical Constants__: Only two possible values: **.TRUE.** and **.FALSE.**.
+
+  + __Character Constants__: Strings of characters enclosed in single quotes
+    (' ') or double quotes (" ") (e.g., 'hello', "don't").
+
+Literal constants often are declared with a **KIND** as well, which is often
+required to ensure the proper number of significant digits will be used or thatthe value does not overflow the type of the value; or to ensure proper character encoding.
+
+## Parameters (Named Constants)
+
+Parameters are symbolic names given to constants. They make code more
+readable and maintainable by avoiding "magic values" and allowing a
+value used in multiple places to be changed in a single location.
+
+### Declaration Syntax
+
+In modern Fortran (Fortran 90 and later), the PARAMETER attribute is
+used within a type declaration statement.
+
+~~~~~~~~~~ {: lang=fortran}
+    INTEGER, PARAMETER           :: MAX_VALUE = 100
+    REAL, PARAMETER              :: PI = 3.141592653589793d0
+    CHARACTER(len=80), PARAMETER :: GREETING = "Hello, World!"
+    LOGICAL, PARAMETER           :: DEBUG_MODE = .TRUE.
+~~~~~~~~~~
+
+In older Fortran 77, the PARAMETER statement had a different syntax and
+determined the type implicitly or via a preceding type declaration.
+fortran
+~~~~~~~~~~ {: lang=fortran}
+    INTEGER MAX_VALUE
+    REAL PI
+    PARAMETER (MAX_VALUE = 100, PI = 3.14159)
+~~~~~~~~~~
+**CHARACTER** constants can assume their length from the associated literal
+using (LEN=*):
+~~~~~~~~~~ {: lang=fortran}
+    CHARACTER(LEN=*),PARAMETER :: GREETING = "Hello, World!"
+~~~~~~~~~~
+
+### Key Characteristics of Parameters:
+
+  __Fixed Value__: The value of a parameter cannot be changed after its
+  definition during program execution. It is fundamentally a constant.
+
+  __Initialization__: Parameters are initialized with a constant expression
+  at the time of declaration.
+
+  __Scope__: Parameters must be defined before their first executable
+  statement within a program unit. They are often placed in modules
+  to be shared across different parts of a program.
+
+## Common Errors
+The most common errors regarding constants are 
+
+1) forgetting the LHS (Left-Hand Side) of an assignment
+   is always evaluated first, so that kinds should often be assigned to
+   literal constants particularly when exceeding the size or precision
+   of default types.
+
+~~~~~~~~~~ {: lang=fortran}
+    integer,parameter :: dp=kind(0.0d0)
+    ! probably wrong! value will be truncated to default precision first, then 
+    !        assigned to PI.
+    real(kind=dp),parameter :: PI = 3.14159265358979
+    ! correct! precision of the constant will be retained up to 
+    !          that supported by the type kind
+    real(kind=dp),parameter :: PI = 3.14159265358979_dp
+~~~~~~~~~~
+
+2) passing constant values of the wrong kind as arguments to procedures
+   that lack an interface definition. If defined in a module or as a
+   contained procedure or with an explicit **INTERFACE** definition this
+   is generally not permitted or produces a warning, but is a common
+   problem with older code that often just defines procedures with no
+   explicit interface definition.
+
+3) forgetting KIND= in CMPLX() calls when wanting double precision.
+~~~~~~~~~~ {: lang=fortran}
+    integer,parameter :: dp=kind(0.0d0)
+
+    ! wrong! CMPLX() defaults to returning a default kind. Precision will
+    !        be lost, assuming default kind is not at least that of 
+    !        double precision
+    complex(kind=dp),parameter :: PI = cmplx(3.14159265358979_real64,0)
+
+    ! correct!
+    complex(kind=dp),parameter :: PI = cmplx(3.14159265358979_real64,0,kind=dp)
+~~~~~~~~~~
+
+4) Overflow or Underflow on assignment
+~~~~~~~~~~ {: lang=fortran}
+    integer,parameter :: BIG=111111111111111111111111111111111111111111111111
+~~~~~~~~~~
+
+5) Issues with implicit Typing
+
+    Mispelling constant names: In older Fortran versions (or without
+    IMPLICIT NONE), misspelled constant names might not trigger a compiler
+    error. Instead, the compiler automatically assigns a default type
+    based on the first letter, which often leads to subtle, hard-to-find
+    logical errors at runtime.
+
+    Failing to use IMPLICIT NONE: Not using the IMPLICIT NONE statement
+    allows implicit typing, making the program more prone to errors
+    related to unintended variable or constant types.
+
+
+6) Type and Kind Mismatches in expressions
+
+    Integer division with real kinds: A significant pitfall is using
+    integer constants with kind suffixes intended for real numbers
+    when performing division. For example, 1_dp / 3_dp might result in
+    integer division (yielding 0) if the compiler uses the same kind
+    value for both integer and double-precision real types, rather than
+    the expected floating-point result.
+
+    Passing wrong types to procedures: If a constant is passed to a
+    procedure whose corresponding dummy argument expects a different type
+    or kind, this can cause unexpected behavior or errors, especially
+    if explicit interfaces are missing.
+
+    Underflow or overflow: Using numerical constants that are too large
+    or too small for their intended type can lead to underflow or overflow
+    warnings/errors during compilation.
+
+7) Formatting and Syntax Errors
+
+    Incorrect real constant format: Real constants must contain a decimal
+    point. Errors include using commas as separators (e.g., 1,234.95),
+    which is not allowed, or omitting the decimal point entirely.
+
+    Too many signs: Using too many optional signs (e.g., --4 or ++3)
+    results in a syntax error.
+
+    Sign placement: The optional sign must precede the number (e.g.,
+    -0.12 is correct, 12.35- is incorrect).
+
+    Unterminated character constants: Missing the closing apostrophe or
+    quote for character constants results in a compilation error.
+
+    Using tabs in fixed-form source: In fixed-form Fortran, using
+    tabs as whitespace can cause issues as they are not part of the
+    standard Fortran character set and can lead to code truncation or
+    misinterpretation.
+
+    Line truncation: In older Fortran standards, code running past column
+    72 could be truncated, potentially cutting off parts of constants
+    or statements.
+
+8) Modifying Constants
+
+    Modifying a constant via argument passing: In some older Fortran
+    implementations, if a constant is passed as an actual argument to
+    a subroutine that tries to modify the corresponding dummy argument
+    (especially if INTENT(IN) is not specified in modern Fortran),
+    it can lead to a runtime segmentation fault or, worse, unintended
+    modification of other instances of the same constant due to compiler
+    optimizations like constant pooling.
+
+## Best Practices to Avoid Errors:
+
+    + Always include IMPLICIT NONE at the start of every program unit.
+
+    + Use explicit type and kind declarations for all constants and variables.
+
+    + Utilize compiler warning flags (like -Wall and -Wextra in gfortran)
+    to catch suspicious code constructs.
+
+    + Use the PARAMETER attribute for named constants (e.g., real, parameter
+    :: PI = 3.14159).
+
+    + Warn when a character assignment will truncate the assigned string.
+
+<div style="background-color: #CCE5FF; padding: 10px; border-radius: 5px;">
+Note that named constants are sometimes gathered together at one place
+in the code, typically in a module (in older code this often occurs in
+an **INCLUDE** file, typically containing a Fortran __common block__);
+or even as cpp(1) macros in an '#include" file that are substituted into
+the code using pre-processing at compile time.
+
+Then there are variables you want to protect from being changed but
+may want to be able to change at system startup or under controlled
+conditions; or in particular code regions. This generally will involve
+understanding the **SAVE** and **PROTECTED** attributes and to a lesser
+degree the **ASSOCIATE** statement, and **INTENT(IN)**.
+</div>
+################################################################################
+~~~~~~~~~~ {: lang=fortran}
+module M_constants
+!"magic numbers" such as kinds that are part of standard Fortran are 
+!                often assigned names via standard modules. Eg. here
+!                are names for commonly used numeric kinds:
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+use,intrinsic :: iso_fortran_env, only : real32, real64, real128
+implicit none  
+private
+!  user-defined named constants
+
+integer, public, parameter :: dp = selected_real_kind(15)
+integer, public, parameter :: wp = dp ! working precision
+real(kind=dp), public, parameter :: &
+
+! "e" is the base of the natural logarithm system.
+! "e" was named in honor of Euler, but is known as Napier's constant.
+   e            = 2.71828182845904523536028747135266249775724709369995_wp,   &
+
+! The Euler-Mascheroni constant is often denoted by a lower-case
+! Gamma. Gamma is defined as
+!    Gamma = limit ( M -> Infinity ) ( Sum ( 1 <= N <= M ) 1 / N ) - Log ( M )
+   gamma        = 0.577215664901532860606512090082402431042_wp,              &
+
+   euler        = 0.577215664901532860606512090082402431042_wp,              &
+
+   pi           = 3.14159265358979323846264338327950288419716939937510_wp,   &
+
+! for two values A+B is to A as A is to B
+   golden_ratio = 1.6180339887498948482045868_wp,                            &
+
+   fini=99999         ! END OF CONSTANTS
+!
+! Note that several named constants have more significant digits declared
+! than the type used possesses. This is not an error, and allows for
+! easily changing the working precision reflected in "WP" to a higher
+! precision in the future without having to change the declarations.
+
+end module M_constants
+
+program demo_M_constants
+use M_constants, only : pi=>pi
+use M_constants, only : e,euler,golden_ratio
+implicit none
+character(len=*),parameter :: all='(*(g0))'
+! most intrinsics can be used in constant declarations
+character(len=1),parameter :: nl=new_line('A')
+   print all, "Approximately",nl, &
+   "Napier's constant (e) is",                              &
+    e,nl,                                                   &
+   "The Euler-Mascheroni constant (ie. euler or gamma) is", &
+    euler,nl,                                               &
+   "pi (pi) is",                                            &
+    pi, nl,                                                 &
+   "The Golden Ratio (golden_ratio) is",                    &
+    golden_ratio
+end program demo_M_constants
+~~~~~~~~~~
+################################################################################
+
+how to make a variable immutable outside of a fortran module
+
+There are two primary methods to make a variable immutable (read-only)
+outside of a Fortran module: using the **PROTECTED** attribute (Fortran
+2003+) or using a combination of PRIVATE access and PUBLIC "getter/putter"
+functions.
+
+1. Using the **PROTECTED** Attribute (Fortran 2003+)
+
+The **PROTECTED** attribute is the most direct way to achieve this in
+modern Fortran. It allows procedures within the module to modify the
+variable, but prevents any code outside the module (i.e., in a **USE**ing
+program unit or another module) from changing its value.
+
+~~~~~~~~~~ {: lang=fortran}
+   module my_data_module
+       implicit none
+
+       ! The variable can be read outside the module, but only modified inside.
+       integer, protected :: protected_variable
+
+   contains
+
+       ! Internal procedure to set the value (allowed)
+       subroutine set_protected_variable(value)
+           integer, intent(in) :: value
+           protected_variable = value
+       end subroutine set_protected_variable
+
+       ! Internal procedure to display the value (for demonstration)
+       subroutine print_protected_variable()
+           print *, 'Protected variable value:', protected_variable
+       end subroutine print_protected_variable
+
+   end module my_data_module
+
+   program main
+       use my_data_module
+       implicit none
+
+       ! Reading is fine
+       call print_protected_variable()
+
+       ! Attempting to modify from outside the module will cause a
+       ! compile-time error
+       ! protected_variable = 10 ! ERROR: Cannot assign to a protected
+       ! variable
+
+       ! Modification is only possible via the module's internal
+       ! procedures
+       call set_protected_variable(20)
+       call print_protected_variable()
+
+   end program main
+~~~~~~~~~~
+
+2. Using PRIVATE and a Public Getter Function
+
+For compatibility with older Fortran standards or a more traditional
+object-oriented approach, you can declare the variable as PRIVATE (making
+it inaccessible from outside the module) and provide a PUBLIC function to
+"get" (read) its value. This approach prevents both reading and writing
+from the outside except through the provided interface.
+
+~~~~~~~~~~ {: lang=fortran}
+    module my_module
+    implicit none
+    private ! Default to private access for all entities
+
+    ! Declare the variable as private so it can only be accessed
+    ! within the module
+    integer :: immutable_var = 5
+
+    ! Expose a public function to read the value
+    public :: get_immutable_var
+    ! Expose internal subroutines if needed to modify the variable
+    ! from within the module
+    public :: initialize_var
+
+    contains
+
+    ! Public getter function
+    integer function get_immutable_var() result(value)
+       value = immutable_var
+    end function get_immutable_var
+
+    ! Internal setter procedure (only callable from within the module)
+    subroutine initialize_var(val)
+    integer, intent(in) :: val
+       immutable_var = val
+    end subroutine initialize_var
+
+    end module my_module
+
+    program main_program
+    use my_module
+    implicit none
+
+    integer :: my_value
+
+       ! Reading the value using the public getter function (allowed)
+       my_value = get_immutable_var()
+       print *, 'The value is: ', my_value
+
+       ! Attempting to directly access or modify the private variable
+       ! will cause a compile-time error
+       ! immutable_var = 10 ! ERROR: 'immutable_var' is a PRIVATE entity
+
+    end program main_program
+~~~~~~~~~~
+
+<div style="background-color: #FFFF00; padding: 10px; border-radius: 5px;">
++ Standard named constants, iso_* files
+
++ creating your own  constants with PARAMETER
+
++ creating values that cannot be changed outside of a module
+
++ saved values in common or in a procedure
+
++ creating a constant from a variable with ASSIGNMENT
+
++ create an immutable user defined type somewhat like an enumeration
+
++ Define a variable from a config/namelist file or environment variable
+only once at startup but then treat values as immutable.
+
++ Avoiding name collisions and not having to list many names on a USE
+statement by using a user-defined type.
+
++ intent(in)
+
++ How to access private variables in fortran modules?
+Protected global variables in Fortran
+
++ solution to disable this feature (in other words, NOT treat all the
+module's variables as "save" unless explicitly declared as "save")
+
++ Use of private in a module where all variables are public
+
++ cpp constant macros
+
++ A complex constant is an ordered pair of real or integer constants
+(or PARAMETER constants@). The constants are separated by a comma,
+and the pair is enclosed ...
+
+Danger with intent(out)
+
+Danger with optional arguments -- use keyword
+
+Typical errors · Misspelling (or forgetting to declare) variables,
+procedures, and modules. · Incorrect types. · Nonsense assignment. ·
+Misuse or misspell of ...
+</div>
+~~~~~~~~~~ {: lang=fortran}
+~~~~~~~~~~ 
+boiler plates
+cheat sheet
+crib sheet
+   [12]Sharing constants between Fortran and C
+   Now I am just curious, if this AAA is read in once, and never change in
+   the code. Can we make it a CONSTANT?
+
+module constants
+   implicit none
+   logical, protected, private :: init = .true.
+   real, protected, public :: ABC, BBB
+
+   contains
+      subroutine set_consts()
+      if(init)then
+         read (*,*) ABC
+         BBB = sqrt(log(abs(ABC)))
+         init = .false.
+      endif
+      return
+      end subroutine
+end module
+
+program xyz
+   use constants
+   real :: aa,bb
+   !
+   bb = 2.3
+   call set_consts()
+   aa = bb + BBB
+   print *,'aa = ',aa
+end program
+
+     is there similar idea in C/C++
+
+   In C, since C99 standard, one can mix declarations and instructions, so
+   it is possible to have
+#include <stdio.h>
+int main() {
+  double x;
+  scanf("%lf", &x);
+  const double y=x;
+  printf("%f\n", y);
+  // y += 2.0;  // if uncommented, gives compiler error: assignment of read-only
+ variable ‘y’
+}
+
+
+     In C, since C99 standard, one can mix declarations and instructions,
+     so it is possible to have
+#include <stdio.h>
+int main() {
+  double x;
+  scanf("%lf", &x);
+  const double y=x;
+  printf("%f\n", y);
+  // y += 2.0;  // if uncommented, gives compiler error: assignment of read-only
+ variable ‘y’
+}
+
+   The Fortran analog is to associate the constant to an expression:
+
+program main
+implicit none
+integer, parameter :: dp = kind(1.0d0)
+real(kind=dp) :: x
+print*,"enter a double"
+read (*,*) x
+associate (y => (x))
+print*,"y =",y
+! if line below uncommented, get gfortran error
+! Error: 'y' at (1) associated to expression cannot be used in a variable defini
+tion context (assignment)
+y = 2*y
+end associate
+end program main
+
+   A variable associated to another variable is not a constant, so the
+   following code, with y => x instead of y => (x), compiles:
+
+program main
+implicit none
+integer, parameter :: dp = kind(1.0d0)
+real(kind=dp) :: x
+   print*,"enter a double"
+   read (*,*) x
+   associate (y => x)
+      print*,"y =",y
+      y = 2*y
+      print*,"y =",y
+   end associate
+end program main
+
+   [12]Sharing constants between Fortran and C
+   [13]User defined functions in constant expressions
+   5 1954 August 29, 2021
+   [14]Knowing variable value during compiling .vs. read in the variable
+   value at run time, performance difference?
+
+   5 579 February 5, 2022
+   [15]Is there a way to read in a variable and then set it as a
+   parameter?
+  lynx -dump https://fortran-lang.discourse.group/t/sharing-constants-between-fortran-and-c/3446

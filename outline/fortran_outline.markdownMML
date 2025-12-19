@@ -20,6 +20,7 @@ course, writing missing sections and reorganizing this index is encouraged as we
     - [[Standards]]
     - [[J3]]
     - [[WG5]]
+    - [[crib sheet]]
 
 ### Chapter 2: Getting Started
 
@@ -40,7 +41,7 @@ course, writing missing sections and reorganizing this index is encouraged as we
     - [Internal procedures](internalproc)
     - [[implicit+none]]
     - [[Keywords]]
-    - [Constants](iso_fortran_env)
+    - [Standard Constants](e.g. iso_fortran_env)
     - [Initializing values](init)
   + Common compiler options and error messages
 
@@ -53,6 +54,7 @@ course, writing missing sections and reorganizing this index is encouraged as we
     - [[Real+precision]]
     - [[Floating+point+arithmetic]]
   + Constants and parameters
+    - [[literal+and+constant]]
   + Operators and expressions
   + IEEE standard conformance
     - [[[IEEE+arithmetic]]
