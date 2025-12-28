@@ -1,0 +1,1237 @@
+# Recursion
+
+In brief, a function or subroutine is recursive if it calls itself.
+
+It is termed __direct recursion__ when a procedure explicitly calls
+itself from within its own code. __Indirect recursion__ is when
+the procedure calls some other procedure that subsequently makes a call
+back to the initial procedure.
+
+## Historical Context
+
+In older versions of the language (FORTRAN 77 and earlier), direct
+recursion was not part of the standard. Compilers generally assumed
+procedures would not call themselves, so local variables were often
+allocated statically, which would cause issues with recursion.
+
+To create recursive procedures Programmers had to use workarounds such
+as passing the procedure as an external argument to itself, or relying
+on compiler-specific extensions.
+
+From Fortran 1990 onwards up to Fortran 2018, to make a function or
+subroutine recursive you explicitly used the **RECURSIVE** keyword in
+the procedure declaration.
+
+The Fortran 2018 Standard then specified that a procedure is assumed to
+allow recursion by default unless it violates a few rarely encountered
+rules.
+
+Because of this history and for clarity the use of the **RECURSIVE**
+prefix is still preferred for identifying recursive procedures, as all
+compilers have not yet implemented recursiveness as a general default
+attribute.
+
+## Key Requirements
+
+   RECURSIVE Keyword: This prefix should be added to the FUNCTION or
+   SUBROUTINE statement. NON_RECURSIVE
+
+   RESULT Clause (for Functions): In a recursive function, the RESULT
+   keyword must be used to specify an internal variable that holds the
+   return value. This is necessary because the function name itself is
+   used to make the recursive call, so a different variable is needed
+   to store the final result.
+
+   Local Variable Behavior: Local variables are "automatic" by default
+   in recursive procedures, meaning a new, private copy of the variable
+   is created for each recursive call. Variables with the SAVE attribute
+   or those initialized in a type declaration statement are static and
+   share the same memory location across calls.
+
+Example: Factorial Function
+
+This example demonstrates how to implement a recursive factorial function in modern Fortran:
+fortran
+
+PROGRAM main_factorial
+    IMPLICIT NONE
+    INTEGER :: n, final, factorial
+    n = 5
+    final = factorial(n)
+    WRITE(*,*) "Final factorial value for input of", n, " is", final
+END PROGRAM main_factorial
+
+RECURSIVE FUNCTION factorial(n) RESULT (fac_result)
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n
+    INTEGER :: fac_result
+    
+    IF (n <= 1) THEN
+        fac_result = 1
+    ELSE
+        fac_result = n * factorial(n - 1) ! Recursive call
+    END IF
+END FUNCTION factorial
+
+ 
+Example: Towers of Hanoi Subroutine
+This example shows a recursive subroutine for the Towers of Hanoi problem:
+fortran
+
+PROGRAM hanoi_main
+    IMPLICIT NONE
+    INTEGER :: n
+    n = 5
+    CALL hanoi(n, 'A', 'C', 'B')
+END PROGRAM hanoi_main
+
+RECURSIVE SUBROUTINE hanoi(n, from_peg, to_peg, aux_peg)
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n
+    CHARACTER(LEN=1), INTENT(IN) :: from_peg, to_peg, aux_peg
+    
+    IF (n == 1) THEN
+        WRITE(*,*) "Move disk 1 from peg", from_peg, " to peg", to_peg
+    ELSE
+        CALL hanoi(n - 1, from_peg, aux_peg, to_peg) ! Recursive call
+        WRITE(*,*) "Move disk", n, " from peg", from_peg, " to peg", to_peg
+        CALL hanoi(n - 1, aux_peg, to_peg, from_peg) ! Recursive call
+    END IF
+END SUBROUTINE hanoi
+
+ 
+
+
+* Recursion. The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements...
+Santa Clara University
+
+
+https://webpages.scu.edu › ftp › dsmolarski › notesforrec
+The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements it.
+Recursion
+IBM
+
+A procedure that can reference itself, directly or indirectly, is called a recursive procedure. Such a procedure can reference itself indefinitely until a ...
+RECURSIVE and NON_RECURSIVE
+
+Intel
+https://www.intel.com › recursive-and-non-recursive
+Keywords: RECURSIVE specifies that a subroutine or function can call itself directly or indirectly. NON_RECURSIVE specifies that a subroutine or function ...
+
+Why use recursion instead of loop?
+
+https://craftofcoding.wordpress.com › 2020/12/02 › rec...
+Dec 2, 2020 — In early versions of Fortran, the subroutine or function could only store one return address at a time. Recursion is therefore not possible.
+
+I'm working on a project that needs to implement few numerical methods in Fortran. For this, I need to write some recursive functions. Here is my code.
+
+!     
+! File:   main.F95
+!
+
+RECURSIVE FUNCTION integrate(n) RESULT(rv)
+    IMPLICIT NONE
+    DOUBLE PRECISION :: rv
+    INTEGER, INTENT(IN) :: n
+    DOUBLE PRECISION, PARAMETER :: minusone = -1.0
+    IF (n == 1) THEN
+        rv = 10 !exp(minusone)
+        RETURN
+    ELSE
+        rv = 1 - (n * integrate(n - 1))
+        RETURN
+    END IF
+END FUNCTION integrate
+
+RECURSIVE FUNCTION factorial(n) RESULT(res)
+    INTEGER res, n
+    IF (n .EQ. 0) THEN
+        res = 1
+    ELSE
+        res = n * factorial(n - 1)
+    END IF
+END
+
+PROGRAM main
+    DOUBLE PRECISION :: rv1
+    PRINT *, factorial(5)
+    PRINT *, integrate(2)
+
+    !READ *, rv1
+
+END PROGRAM main
+
+
+As one of the comments mentions, a better solution is to put your subroutines and functions into a module, then use that module from your main program. This will make the interface of those procedures known to the caller -- "explicit" in Fortran terminology. Not only will the compiler correctly handle the type of the function, it will be able to check type-agreement between the arguments in the call and the arguments in the callee ("dummy arguments") for consistency.
+
+If you use as many debugging options as possible the compiler will help you find mistakes. With gfortran, try: -O2 -fimplicit-none -Wall -Wline-truncation -Wcharacter-truncation -Wsurprising -Waliasing -Wimplicit-interface -Wunused-parameter -fwhole-file -fcheck=all -std=f2008 -pedantic -fbacktrace
+
+module factorial_procs
+
+   IMPLICIT NONE
+
+contains
+
+   RECURSIVE FUNCTION integrate(n) RESULT(rv)
+       DOUBLE PRECISION :: rv
+       INTEGER, INTENT(IN) :: n
+
+       IF (n == 1) THEN
+           rv = 10
+           RETURN
+       ELSE
+           rv = 1 - (n * integrate(n - 1))
+           RETURN
+       END IF
+   END FUNCTION integrate
+
+   RECURSIVE FUNCTION factorial(n) RESULT(res)
+       INTEGER res, n
+       IF (n .EQ. 0) THEN
+           res = 1
+       ELSE
+           res = n * factorial(n - 1)
+       END IF
+   END
+
+end module factorial_procs
+
+PROGRAM main
+
+    use factorial_procs
+
+    implicit none
+
+    PRINT *, factorial(5)
+    PRINT *, integrate(2)
+
+END PROGRAM main
+
+You'll probably find that you can only calculate factorials of very small integers by straight forward multiplication using regular integers. One fix is to use a larger integer type, e.g.,
+
+integer, parameter :: BigInt_K = selected_int_kind (18)
+
+Just as you could modernize and use selected_real_kind instead of Double Precision.
+
+Your functions are written correctly. The problem is in the main program, where you do not explicitly declare the type of integrate and factorial functions, so you have implicit typing, in which case factorial is assumed REAL and integrate is assumed INTEGER. For some reason, your compiler did not warn you about type mismatch. Mine did:
+
+$ gfortran recurs.f90 
+recurs.f90:26.22:
+
+    PRINT *, integrate(2)
+                      1
+Error: Return type mismatch of function 'integrate' at (1) (INTEGER(4)/REAL(8))
+recurs.f90:27.22:
+
+    PRINT *, factorial(5)
+                      1
+Error: Return type mismatch of function 'factorial' at (1) (REAL(4)/INTEGER(4))
+
+You should change your main program to:
+
+PROGRAM main
+    IMPLICIT NONE
+    DOUBLE PRECISION, EXTERNAL :: integrate
+    INTEGER, EXTERNAL :: factorial
+    PRINT *, factorial(5)
+    PRINT *, integrate(2)
+END PROGRAM main
+
+Notice the IMPLICIT NONE line. This declaration statement will disable any implicit typing, and the compiler would throw an error if not all variables and functions are explicitly declared. This is a very important line in every Fortran program, and if you had it, you would've figured out your problem yourself, because it would force you to explicitly declare everything in your program.
+
+The output now is:
+
+         120
+  -19.0000000000000     
+
+as expected.
+
+As a side note, the DOUBLE PRECISION type declaration is not as flexible as using REAL with KIND parameter specified instead, e.g. anREAL(KIND=myRealKind). See answers to this question about how to use KIND properly: Fortran 90 kind parameter.
+
+Over a year ago
+EXTERNAL attribute is not necessary. The compiler will figure out they are external.
+
+I would like to highlight some points while using RECURSIVE functions or non recursive function. 
+
+1. Make sure the function has an explicit interface with the calling program. This can be achieved by putting function in a module and USE association. This is explained in aforementioned answer. 2. you can use INTERFACE to build an explicit interface with the main calling program, this is useful when you have a very few numbers of function which have implicit interface, like in your case. The example is given below.
+
+PROGRAM main
+IMPLICIT NONE
+  INTERFACE 
+   FUNCTION factorial(n)
+     INTEGER:: factorial 
+     INTEGER, INTENT(IN):: n
+   END FUNCTION factorial
+
+  FUNCTION integrate(n)
+    DOUBLE PRECISION:: integrate
+    INTEGER, INTENT(IN):: n
+  END FUNCTION integrate
+END INTERFACE 
+
+PRINT *, factorial(5) 
+PRINT *, integrate(2)
+
+END PROGRAM main
+
+note it always better to define kind parameter and then using KIND clause as!explained by @milancurcic
+
+There is another very simple way to solve your problem: Just define factorial and itegrate in the main program as follows and you are ready to go
+
+PROGRAM main
+IMPLICIT NONE
+    DOUBLE PRECISION :: integrate
+    INTEGER:: factorial
+    PRINT *, factorial(5)
+    PRINT *, integrate(2)
+
+END PROGRAM main 
+
+Random large floating point errors and NaN when using a recursive function in Fortran
+Hot Network Questions
+
+Recursion
+
+Ordinary FORTRAN procedures (subroutine and function) are not recursive, i.e., they cannot invoke themselves in their body. We can use the RECURSIVE keyword to implement recursive procedures.
+
+Recursive subroutine
+
+Calculate factorial using recursive subroutine:
+src/21_recursive_subroutine.f90
+
+! Calculate factorial
+!      | n(n -1)  n >= 1 
+! n! = |
+!      | 1        n = 0
+PROGRAM recursive_subroutine
+    IMPLICIT NONE
+    INTEGER :: input, output
+
+    PRINT *, "This program calculates factorial:"
+    PRINT '(a,$)', "Input = "
+    READ *, input
+
+    CALL factorial(input, output)
+
+    PRINT *, input, "! = ", output
+
+CONTAINS
+    RECURSIVE SUBROUTINE factorial(n, result)
+        INTEGER, INTENT(IN) :: n
+        INTEGER, INTENT(OUT) :: result
+        INTEGER :: tmp
+
+        IF (n >= 1) THEN
+            CALL factorial(n-1, tmp)
+            result = n * tmp
+        ELSE
+            result = 1
+        END IF
+    END SUBROUTINE factorial
+END PROGRAM recursive_subroutine
+
+Recursive function
+
+Calculate fibonacci series using recursive function:
+src/21_recursive_function.f90
+
+! Fibonacci series
+! F(0) = 0
+! F(1) = 1
+! F(n) = F(n-1) + F(n-2)  for n > 1
+PROGRAM recursive_function
+    IMPLICIT NONE
+    INTEGER :: lim, i
+
+    PRINT *, "This program calculates fibonacci series:"
+    PRINT '(a,$)', "Limit = "
+    READ *, lim
+
+    DO i = 0, lim
+        PRINT *, "Fib(", i, ") = ", fibonacci(i)
+    END DO
+
+CONTAINS
+    RECURSIVE FUNCTION fibonacci(n) RESULT(output)
+        INTEGER, INTENT(IN) :: n
+        INTEGER :: output
+
+        IF (n > 1) THEN
+            output = fibonacci(n - 1) + fibonacci(n - 2)
+        ELSE IF (n == 1) THEN
+            output = 1
+        ELSE
+            output = 0
+        END IF
+    END FUNCTION fibonacci
+END PROGRAM recursive_function
+
+Recursion
+
+For a general introduction to recursion (in C++) see this link.
+
+Note that recursion is not implemented in older versions of FORTRAN!
+
+Recursive Fortran 90 Subroutines
+To designate a Fortran-90 SUBROUTINE as recursive, one prepends the word RECURSIVE before the keyword SUBROUTINE in the code for that subprogram. No other adaptations are required. SUBROUTINES designated as recursive are then used as they would be in other languages.
+
+The following is an example of the recursive Towers of Hanoi code implemented in Fortran-90. (It is also available for downloading at this link.)
+
+     program hanoimain
+     ! recursive towers of hanoi program in 
+     ! fortran 90
+         integer n
+	 n = 5
+	 call hanoi(n,'a','c','b')
+     end
+     !
+     recursive subroutine hanoi(n,frompeg,auxpeg,topeg)
+         integer n
+         character*1 frompeg,auxpeg,topeg
+         if (n == 1) then
+            write(6,*)"Move disk 1 from peg ", frompeg, " to peg ", topeg
+         else
+            call hanoi(n-1,frompeg,auxpeg,topeg)
+            write(6,101) n, frompeg,topeg
+            101 FORMAT(1x,"Move disk ",i1," from peg ", A1, " to peg ", A1)
+            call hanoi(n-1,auxpeg,topeg,frompeg)
+         endif
+    end
+
+Recursive Fortran 90 Functions
+
+To designate a Fortran-90 FUNCTION as recursive, one prepends the word RECURSIVE before the keyword FUNCTION in the code for that subprogram. In addition, in the header line after the parameter list, one includes the keyword RESULT followed, in parentheses, by the internal variable that will be used to store the value the function returns. Some authors recommend that this variable use the suffice _RESULT but this is not required.
+
+As in other languages, the recursive FUNCTION can be called on the right side of an assignment statement within the FUNCTION. The RESULT variable must be given a return value somewhere within the code.
+
+(Recall that in a non-recursive Fortran FUNCTION, the return value is assigned to the name of the FUNCTION which is considered a local variable within the subprogram. In a recursive FUNCTION, the FUNCTION name retains its purpose as a means to invoke itself, and so another identifier must be designated as the means to return the value computed by the subprogram.)
+
+FUNCTIONS designated as recursive as then used as they would be in other languages.
+
+The following is an example of a recursive fibonacci function implemented in Fortran-90. (It is also available for downloading at this link.)
+
+     program fibonmain
+     ! recursive fibonacci program in
+     ! fortran 90
+         integer n, final, fibon
+	 n = 5
+	 final = fibon(n)
+         write(6,*) "Final fibonacci value for input of",n," is",final
+     end
+     !
+     recursive function fibon(n) result (fib_result)
+         integer  :: n, fib_result
+	 if (n <= 2) then
+	     fib_result = 1
+         else
+	     fib_result = fibon(n-1) + fibon(n-2)
+         endif
+     end
+
+
+    RECURSIVE and NON_RECURSIVE
+
+Intel® Fortran Compiler Classic and Intel® Fortran Compiler Developer Guide and Reference
+
+A newer version of this document is available. Customers should click here to go to the newest version.
+
+    System Requirements
+
+    Release Notes
+
+    Get Started
+
+Intel® Fortran Compiler Classic and Intel® Fortran Compiler Developer Guide and Reference
+Intel® Fortran Compiler Classic and Intel® Fortran Compiler Introduction
+Compiler Setup
+Compiler Reference
+Language Reference
+
+    New Language Features
+
+    New Features for ifx
+
+    Language Reference Conventions
+
+Program Elements and Source Forms
+Data Types, Constants, and Variables
+Expressions and Assignment Statements
+Specification Statements
+Dynamic Allocation
+Execution Control
+Program Units and Procedures
+Intrinsic Procedures
+Data Transfer I/O Statements
+I/O Formatting
+File Operation I/O Statements
+
+    Compilation Control Lines and Statements
+
+Directive Enhanced Compilation
+Scope and Association
+Deleted and Obsolescent Language Features
+Additional Language Features
+Additional Character Sets
+Data Representation Models
+Library Modules and Runtime Library Routines
+Summary of Language Extensions
+A to Z Reference
+Language Summary Tables
+A to B
+C to D
+E to F
+G
+H to I
+J to L
+M to N
+O to P
+Q to R
+
+    QCMPLX
+
+    QEXT
+
+    QFLOAT
+
+    QNUM
+
+    QRANSET
+
+    QREAL
+
+    QSORT
+
+    RADIX
+
+    RAISEQQ
+
+    RAN
+
+    RAND, RANDOM
+
+    RANDOM Subroutine
+
+    RANDOM_INIT
+
+    RANDOM_NUMBER
+
+    RANDOM_SEED
+
+    RANDU
+
+    RANF Intrinsic Procedure
+
+    RANF Portability Routine
+
+    RANGE
+
+    RANGET
+
+    RANK
+
+    RANSET
+
+    READ Statement
+
+    REAL Directive
+
+    REAL Function
+
+    REAL Statement
+
+    RECORD
+
+    RECURSIVE and NON_RECURSIVE
+
+    REDUCE
+
+    REDUCTION
+
+    %REF
+
+    RENAME
+
+    RENAMEFILEQQ
+
+    REPEAT
+
+    REQUIRES
+
+    RESHAPE
+
+    RESULT
+
+    RETURN
+
+    REWIND
+
+    REWRITE
+
+    RINDEX
+
+    RNUM
+
+    RRSPACING
+
+    RSHIFT
+
+    RTC
+
+    RUNQQ
+
+S
+T to Z
+POSIX* Library Routines
+Automation Server and Component Object Model Library Routines
+National Language Support Library Routines
+QuickWin Library Routines
+Graphics Library Routines
+Serial Port I/O Library Routines
+Dialog Library Routines
+Glossary
+Compilation
+Program Structure
+Optimization and Programming
+Compatibility and Portability
+
+    Notices and Disclaimers
+
+    Samples
+
+RECURSIVE and NON_RECURSIVE
+
+Keywords: RECURSIVE specifies that a subroutine or function can call itself directly or indirectly. NON_RECURSIVE specifies that a subroutine or function does not call itself directly or indirectly.
+Description
+
+RECURSIVE or NON_RECURSIVE can be specified once in a FUNCTION or SUBROUTINE statement. They cannot both appear in the same statement.
+
+Procedures not specified as RECURSIVE or NON_RECURSIVE are currently compiled as NON_RECURSIVE.
+
+The default behavior can be changed by using the -assume [no]recursion option, or in an OPTIONS statement.
+NOTE:
+
+The Fortran 2018 Standard specifies that the default mode is recursion; previous standards specified the default was no recursion. The default compilation mode will change to recursion in a future release.
+
+If a function is directly recursive and array valued, and if the keyword RESULT is not specified in the FUNCTION statement, the result variable is the function name, and all occurrences of the function name in the executable part of the function are references to the function result variable.
+
+A directly recursive function cannot have a declared type of CHARACTER if the character length is declared as *.
+
+A procedure interface is always explicit within the subprogram that defines the procedure.
+
+The keyword RECURSIVE must be specified if the compilation mode is set to non-recursive by a compiler option and if any of the following applies (directly or indirectly):
+
+    The subprogram invokes itself.
+
+    The subprogram invokes a subprogram defined by an ENTRY statement in the same subprogram.
+
+    An ENTRY procedure in the same subprogram invokes one of the following:
+
+        Itself
+
+        Another ENTRY procedure in the same subprogram
+
+        The subprogram defined by the FUNCTION or SUBROUTINE statement
+
+The keyword NON_RECURSIVE must be specified if the compilation mode is set to recursion by a compiler option and the procedure is not to be compiled for recursion.
+Example
+
+ ! RECURS.F90
+ !
+   i = 0
+   CALL Inc (i)
+   END
+   RECURSIVE SUBROUTINE Inc (i)
+   i = i + 1
+   CALL Out (i)
+   IF (i.LT.20) CALL Inc (i)    ! This also works in OUT
+   END SUBROUTINE Inc
+
+   SUBROUTINE Out (i)
+   WRITE (*,*) i
+   END SUBROUTINE Out
+
+Parent topic: Q to R
+See Also
+ENTRY
+FUNCTION
+SUBROUTINE
+OPTIONS
+Program Units and Procedures
+recursive compiler option
+
+    Company Overview Contact Intel Newsroom Investors Careers Corporate Responsibility Inclusion Public Policy 
+
+    © Intel Corporation Terms of Use *Trademarks Cookies Privacy Supply Chain Transparency Site Map Recycling Your Privacy Choices
+
+    Notice at Collection 
+
+Intel technologies may require enabled hardware, software or service activation. // No product or component can be absolutely secure. // Your costs and results may vary. // Performance varies by use, configuration, and other factors. Learn more at intel.com/performanceindex. // See our complete legal Notices and Disclaimers. // Intel is committed to respecting human rights and avoiding causing or contributing to adverse impacts on human rights. See Intel’s Global Human Rights Principles. Intel’s products and software are intended only to be used in applications that do not cause or contribute to adverse impacts on human rights.
+Intel Footer Logo
+recursion in Fortran Wiki
+fortranwiki.org
+https://fortranwiki.org › fortran › show › recursion
+Jan 28, 2014 — From Fortran 90 onwards, recursive functions and subroutines could be declared and used freely. A well known recursion benchmark.
+Recursion • Fortran Tutorial
+GitHub
+https://pranabdas.github.io › fortran › recursion
+Ordinary FORTRAN procedures (subroutine and function) are not recursive, i.e., they cannot invoke themselves in their body. We can use the RECURSIVE keyword to ...
+Math 61 -- Notes: Fortran-90 and Recursion
+Santa Clara University
+https://webpages.scu.edu › ftp › dsmolarski › notesforrec
+The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements it.
+Recursion
+IBM
+https://www.ibm.com › docs › openxl-fortran-aix › topi...
+A procedure that can reference itself, directly or indirectly, is called a recursive procedure. Such a procedure can reference itself indefinitely until a ...
+RECURSIVE and NON_RECURSIVE
+Intel
+https://www.intel.com › recursive-and-non-recursive
+Keywords: RECURSIVE specifies that a subroutine or function can call itself directly or indirectly. NON_RECURSIVE specifies that a subroutine or function ...
+Missing: recursion ‎| Show results with: recursion
+Recursive Data Structures in Fortran - Tutorials
+Fortran Discourse
+https://fortran-lang.discourse.group › recursive-data-str...
+Jul 22, 2021 — A tutorial toward recursive data structures in Fortran, my 2 cents is a more conventional example - say with a stack use case - will be apt.
+People also ask
+Does Fortran have recursion?
+What is recursion with example?
+Why use recursion instead of loop?
+Recursion Advantages
+
+This makes the code easier to understand and maintain. Less Code: Recursive functions can frequently achieve the same result with less code than iterative solutions. This is particularly true when dealing with inherently recursive problems, like traversing tree-like data structures.Jul 12, 2023
+recursion in Fortran Wiki
+fortranwiki.org
+https://fortranwiki.org › fortran › show › recursion
+Jan 28, 2014 — From Fortran 90 onwards, recursive functions and subroutines could be declared and used freely. A well known recursion benchmark.
+Recursion • Fortran Tutorial
+GitHub
+https://pranabdas.github.io › fortran › recursion
+Ordinary FORTRAN procedures (subroutine and function) are not recursive, i.e., they cannot invoke themselves in their body. We can use the RECURSIVE keyword to ...
+Math 61 -- Notes: Fortran-90 and Recursion
+Santa Clara University
+https://webpages.scu.edu › ftp › dsmolarski › notesforrec
+The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements it.
+Recursion
+IBM
+https://www.ibm.com › docs › openxl-fortran-aix › topi...
+A procedure that can reference itself, directly or indirectly, is called a recursive procedure. Such a procedure can reference itself indefinitely until a ...
+RECURSIVE and NON_RECURSIVE
+Intel
+https://www.intel.com › recursive-and-non-recursive
+Keywords: RECURSIVE specifies that a subroutine or function can call itself directly or indirectly. NON_RECURSIVE specifies that a subroutine or function ...
+Missing: recursion ‎| Show results with: recursion
+Recursive Data Structures in Fortran - Tutorials
+Fortran Discourse
+https://fortran-lang.discourse.group › recursive-data-str...
+Jul 22, 2021 — A tutorial toward recursive data structures in Fortran, my 2 cents is a more conventional example - say with a stack use case - will be apt.
+People also ask
+Does Fortran have recursion?
+What is recursion with example?
+Why use recursion instead of loop?
+Recursion Advantages
+
+This makes the code easier to understand and maintain. Less Code: Recursive functions can frequently achieve the same result with less code than iterative solutions. This is particularly true when dealing with inherently recursive problems, like traversing tree-like data structures.Jul 12, 2023
+Skip to main content
+Accessibility help
+Accessibility feedback
+Seasonal Holidays 2025
+recursion in fortran
+Sign in
+AI Mode
+All
+Images
+Shopping
+Videos
+News
+Short videos
+More
+Tools
+AI Overview
+Recursion has been a standard feature in Fortran since the Fortran 90 standard
+. To make a function or subroutine recursive in modern Fortran (Fortran 90 and later), you must explicitly use the RECURSIVE keyword in the procedure declaration. 
+Key Requirements
+
+    RECURSIVE Keyword: This prefix must be added to the FUNCTION or SUBROUTINE statement.
+    RESULT Clause (for Functions): In a recursive function, the RESULT keyword must be used to specify an internal variable that holds the return value. This is necessary because the function name itself is used to make the recursive call, so a different variable is needed to store the final result.
+    Local Variable Behavior: Local variables are "automatic" by default in recursive procedures, meaning a new, private copy of the variable is created for each recursive call. Variables with the SAVE attribute or those initialized in a type declaration statement are static and share the same memory location across calls. 
+
+Example: Factorial Function
+This example demonstrates how to implement a recursive factorial function in modern Fortran:
+fortran
+
+PROGRAM main_factorial
+    IMPLICIT NONE
+    INTEGER :: n, final, factorial
+    n = 5
+    final = factorial(n)
+    WRITE(*,*) "Final factorial value for input of", n, " is", final
+END PROGRAM main_factorial
+
+RECURSIVE FUNCTION factorial(n) RESULT (fac_result)
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n
+    INTEGER :: fac_result
+    
+    IF (n <= 1) THEN
+        fac_result = 1
+    ELSE
+        fac_result = n * factorial(n - 1) ! Recursive call
+    END IF
+END FUNCTION factorial
+
+ 
+Example: Towers of Hanoi Subroutine
+This example shows a recursive subroutine for the Towers of Hanoi problem:
+fortran
+
+PROGRAM hanoi_main
+    IMPLICIT NONE
+    INTEGER :: n
+    n = 5
+    CALL hanoi(n, 'A', 'C', 'B')
+END PROGRAM hanoi_main
+
+RECURSIVE SUBROUTINE hanoi(n, from_peg, to_peg, aux_peg)
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n
+    CHARACTER(LEN=1), INTENT(IN) :: from_peg, to_peg, aux_peg
+    
+    IF (n == 1) THEN
+        WRITE(*,*) "Move disk 1 from peg", from_peg, " to peg", to_peg
+    ELSE
+        CALL hanoi(n - 1, from_peg, aux_peg, to_peg) ! Recursive call
+        WRITE(*,*) "Move disk", n, " from peg", from_peg, " to peg", to_peg
+        CALL hanoi(n - 1, aux_peg, to_peg, from_peg) ! Recursive call
+    END IF
+END SUBROUTINE hanoi
+
+ 
+Historical Context
+In older versions of the language (FORTRAN 77 and earlier), direct recursion was not part of the standard. Compilers generally assumed procedures would not call themselves, so local variables were often allocated statically, which would cause issues with recursion. Programmers had to use workarounds, such as passing the procedure as an external argument to itself, or relying on compiler-specific extensions. 
+
+    recursion in Fortran Wiki
+    Jan 27, 2014 — Recursion. Fortran 77 did not explicitly allow recursive functions and subroutines, although there were several ways a...
+    fortranwiki.org
+
+Andy's Fortran Examples - ESM Intranet Site
+Fortran Examples * Example 1: Recursive Routines in FORTRAN 77 (and Fortran 90) First let me say that I think every serious Fortra...
+Penn State University
+Math 61 -- Notes: Fortran-90 and Recursion
+* Recursion. The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements...
+Santa Clara University
+
+Show all
+Dive deeper in AI Mode
+recursion in Fortran Wiki
+fortranwiki.org
+https://fortranwiki.org › fortran › show › recursion
+Jan 28, 2014 — From Fortran 90 onwards, recursive functions and subroutines could be declared and used freely. A well known recursion benchmark.
+Recursion • Fortran Tutorial
+GitHub
+https://pranabdas.github.io › fortran › recursion
+Ordinary FORTRAN procedures (subroutine and function) are not recursive, i.e., they cannot invoke themselves in their body. We can use the RECURSIVE keyword to ...
+Math 61 -- Notes: Fortran-90 and Recursion
+Santa Clara University
+https://webpages.scu.edu › ftp › dsmolarski › notesforrec
+The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements it.
+Recursion
+IBM
+https://www.ibm.com › docs › openxl-fortran-aix › topi...
+A procedure that can reference itself, directly or indirectly, is called a recursive procedure. Such a procedure can reference itself indefinitely until a ...
+RECURSIVE and NON_RECURSIVE
+Intel
+https://www.intel.com › recursive-and-non-recursive
+Keywords: RECURSIVE specifies that a subroutine or function can call itself directly or indirectly. NON_RECURSIVE specifies that a subroutine or function ...
+Missing: recursion ‎| Show results with: recursion
+Recursive Data Structures in Fortran - Tutorials
+Fortran Discourse
+https://fortran-lang.discourse.group › recursive-data-str...
+Jul 22, 2021 — A tutorial toward recursive data structures in Fortran, my 2 cents is a more conventional example - say with a stack use case - will be apt.
+People also ask
+Does Fortran have recursion?
+What is recursion with example?
+Why use recursion instead of loop?
+Recursion Advantages
+
+This makes the code easier to understand and maintain. Less Code: Recursive functions can frequently achieve the same result with less code than iterative solutions. This is particularly true when dealing with inherently recursive problems, like traversing tree-like data structures.Jul 12, 2023
+Recursion Vs. Loops: A Simple Introduction to Elegant Javascript
+the Appsmith Community
+https://community.appsmith.com › content › blog › recu...
+Does anybody still use Fortran?
+Why is recursion not recommended?
+Memory Usage: Since each recursive call creates a new stack frame, recursive functions can consume a large amount of memory, especially if the recursion depth is deep. In contrast, iterative solutions often use a single stack frame and are more memory-efficient.Oct 10, 2024
+Powerful but dangerous. Why recursion can be bad for code…
+Python in Plain English
+https://python.plainenglish.io › ...
+Is recursion lifo or fifo?
+Do programmers actually use recursion?
+What is the main disadvantage of recursion?
+Why does NASA not use recursion?
+Feedback
+Recursion – the trouble with early Fortran - The Craft of Coding
+The Craft of Coding
+https://craftofcoding.wordpress.com › 2020/12/02 › rec...
+Dec 2, 2020 — In early versions of Fortran, the subroutine or function could only store one return address at a time. Recursion is therefore not possible.
+How does Recursive Subroutine works in fortran?
+Stack Overflow
+1 answer · 11 years ago
+I am trying to understand how recursive subroutine works. For example this recursive function calculates fibonacci number.
+1 answer
+  ·  Top answer: Subroutines are not that nice for this particular problem. Nonrecursive solution would be more readable. You tried to use subroutine as a function. You ...
+Recursive Fortran function return array? - Stack Overflow
+1 answer
+Aug 1, 2015
+How did Fortran prevent recursion prior to Fortran 90?
+1 answer
+Jun 27, 2020
+More results from stackoverflow.com
+Chapter 6: Recursion in Fortran
+SIAM Publications Library
+https://epubs.siam.org › doi › abs
+by RJ Hanson · 2013 · Cited by 24 — Until Fortran 95, the language standard did not support recursion. Many programmers still believe that making any recursive calls will ...
+9. Recursion
+Linköpings universitet
+https://www.nsc.liu.se › ~boein
+Apr 6, 1998 — Recursion. A completely new capability of Fortran 90 is recursion. Note that it requires that you assign a new property RESULT to the output ...
+People also ask
+What is the main advantage of using recursion?
+Why does NASA not allow recursion?
+Is recursion faster than for loops?
+When and why do you prefer recursion over iteration?
+Feedback
+People also search for
+Recursion in fortran example
+Recursion in fortran c++
+Fortran examples
+	1	
+2
+	
+3
+	
+4
+	
+5
+	
+6
+	
+7
+	
+8
+	
+9
+	
+10
+	
+Next
+Baldwin, Pennsylvania
+ - Based on your past activity
+ - Update location
+HelpSend feedbackPrivacyTerms
+AI overview is ready
+Skip to main content
+Accessibility help
+Accessibility feedback
+Seasonal Holidays 2025
+recursion in fortran
+Sign in
+AI Mode
+All
+Images
+Shopping
+Videos
+News
+Short videos
+More
+Tools
+AI Overview
+Recursion has been a standard feature in Fortran since the Fortran 90 standard
+. To make a function or subroutine recursive in modern Fortran (Fortran 90 and later), you must explicitly use the RECURSIVE keyword in the procedure declaration. 
+Key Requirements
+
+    RECURSIVE Keyword: This prefix must be added to the FUNCTION or SUBROUTINE statement.
+    RESULT Clause (for Functions): In a recursive function, the RESULT keyword must be used to specify an internal variable that holds the return value. This is necessary because the function name itself is used to make the recursive call, so a different variable is needed to store the final result.
+    Local Variable Behavior: Local variables are "automatic" by default in recursive procedures, meaning a new, private copy of the variable is created for each recursive call. Variables with the SAVE attribute or those initialized in a type declaration statement are static and share the same memory location across calls. 
+
+Example: Factorial Function
+This example demonstrates how to implement a recursive factorial function in modern Fortran:
+fortran
+
+PROGRAM main_factorial
+    IMPLICIT NONE
+    INTEGER :: n, final, factorial
+    n = 5
+    final = factorial(n)
+    WRITE(*,*) "Final factorial value for input of", n, " is", final
+END PROGRAM main_factorial
+
+RECURSIVE FUNCTION factorial(n) RESULT (fac_result)
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n
+    INTEGER :: fac_result
+    
+    IF (n <= 1) THEN
+        fac_result = 1
+    ELSE
+        fac_result = n * factorial(n - 1) ! Recursive call
+    END IF
+END FUNCTION factorial
+
+ 
+Example: Towers of Hanoi Subroutine
+This example shows a recursive subroutine for the Towers of Hanoi problem:
+fortran
+
+PROGRAM hanoi_main
+    IMPLICIT NONE
+    INTEGER :: n
+    n = 5
+    CALL hanoi(n, 'A', 'C', 'B')
+END PROGRAM hanoi_main
+
+RECURSIVE SUBROUTINE hanoi(n, from_peg, to_peg, aux_peg)
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n
+    CHARACTER(LEN=1), INTENT(IN) :: from_peg, to_peg, aux_peg
+    
+    IF (n == 1) THEN
+        WRITE(*,*) "Move disk 1 from peg", from_peg, " to peg", to_peg
+    ELSE
+        CALL hanoi(n - 1, from_peg, aux_peg, to_peg) ! Recursive call
+        WRITE(*,*) "Move disk", n, " from peg", from_peg, " to peg", to_peg
+        CALL hanoi(n - 1, aux_peg, to_peg, from_peg) ! Recursive call
+    END IF
+END SUBROUTINE hanoi
+
+ 
+Historical Context
+In older versions of the language (FORTRAN 77 and earlier), direct recursion was not part of the standard. Compilers generally assumed procedures would not call themselves, so local variables were often allocated statically, which would cause issues with recursion. Programmers had to use workarounds, such as passing the procedure as an external argument to itself, or relying on compiler-specific extensions. 
+
+    recursion in Fortran Wiki
+    Jan 27, 2014 — Recursion. Fortran 77 did not explicitly allow recursive functions and subroutines, although there were several ways a...
+    fortranwiki.org
+
+Andy's Fortran Examples - ESM Intranet Site
+Fortran Examples * Example 1: Recursive Routines in FORTRAN 77 (and Fortran 90) First let me say that I think every serious Fortra...
+Penn State University
+Math 61 -- Notes: Fortran-90 and Recursion
+* Recursion. The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements...
+Santa Clara University
+
+Show all
+Dive deeper in AI Mode
+recursion in Fortran Wiki
+fortranwiki.org
+https://fortranwiki.org › fortran › show › recursion
+Jan 28, 2014 — From Fortran 90 onwards, recursive functions and subroutines could be declared and used freely. A well known recursion benchmark.
+Recursion • Fortran Tutorial
+GitHub
+https://pranabdas.github.io › fortran › recursion
+Ordinary FORTRAN procedures (subroutine and function) are not recursive, i.e., they cannot invoke themselves in their body. We can use the RECURSIVE keyword to ...
+Math 61 -- Notes: Fortran-90 and Recursion
+Santa Clara University
+https://webpages.scu.edu › ftp › dsmolarski › notesforrec
+The concept of recursion in Fortran-90 is identical to the concept of recursion in any other language that implements it.
+Recursion
+IBM
+https://www.ibm.com › docs › openxl-fortran-aix › topi...
+A procedure that can reference itself, directly or indirectly, is called a recursive procedure. Such a procedure can reference itself indefinitely until a ...
+RECURSIVE and NON_RECURSIVE
+Intel
+https://www.intel.com › recursive-and-non-recursive
+Keywords: RECURSIVE specifies that a subroutine or function can call itself directly or indirectly. NON_RECURSIVE specifies that a subroutine or function ...
+Missing: recursion ‎| Show results with: recursion
+Recursive Data Structures in Fortran - Tutorials
+Fortran Discourse
+https://fortran-lang.discourse.group › recursive-data-str...
+Jul 22, 2021 — A tutorial toward recursive data structures in Fortran, my 2 cents is a more conventional example - say with a stack use case - will be apt.
+People also ask
+Does Fortran have recursion?
+What is recursion with example?
+Why use recursion instead of loop?
+Recursion Advantages
+
+This makes the code easier to understand and maintain. Less Code: Recursive functions can frequently achieve the same result with less code than iterative solutions. This is particularly true when dealing with inherently recursive problems, like traversing tree-like data structures.Jul 12, 2023
+Recursion Vs. Loops: A Simple Introduction to Elegant Javascript
+the Appsmith Community
+https://community.appsmith.com › content › blog › recu...
+Does anybody still use Fortran?
+Why is recursion not recommended?
+Memory Usage: Since each recursive call creates a new stack frame, recursive functions can consume a large amount of memory, especially if the recursion depth is deep. In contrast, iterative solutions often use a single stack frame and are more memory-efficient.Oct 10, 2024
+Powerful but dangerous. Why recursion can be bad for code…
+Python in Plain English
+https://python.plainenglish.io › ...
+Is recursion lifo or fifo?
+Do programmers actually use recursion?
+What is the main disadvantage of recursion?
+Why does NASA not use recursion?
+Feedback
+
+How did Fortran prevent recursion prior to Fortran 90?
+1 answer
+
+Is recursion faster than for loops?
+
+When should recursion be avoided?
+1. Limited Stack Space. Kernels typically operate with very limited stack space, often just a few kilobytes (e.g., 8 KB in Linux on x86–64). Recursive function calls consume stack space for each level of recursion, and deep recursion can lead to stack overflow, causing system crashes or undefined behavior.Dec 4, 2024
+Why Recursion is Generally Avoided in Kernel Development
+Anamul Akash - Medium
+
+
+What is tail recursion?
+Tail recursion is a form of recursion where the recursive call is the last action in the function. It improves memory efficiency by reusing the current stack frame, reducing the risk of stack overflow. Tail recursion can be optimized by compilers through Tail Call Optimization (TCO), turning recursion into iteration.
+
+What is tail recursion? - Educative.io
+Educative.io
+https://www.educative.io › answers › what-is-tail-recursion
+
+What are the three rules of recursion?
+Like the robots of Asimov, all recursive algorithms must obey three important laws:
+
+    A recursive algorithm must call itself, recursively.
+    A recursive algorithm must have a base case.
+    A recursive algorithm must change its state and move toward the base case.
+
+The Three Laws of Recursion
+
+Why does NASA not use recursion?
+Recursion is the easiest way to blow up the stack (with alloca a distant second). NASA stacks tend to be small, static, and can produce physical harm when damaged. Why avoid recursion entirely? Because it's too easy for another programmer to accidentally convert tail-call optimized recursion into full recursion.
+"but what is wrong with recursion? Why NASA guidelines prescribe to ...
+
+30      has the VALUE. Procedures that are not declared with an asterisk type-param-value, including elemental
+31      procedures, can be invoked recursively by default; the RECURSIVE keyword is advisory only. The NON_-
+32      RECURSIVEkeywordspeciﬁesthataprocedureisnotrecursive. TheERRORSTOPstatementcanappear
+37      The NON_RECURSIVE and RECURSIVE keywords are not used in an ENTRY statement. Instead, the presence or absence of
+38      NON_RECURSIVEin the initial SUBROUTINE or FUNCTION statement controls whether the procedure deﬁned by an ENTRY
+39      statement is permitted to reference itself or another procedure deﬁned by the subprogram.
+fortran_recursion(7)                                                                               fortran_recursion(7)
+
+NAME
+  fortran_recursion(7f) ‐ [FORTRAN] Examples of recursion
+
+SYNOPSIS
+DESCRIPTION
+EXAMPLE
+  Sample program that does a simple flood fill using recursion
+
+     program testit
+        integer  :: array(20,50)
+     ! Fill array with rectangles of values
+        array(:,:)=61 ! fill array
+        do  i=  5   ,  15;  do  j=  4   ,  45;  array(i  ,  j)=  43;  enddo;  enddo
+        do  i=  10  ,  12;  do  j=  3   ,  35;  array(i  ,  j)=  45;  enddo;  enddo
+        do  i=  13  ,  18;  do  j=  2   ,  45;  array(i  ,  j)=  45;  enddo;  enddo
+        do  i=  2   ,  10;  do  j=  26  ,  49;  array(i  ,  j)=  45;  enddo;  enddo
+        do  i=  3   ,  8;   do  j=  30  ,  44;  array(i  ,  j)=  42;  enddo;  enddo
+        do  i=  2   ,  2;   do  j=  2   ,  14;  array(i  ,  j)=  45;  enddo;  enddo
+     !  print the array assuming the values can be printed as characters
+        WRITE (*, FMT = ’(50a1)’) ((char(array(i,j)),j=1,50,1),i=1,20,1)
+     !  pick a point and flood fill value 45 with value 35
+        call flood_fill(array,10,17,45,35)
+        write(*,’(a)’)
+        WRITE (*, FMT = ’(50a1)’) ((char(array(i,j)),j=1,50,1),i=1,20,1)
+     contains
+        recursive subroutine flood_fill(array,y,x,old_attribute,new_attribute)
+     ! Stack‐based recursive flood‐fill (Four‐way)
+     !
+     ! Flood fill, also called seed fill, is an algorithm that determines the
+     ! area connected to a given node in a multi‐dimensional array. It is used
+     ! in pixel‐based graphics to "bucket" fill connected, similarly‐colored
+     ! areas with a different color,
+     !
+     ! The flood fill algorithm takes three parameters: a start node, a target
+     ! color, and a replacement color. The algorithm looks for all nodes in the
+     ! array which are connected to the start node by a path of the target color,
+     ! and changes them to the replacement color.
+     !
+     ! Depending on whether we consider nodes touching at the corners connected
+     ! or not, we have two variations, Eight‐way and Four‐way, respectively.
+     !
+     ! One implicitly stack‐based (recursive) flood‐fill implementation (for
+     ! a two‐dimensional array) goes as follows:
+     !
+     ! Flood‐fill (node, target‐color, replacement‐color):
+     !  1. If target‐color is equal to replacement‐color, return.
+     !  2. If the color of node is not equal to target‐color, return.
+     !  3. Set the color of node to replacement‐color.
+     !  4. Perform Flood‐fill (one step to the west of node, target‐color, replacement‐color).
+     !     Perform Flood‐fill (one step to the east of node, target‐color, replacement‐color).
+     !     Perform Flood‐fill (one step to the north of node, target‐color, replacement‐color).
+     !     Perform Flood‐fill (one step to the south of node, target‐color, replacement‐color).
+     !  5. Return.
+     !
+     ! Though easy to understand, the implementation of the algorithm above
+     ! is impractical in languages and environments where stack space is
+     ! severely constrained. Many other algorithms are available if this is an issue.
+           integer  ::  array(:,:)
+           integer  :: y, x, old_attribute, new_attribute
+           integer  :: test_attribute
+           test_attribute=array(y,x)
+           if(test_attribute.eq.new_attribute) return
+           if(test_attribute.ne.old_attribute) return
+           array(y,x)=new_attribute
+           if(x.gt.1)                call flood_fill(array,y,x‐1,old_attribute,new_attribute)
+           if(x.lt.size(array,dim=2))call flood_fill(array,y,x+1,old_attribute,new_attribute)
+           if(y.gt.1)                call flood_fill(array,y‐1,x,old_attribute,new_attribute)
+           if(y.lt.size(array,dim=1))call flood_fill(array,y+1,x,old_attribute,new_attribute)
+        end subroutine flood_fill
+     end program testit
+
+
+program demo_sort_quick
+implicit none
+integer                      :: i
+logical                      :: passed
+character(len=10),parameter  :: in_words(*)=[character(len=10) :: &
+& 'red','white','blue','green','black','cyan','magenta','yellow']
+character(len=len(in_words)) :: out_words(size(in_words))
+   write(*,*)'unsorted ',in_words
+
+   out_words=sort_quick(in_words)
+   write(*,*)'sorted   ',out_words
+
+   write(*,*)'checking assuming no duplicates' 
+   passed=.true.
+   do i=1,size(in_words)-1
+     if(out_words(i).gt.out_words(i+1))then
+        write(*,*)'Error sorting ', &
+        & i,out_words(i),out_words(i+1)
+        passed=.false.
+     endif
+   enddo
+   write(*,*)'test of sort_quick(3f) ',merge('passed','failed',passed)
+
+contains
+
+recursive function sort_quick(data) result(sorted)
+
+! @(#) sort_quick(3f) recursive quicksort of a character(kind=ascii) array
+!
+! Compact implementation of the QuickSort algorithm
+!
+! This is derived from an example in "Modern Fortran in Practice" by Arjen Markus
+!
+! This work is licensed under the Creative Commons Attribution 3.0 Unported License.
+! To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+character(len=*),intent(in)  :: data(:)
+character(len=len(data))     :: sorted(1:size(data))
+
+   if (size(data) > 1) then
+      sorted = [character(len=len(data)) :: &
+                sort_quick(pack(data(2:), data(2:) < data(1))), &
+                data(1), &
+                sort_quick(pack(data(2:), data(2:) >= data(1)))]
+   else
+      sorted = data
+   endif
+!     All done
+end function sort_quick
+end program demo_sort_quick
+
+## A well-known recursion benchmark.
+
+    30        has the VALUE. Procedures that are not declared with an asterisk type-param-value, including elemental
+    31        procedures, can be invoked recursively by default; the RECURSIVE keyword is advisory only. The NON_-
+    32        RECURSIVEkeywordspeciﬁesthataprocedureisnotrecursive. TheERRORSTOPstatementcanappear
+     37      The NON_RECURSIVE and RECURSIVE keywords are not used in an ENTRY statement. Instead, the presence or absence of
+     38      NON_RECURSIVEin the initial SUBROUTINE or FUNCTION statement controls whether the procedure deﬁned by an ENTRY
+     39      statement is permitted to reference itself or another procedure deﬁned by the subprogram.
