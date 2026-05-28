@@ -1,41 +1,89 @@
-<a name="summary_ucs4"></a>
 #### Introduction to Fortran Unicode support
 ### Summary: Lessons Learned
 
-The main lessons discussed here are
+The main lessons from **Guide 1** ...
 
-1. Compilers that support CHARACTER kind ISO_10646  make reading and
+1. Compilers that support CHARACTER kind **ISO_10646** make reading and
    writing UTF-8 encoded files as easy as doing the same with ASCII
-   files.
+   files. Just open or re-open the file with "ENCODING='UTF-8'" and use
+   CHARACTER(KIND=UCS4) variables where
 
-2. All the CHARACTER intrinsics work with UCS4 variables.
+      integer, parameter :: ucs4  = selected_char_kind ('ISO_10646')
 
-3. Fortran does not supply functions to convert between UTF-8 encoded
-   byte streams and UCS-4 encoded data. Fortran encodes Unicode data
-   internally as UCS-4, but modern operating systems typically support
-   UTF-8 encoded data. So this generally causes problems with converting
-   values from command lines and environment variables to UCS-4.
-   Problems typically arise for using UCS-4 encoded variables when
-   opening files and doing file inquiry by name.
+   All the CHARACTER intrinsics work with UCS-4 variables so working with
+   all UCS-4 variables is primarily identical to working with all default
+   CHARACTER variables.
 
-   Creating source files using UTF-8 encoding makes it nearly universally
-   easy to write multi-byte files in Fortran constant strings, but
-   remember Fortran instructions other than comments and constant
-   strings must be composed only of characters in the Fortran character
-   set (which amounts to ASCII-7 characters sans control characters).
+2. Issues are mostly evident only in that
+    + there are special restrictions for concatenation, internal I/O
+      and assignment between CHARACTER kinds.
+    + on modern systems more than just file data is typically encoded
+      using UTF-8 (e.g.file names and environment variable values).
 
-If you care about the shortfallings in item 3 create a few conversion
-routines and you can solve those problems on any system supporting
-UTF-8 encoded files.
+   Simply put, mixing UCS-4 variables with other kinds is not permitted
+   for internal I/O and concatenation so no encoding conversions can
+   occur via these features.
 
-Remember that if you use UTF-8 constants in your code files that this is
-not disallowed by the Standard, but neither is it required to be supported.
+   Internal I/O does _not_ provide the conversions READ and WRITE
+   operations perform on data files opened with UTF-8 encoding. Internal
+   I/O only supports reading and writing UCS-4 variables from a UCS-4
+   internal file. No mixing with other kinds (and therefore no conversion
+   between UCS-4 and other encodings) is permitted.
 
-Taking that all into account
-the following example program shows how to read an environment
-variable into a UCS-4 variable, open files with UTF-8 encoded names, and
-use intrinsic CHARACTER methods with Unicode data, circumventing the
-issues raised in item 3.
+   Assignment of UCS-4 variables to ASCII variables folds each character
+   into one byte. One-byte UCS-4 characters (ie. the ASCII-7 characters)
+   are copied as-is. All other (multibyte) characters are converted
+   to a processor-dependent single-byte character designating an
+   "unrepresentable" character.
+
+   Conversely going from default CHARACTER variables to ISO_10646 variables
+   the data is assumed to be ASCII, not UTF-8. So again, only single-byte
+   characters are properly assigned from default CHARACTER to UCS-4 variables.
+
+   So assignment will not interpret UTF-8 data properly except for the first
+   128 "ASCII" characters.
+
+3. Procedures that interact with the system to get command line arguments
+   or the values of environment variables or to inquire or open files by name
+   all take default character kinds, not UCS-4 variables.
+
+4. So other than reading and writing to formatted data files as described in
+   (1) above, Fortran is unaware of UTF-8 encoding.
+
+   But modern operating systems typically support UTF-8 encoded data. So
+   as noted this causes problems with converting multi-byte characters in command
+   line arguments and environment variables to UCS-4. Problems also arise when
+   data in UCS-4 encoded variables is desired for use in opening files
+   and doing file inquiry by name, or for UTF-8 data in string constants.
+
+   With regards to  creating Fortran source files, using UTF-8 encoding
+   makes it nearly universally easy to write multi-byte files in Fortran
+   constant strings, but remember Fortran instructions other than
+   comments and constant strings must be composed only of characters
+   in the Fortran character set (which amounts to ASCII-7 characters
+   sans control characters).
+
+   Therefore note that if you use UTF-8 encoded constants in your code
+   files that this is not disallowed by the Standard, but neither is
+   it required to be supported.
+
+5. What is missing is that Fortran does not supply functions to convert
+   between UTF-8 encoded byte streams and UCS-4 encoded data. You can create
+   them using scratch files.
+
+   So create a few conversion routines and you can solve those problems on
+   any system supporting UTF-8 encoded files.
+
+
+Taking that all into account the following example program shows how to
+read an environment variable into a UCS-4 variable, open files with UTF-8
+encoded names, and use intrinsic CHARACTER methods with Unicode data,
+circumventing the issues raised above.
+
+A much more efficient way than using scratch files to
+encode UTF-8 into UCS-4 variables is in the companion module
+[M_ucs4](https://github.com/urbanjost/M_ucs4). The scratch file method
+is used here in order to provide a simple self-contained example.
 
 ~~~~~~~~~~ {: lang=fortran}
 module M_encode
@@ -231,3 +279,4 @@ end program try_module
 ~~~~~~~~~~
 + [[Unicode|TOP]]
 + [[lesson7_ucs4|PREVIOUS]]
++ **Guide 2: **  [[no_iso_10646| on to processing UTF-8 data without using the ISO_10646 extension]].

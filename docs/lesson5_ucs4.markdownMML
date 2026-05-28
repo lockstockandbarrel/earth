@@ -2,26 +2,35 @@
 #### Introduction to Fortran Unicode support
 ### Lesson V: processing Unicode file names on OPEN() statements
 
-If your OS supports utf-8 as the default encoding it is likely you will
-at some point encounter a filename containing multi-byte Unicode characters.
+If your OS supports UTF-8 as the default encoding it is likely you will at
+some point encounter a filename containing multi-byte Unicode characters.
 
-The definition of the OPEN() statement specifies that the
-filename expression is a "scalar-default-char-expr". But it
-also states
+The definition of the OPEN() statement specifies that the filename
+expression is a **"scalar-default-char-expr"** (section 12.5.6.2 (Syntax
+of the OPEN statement) on line 22). That is, _it must be of the default
+CHARACTER kind_. The default could be some type of wide Unicode kind
+but all processors examined defaulted to ASCII8 or ASCII7 or EBCDIC.
 
+It also states
+
+<pre style="background-color:lightgreen;color:black;display:inline-block;padding: 1rem;">
+    12.5.6     OPEN statement
     A file may have a name; a file that has a name is called a named
     file. The name of a named file is represented by a character
     string value. The set of allowable names for a file is processor
     dependent.
+</pre>
 
 And the description of the FILE= specifier states
 
+<pre style="background-color:lightgreen;color:black;display:inline-block;padding: 1rem;">
     12.5.6.10 FILE= specifier in the OPEN statement
 
     The value of the FILE= specifier is the name of the file to
     be connected to the specified unit. Any trailing blanks are
     ignored. The file-name-expr shall be a name that is allowed by
     the processor. The interpretation of case is processor dependent.
+</pre>
 
 So what filenames are allowed is processor-dependent -- but probably
 is restricted to a default character expression, which currently is
@@ -29,19 +38,20 @@ typically ASCII or extended ASCII.
 
 So if your Fortran compiler allows Unicode filenames the filename is
 likely to require being specified as a stream of bytes of the default
-CHARACTER kind representing utf-8 characters.
+CHARACTER kind representing UTF-8 characters.
 
 But what if you have the filename in UCS-4 internal representation?
 Fortran does not currently provide an intrinsic procedure for converting
-ucs-4 to utf-8 Unicode.
+UCS-4 to UTF-8 Unicode.
 
-Fortran does the conversion needed when writing ucs-4 internal data
-to utf-8-encoded files. We can use that functionality to create a
+Fortran does the conversion needed when writing UCS-4 internal data
+to UTF-8-encoded files. We can use that functionality to create a
 simple conversion routine.
 
+#### A procedure to convert UCS-4 to UTF-8
 ~~~~~~~~~~ {: lang=fortran}
 program read_filename
-! @(#) convert ucs-4 filename to utc-8 for OPEN() statement
+! @(#) convert UCS-4 filename to UTF-8 for OPEN() statement
 use, intrinsic :: iso_fortran_env, only : output_unit
 implicit none
 integer, parameter                     :: ucs4 = selected_char_kind ('ISO_10646')
@@ -58,12 +68,12 @@ integer                                :: lun
    char(int(z'5F'),kind=ucs4)  // char(int(z'73'),kind=ucs4) // char(int(z'FA'),kind=ucs4)// &
    char(int(z'62'),kind=ucs4)  // char(int(z'6F'),kind=ucs4) // char(int(z'72'),kind=ucs4)
 
-   open (output_unit, encoding='utf-8')
+   open (output_unit, encoding='UTF-8')
    write(output_unit,*)'FILENAME:',ufilename
 
    afilename=ucs4_to_utf8(ufilename)
 
-   open (newunit=lun, file=afilename, encoding='utf-8')
+   open (newunit=lun, file=afilename, encoding='UTF-8')
    !CLOSE(unit=lun, status='delete')
 
 contains
@@ -105,6 +115,13 @@ filename that is an alias for the unusable filename. This can typically
 be done with system commands using the intrinsic EXECUTE_COMMAND_LINE(3) if
 you do not have procedures for creating (and removing) links.
 
-+ [[Unicode|TOP]]
-+ [[lesson4_ucs4|PREVIOUS]]
-+ [[lesson6_ucs4|NEXT]]
++ <span style="background-color:pink;color:black;display:inline-block;padding: 1rem;">
+[[Unicode|TOP]]
+</span>
++ <span style="background-color:pink;color:black;display:inline-block;padding: 1rem;">
+[[lesson4_ucs4|PREVIOUS]]
+</span>
+
++ <span style="background-color:pink;color:black;display:inline-block;padding: 1rem;">
+[[lesson6_ucs4|NEXT]]
+</span>

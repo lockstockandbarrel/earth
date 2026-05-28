@@ -7,7 +7,7 @@ convert an arbitrary UTF-8 encoded string to UCS-4 (ISO_10646) character
 kind. While Fortran 2003 and later standards introduce support for
 different character kinds, including ISO_10646 (UCS-4), the conversion
 from a byte-stream representing UTF-8 to the UCS-4 character kind typically
-requires manual decoding accept when reading and writing from a file with
+requires manual decoding except when reading and writing from a file with
 encoding set to "UTF-8".
 
 Herein are some experiments in helping to facilitate using source codes

@@ -59,5 +59,6 @@ supplement that is considerably more powerful.
    example programs for each method provided; and documentation in
    HTML, man-page, and flat-text formats.
 
-+ [TOP](Unicode)
-
+----
++ <span style="background-color:pink;color:black;display:inline-block;padding: 1rem;"> [TOP](Unicode) </span>
++ <span style="background-color:pink;color:black;display:inline-block;padding: 1rem;"> [NEXT](extensions_ext)</span> Common Unicode-related processor-dependent extensions

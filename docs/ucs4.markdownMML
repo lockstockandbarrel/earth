@@ -1,7 +1,6 @@
-<a name="ucs4"></a>
 ## The optional Fortran 2003 ISO_10646 standard
 
-The Fortran 2003 standard first defines support for processing of
+The Fortran 2003 standard is the first to define support for processing of
 Unicode UTF-8-encoded files. There are three simple main points:
 
 1. The option ENCODING="UTF8" on OPEN() statements indicates to

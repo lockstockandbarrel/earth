@@ -1344,10 +1344,10 @@ after:Hello World and Ni Hao -- ??????
   whether that would be a byte-per-byte transfer or whether only the 128
   ASCII characters would be allowed or whether it might treat the data as
   UTF-8 and encode it into UCS4. In all compilers I have tried the ASCII
-  writes into a UCS4 variable fail accept for ADE values from 0 o 128.
+  writes into a UCS4 variable fail except for ADE values from 0 o 128.
 
   So basically with Unicode support added you cannot do much new that
-  is useful with internal I/O accept read and write UCS-4 values in and
+  is useful with internal I/O except read and write UCS-4 values in and
   out of UCS-4 internal files. This allows for common operations like
   converting strings to numeric variables but provides no functionality
   that is aware of UTF-8 encoded streams of bytes.

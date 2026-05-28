@@ -1,4 +1,3 @@
-<a name="Unicode"></a>
 #### Introduction to Fortran Unicode support
 ## Reading, writing and processing UTF-8 data using Fortran, Unicode codepoints, and their encodings
 
@@ -9,8 +8,7 @@ the world. This allows computers to process, store, and display text
 correctly across different platforms by providing a universal mapping
 for characters.
 
-There are several standardized ways to encode the code points. The interest
-here is in two of them -- UTF-8 and UCS-4 encoding.
+There are several standardized ways to encode the code points. The encoding methods of interest here are called UTF-8 and UCS-4.
 
 **UTF-8 encoding** has emerged as the de-facto standard format for
 representing Unicode in text files on all major operating systems.
@@ -33,7 +31,7 @@ UCS-4 encoding shares the trait of constant storage size per element with
 all Fortran intrinsic types, making it a natural fit for the internal
 representation of code points in the Fortran language.
 
-Since the release of the 2003 standard, Fortran does indeed __optionally__
+Since the release of the 2003 standard, Fortran does __optionally__
 support processing of Unicode UTF-8-encoded files in this manner. Data
 is internally stored using UCS-4 encoding but translated to and from
 UCS-8 encoding during formatted I/O. This option will be referred to as
@@ -42,8 +40,8 @@ the **Fortran ISO_10646 standard**.
 ### Glyphs
 
 A character encoded using UCS-4 or UTF-8 is often referred to as a
-**"glyph"** to differentiate it from ASCII characters. "Glyph" more
-technically is actually the name for the appearance of the rendering of
+**"glyph"** to differentiate it from ASCII characters. "Glyph" formally is
+the name for the appearance of the rendering of
 the character via a font. But it will be used here as well as representing
 a Unicode "character".
 
@@ -61,22 +59,20 @@ various compilers/processors.
 The resulting methods are incorporated into Fortran Modules available
 via github repositories.
 
-The selection of methods to employ breaks down along these major divides:
 
- + [[ucs4|using the optional Fortran ISO_10646 standard]].
+ + **Guide 1: **  [[ucs4|using the optional Fortran ISO_10646 standard]].
 
    The first guide set assumes you want to use the ISO_10646 extension
    and would prefer to conform as portably as reasonable to the Fortran
    standard; and probably avoid using UTF-8-encoded constant strings.
 
- + [[no_iso_10646|processing UTF-8 data without using the ISO_10646 extension]].
+ + **Guide 2: **  [[no_iso_10646|processing UTF-8 data without using the ISO_10646 extension]].
 
- + [[utf8_source_ext|using UTF-8-encoded source files]] versus using
-   only Fortran source files strictly adhering to the Fortran character set
+   This guide explains how to process UTF-8-encoded data files without using the ISO_10646 extensions as well as compiling UTF-8 Fortran source files.
 
- + using [[extensions_ext|Common Unicode-related processor-dependent extensions]]
+ + **Common Extensions: **  using [[extensions_ext|Common Unicode-related processor-dependent extensions]]
 
- + [M_ucs4](https://github.com/urbanjost/M_ucs4) - A Module supporting
+ + **ISO 10646 module:**  [M_ucs4](https://github.com/urbanjost/M_ucs4) - A Module supporting
    using the ISO_10646 extension
 
    A module supplementing the ISO_10646 extension, including
@@ -87,7 +83,7 @@ The selection of methods to employ breaks down along these major divides:
      * Unicode processing
      * related utility programs
 
- + [M_unicode](https://github.com/urbanjost/M_unicode) - Processing
+ + **UTF-8 module**:  [M_unicode](https://github.com/urbanjost/M_unicode) - Processing
    UTF-8 data without depending on the ISO_10646 extension
 
    A module defining a user-defined type that allows for ragged arrays
